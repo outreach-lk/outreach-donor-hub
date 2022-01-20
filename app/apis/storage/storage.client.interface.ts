@@ -10,6 +10,7 @@ import { FileDto, FileMetadata, RemoteFileDeleteResDto, RemoteFileUploadResDto }
  */
 export interface IFileStorageClient {
     uploadFile(file: File, meta: FileMetadata): Promise<RemoteFileUploadResDto>;
+    updateFile(path: string, meta: FileMetadata): Promise<RemoteFileUploadResDto>;
     fetchFile(path: string): Promise<FileDto>;
     removeFile(path: string): Promise<RemoteFileDeleteResDto>;
 }
