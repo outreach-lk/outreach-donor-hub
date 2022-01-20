@@ -56,7 +56,7 @@ export type UserCreateResDto = ServerMessageDto<AuditableUserDto | ServerError>;
 export type UserUpdateResDto = ServerMessageDto<AuditableUserDto | ServerError>;
 
 /** Response to Delete User */
-export type UserDeleteResDto = ServerMessageDto< {} | ServerError>;
+export type UserDeleteResDto = ServerMessageDto< never | ServerError>;
 
 /** Response to list all Users */
 export type UserListAllResDto = ServerMessageDto<Pagable<AuditableUserDto> | ServerError>;
