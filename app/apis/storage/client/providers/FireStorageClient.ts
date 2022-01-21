@@ -1,5 +1,5 @@
-import { FileMetadata, RemoteFileUploadResDto, FileDto, RemoteFileDeleteResDto } from "../../../types/dtos/remote.file.dtos";
-import { IFileStorageClient } from "../../../types/interfaces/storage.client.interface";
+import { FileMetadata, RemoteFileUploadResDto, FileDto, RemoteFileDeleteResDto } from "../../../../types/dtos/remote.file.dtos";
+import { IFileStorageClient } from "../../../../types/interfaces/storage.client.interface";
 
 /** Storage Client for Provider Google Firestroage */
 export default class FireStorageClient implements IFileStorageClient {
