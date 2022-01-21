@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/unbound-method */
-import { AuthProvider } from "../../types/enums/providers";
+import { AuthProvider } from "../../../types/enums/providers";
 import AuthClientFactory from "./AuthClientFactory";
 
 describe("Create Auth Client", ()=>{

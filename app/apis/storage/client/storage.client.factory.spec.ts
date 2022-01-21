@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/unbound-method */
-import { FileStorageProvider } from "../../types/enums/providers";
+import { FileStorageProvider } from "../../../types/enums/providers";
 import StorageClientFactory from "./StorageClientFactory";
 
 describe("Create Storage Client", ()=>{
