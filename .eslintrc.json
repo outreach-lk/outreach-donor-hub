@@ -33,5 +33,5 @@
   "rules": {
     // ...add rules which you'd like to disable
   },
-  "ignorePatterns": ["next.config.js"]
+  "ignorePatterns": ["*.config.js"]
 }

@@ -1,8 +1,13 @@
 import { UserDto } from "../../../types/dtos/userDtos";
+import { AuthProvider } from "../../../types/providers/auth";
 import { IAuthClient } from "../auth.client.interface";
 
 /** Authentication Client for Provider Firebase */
 export default class FirebaseAuthClient implements IAuthClient{
+    accessToken: string | undefined;
+    refreshToken: string | undefined;
+    provider: AuthProvider  = AuthProvider.FIREBASE;
+    
     signInWithEmail(email: string, password: string): Promise<UserDto> {
         throw new Error("Method not implemented.");
     }

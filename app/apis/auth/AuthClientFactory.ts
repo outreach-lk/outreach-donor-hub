@@ -4,7 +4,7 @@ import { IAuthClient } from "./auth.client.interface";
 import FirebaseAuthClient from "./providers/FirebaseAuthClient";
 
 export default class AuthClientFactory extends APIClientFactory<IAuthClient,AuthProvider>{
-    createClient(provider: AuthProvider): IAuthClient {
+    protected createClient(provider: AuthProvider): IAuthClient {
         switch(provider){
             case AuthProvider.FIREBASE:
             default:
