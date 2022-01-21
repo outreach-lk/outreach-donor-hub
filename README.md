@@ -2,7 +2,7 @@
 
 ![Github License](https://img.shields.io/badge/license-MIT-green)
 ![React Version](https://img.shields.io/badge/react-v17.0.2-blue.svg)
-
+[![Lint Code Base](https://github.com/outreach-lk/outreach-donor-hub/actions/workflows/super-linter.yml/badge.svg?branch=main)](https://github.com/outreach-lk/outreach-donor-hub/actions/workflows/super-linter.yml)
 ![example](https://mdn.mozillademos.org/files/10529/inspector.png)
 
 #### Description of your project
