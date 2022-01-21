@@ -1,6 +1,6 @@
-import { AuthProvider } from "../../types/providers/auth";
+import { AuthProvider } from "../../types/enums/providers";
 import APIClientFactory from "../APIClientFactory";
-import { IAuthClient } from "./auth.client.interface";
+import { IAuthClient } from "../../types/interfaces/auth.client.interface";
 import FirebaseAuthClient from "./providers/FirebaseAuthClient";
 
 export default class AuthClientFactory extends APIClientFactory<IAuthClient,AuthProvider>{

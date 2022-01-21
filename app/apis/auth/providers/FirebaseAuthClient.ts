@@ -1,6 +1,6 @@
-import { UserDto } from "../../../types/dtos/userDtos";
-import { AuthProvider } from "../../../types/providers/auth";
-import { IAuthClient } from "../auth.client.interface";
+import { UserDto } from "../../../types/dtos/user.dtos";
+import { AuthProvider } from "../../../types/enums/providers";
+import { IAuthClient } from "../../../types/interfaces/auth.client.interface";
 
 /** Authentication Client for Provider Firebase */
 export default class FirebaseAuthClient implements IAuthClient{
