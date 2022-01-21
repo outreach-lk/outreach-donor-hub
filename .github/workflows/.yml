@@ -12,7 +12,7 @@ on:
   pull_request:
     branches: [ main ]
 jobs:
-  run-lint:
+  run-checks:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -22,16 +22,8 @@ jobs:
           fetch-depth: 0
 
       - name: Lint Code Base
-        uses: github/super-linter@v4
-        env:
-          VALIDATE_ALL_CODEBASE: false
-          DEFAULT_BRANCH: main
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  run-tests:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Run Specs
-      - uses: actions/checkout@v2
       - run: |
               npm ci
-              npm run test
+              npm run lint
+      - name: Run Specs
+      - run: npm run test
