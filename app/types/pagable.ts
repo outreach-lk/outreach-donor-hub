@@ -6,9 +6,9 @@
  */
 export type Pagable<T> = {
     total: number,
-    prev: Page<[]>,
+    prev: Page<T>,
     current: Page<T>,
-    next: Page<[]>
+    next: Page<T>
 }
 
 export type Page<T> = {
@@ -18,5 +18,5 @@ export type Page<T> = {
         start: number,
         end: number
     }
-    data: T[]
+    data?: T[]
 }
