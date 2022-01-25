@@ -4,12 +4,10 @@
 
 import { Auditable } from "../auditable";
 import { Pagable } from "../pagable";
-import { UserDto } from "./user.dtos";
 import { FileDto } from "./remote.file.dtos";
+import { Ownable } from "../ownable";
 
-export type CauseDto = {
-    causeId: string,
-    causeOwner: UserDto,
+export type CauseDto = Ownable & {
     title: string,
     description: string,
     attachments: FileDto[]
