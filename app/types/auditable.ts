@@ -2,11 +2,13 @@
  * Defines types for auditable data
  */
 
+import { UserDto } from "./dtos/user.dtos";
+
 export type Auditable = {
     createdOn: Date,
-    createdBy: string // User ID
+    createdBy: UserDto // User ID
     updatedOn: Date,
-    updatedBy: string
+    updatedBy: UserDto
 }
 
 

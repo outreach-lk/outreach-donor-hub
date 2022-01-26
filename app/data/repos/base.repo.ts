@@ -2,14 +2,9 @@
  * Parent Class for Cross Environment Data Items 
 */
 
-export default class BaseRepo {
-    protected isNode: boolean;
-    protected isBrowser: boolean;
+import MultiEnvEntity from "../multi.env.entity";
 
-    constructor(){
-        this.isNode = (typeof window === undefined);
-        this.isBrowser = !this.isNode;
-    }
+export default class BaseRepo extends MultiEnvEntity {
 
 
 }

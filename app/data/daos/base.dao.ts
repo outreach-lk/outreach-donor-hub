@@ -8,18 +8,23 @@
 import { UserDto } from "../../types/dtos/user.dtos";
 import { Entity } from "../../types/enums/entities";
 import { OwnablePermissions } from "../../types/ownable";
+import MultiEnvEntity from "../multi.env.entity";
+import User from "./user.dao";
 
-export default class BaseDAO {
+export default class BaseDAO extends MultiEnvEntity{
     // $serverSecret Use this key to authorize actions on entities in the server.
     private $serverSecret: string|null; 
     protected $serverIdentifier: string;
     protected $serverEntity: Entity;
-    protected isNode: boolean;
-    protected isBrowser: boolean;
+    createdOn?: Date | null;
+    createdBy?: User;
+    updatedOn?: Date;
+    updatedBy?: User;
+    permissions?: OwnablePermissions;
+    sharedWith?: User[];
 
     constructor(id:string, entity: Entity){
-        this.isNode = (typeof window === undefined);
-        this.isBrowser = !this.isNode;
+        super();
         this.$serverIdentifier = id;
         this.$serverEntity = entity;
         this.$serverSecret = process.env.SERVER_SECRET || null; // Assign from environment

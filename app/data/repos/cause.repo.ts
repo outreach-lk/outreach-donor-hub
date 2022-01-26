@@ -1,5 +1,5 @@
 /**
- * Cross Environment Data Access Objects for Causes.
+ * Cross Environment Data Repositories for Causes.
  * Methods may either be common two both server and browser environments or
  * they may be exclusive to each - in which case one of two prefixes precede.
  * browser: $browser or node $server
@@ -12,7 +12,7 @@ import ICRUDDAO from "../../types/interfaces/crud.repo.interface";
 import { Pagable, Page } from "../../types/pagable";
 import BaseRepo from "./base.repo";
 
-export default class Cause extends BaseRepo implements ICRUDDAO<CauseDto>{
+export default class CauseRepo extends BaseRepo implements ICRUDDAO<CauseDto>{
     constructor(){
         super();
     }
