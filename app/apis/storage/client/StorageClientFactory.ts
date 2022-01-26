@@ -1,5 +1,5 @@
 import { FileStorageProvider } from "../../../types/enums/providers";
-import BaseClientFactory from "../../BaseClientFactory";
+import BaseClientFactory from "../../base.client.factory";
 import FireStorageClient from "./providers/FireStorageClient";
 import { IFileStorageClient } from "../../../types/interfaces/storage.client.interface";
 

@@ -5,10 +5,10 @@
 import { UserDto } from "./dtos/user.dtos";
 
 export type Auditable = {
-    createdOn: Date,
-    createdBy: UserDto // User ID
-    updatedOn: Date,
-    updatedBy: UserDto
+    createdOn?: Date,
+    createdBy?: UserDto // User ID
+    updatedOn?: Date,
+    updatedBy?: UserDto
 }
 
 

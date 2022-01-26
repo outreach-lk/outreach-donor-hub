@@ -1,5 +1,5 @@
 /** 
- * Parent Class for Cross Environment Data Access Objects 
+ * Parent Class for Cross Environment Data Entities 
  * Methods may either be common two both server and browser environments or
  * they may be exclusive to each - in which case one of two prefixes precede.
  * browser: $browser or node $server
@@ -11,10 +11,10 @@ import { OwnablePermissions } from "../../types/ownable";
 import MultiEnvEntity from "../multi.env.entity";
 import User from "./user.dao";
 
-export default class BaseDAO extends MultiEnvEntity{
+export default class BaseEntity extends MultiEnvEntity{
     // $serverSecret Use this key to authorize actions on entities in the server.
     private $serverSecret: string|null; 
-    protected $serverIdentifier: string;
+    protected $serverIdentifier?: string;
     protected $serverEntity: Entity;
     createdOn?: Date | null;
     createdBy?: User;
@@ -23,12 +23,13 @@ export default class BaseDAO extends MultiEnvEntity{
     permissions?: OwnablePermissions;
     sharedWith?: User[];
 
-    constructor(id:string, entity: Entity){
+    constructor(entity: Entity,id?:string,){
         super();
         this.$serverIdentifier = id;
         this.$serverEntity = entity;
         this.$serverSecret = process.env.SERVER_SECRET || null; // Assign from environment
     }
+
 
     /** Server Exclusive Base Functions */
     /** Share */

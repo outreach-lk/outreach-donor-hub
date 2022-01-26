@@ -7,8 +7,8 @@ export enum AccessPerms{
 }
 
 export type Ownable = {
-    id: string,
-    owner: UserDto,
+    id?: string,
+    owner?: UserDto,
     sharedWith?: UserDto[],
     permissions?: OwnablePermissions
 }

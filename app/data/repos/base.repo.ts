@@ -6,5 +6,4 @@ import MultiEnvEntity from "../multi.env.entity";
 
 export default class BaseRepo extends MultiEnvEntity {
 
-
 }
