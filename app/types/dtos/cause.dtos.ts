@@ -7,6 +7,8 @@ import { Pagable } from "../pagable";
 import { FileDto } from "./remote.file.dtos";
 import { Ownable } from "../ownable";
 import { ServerError, ServerMessageDto } from "./server.message.dtos";
+import { EntityCreatedDto } from "./server.message.dtos";
+import { EntityUpdatedDto } from "./server.message.dtos";
 
 export type CauseDto = Ownable & {
     title: string,
@@ -16,8 +18,8 @@ export type CauseDto = Ownable & {
 
 export type CausePage = Pagable<CauseDto>
 
-export type CauseCreatedDto = ServerMessageDto<AuditableCauseDto | ServerError>;
-export type CauseUpdatedDto = ServerMessageDto<AuditableCauseDto | ServerError>;
+export type CauseCreatedDto = EntityCreatedDto<AuditableCauseDto | ServerError>;
+export type CauseUpdatedDto = EntityUpdatedDto<AuditableCauseDto | ServerError>;
 
 
 /** Auditable Dtos */

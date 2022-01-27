@@ -9,16 +9,17 @@ import CauseRepo from "../repos/cause.repo";
 import BaseEntity from "./base.entity";
 import User from "./user.dao";
 
-export default class Cause extends BaseEntity{
+export default class Cause extends BaseEntity<CauseDto>{
     causeId?: string;
     owner?: User;
     title: string;
     description: string;
     attachments: FileDto[];
-    private repo: CauseRepo = CauseRepo.getRepo();
+    
     
     constructor(causeDto:AuditableCauseDto){
         super(Entity.CAUSE,causeDto.id);
+        this.repo = CauseRepo.getRepo();
         this.causeId = causeDto.id;
         this.owner = causeDto.owner?new User(causeDto.owner):undefined;
         this.title = causeDto.title
@@ -62,31 +63,6 @@ export default class Cause extends BaseEntity{
         }
     }
     
-    /**
-     * Save the current local cause instance to the database.
-     * To be used in the browser.
-     * @todo May need to be converted to a multi environment method.
-     * @returns AuditableCauseDto
-     */
-    async $browser_saveToDb(): Promise<CauseCreatedDto> {
-        if(this.causeId){
-            // Do not allow creating 
-            throw Error(); 
-        }else if(this.isBrowser){
-            try {
-                return await this.repo.create({
-                    title: this.title,
-                    description: this.description,
-                    attachments: this.attachments
-                });
-            } catch (error) {
-                throw Error();
-            }
-        }else{
-            // Throw Environment Does Not Support this method.
-            throw Error();
-        }
-    }
 
     /** 
      * Update the Current Cause Instance in the Database 

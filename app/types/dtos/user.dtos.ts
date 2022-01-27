@@ -5,6 +5,10 @@
 import { Auditable } from "../auditable"
 import { Pagable } from "../pagable";
 import { FileDto } from "./remote.file.dtos";
+import { EntityFetchedPageDto } from "./server.message.dtos";
+import { EntityUpdatedDto } from "./server.message.dtos";
+import { EntityDeletedDto } from "./server.message.dtos";
+import { EntityCreatedDto } from "./server.message.dtos";
 import { ServerError, ServerMessageDto } from "./server.message.dtos";
 
 /**
@@ -50,16 +54,16 @@ export type UserVerificationDto = {
 
 
 /** Response to Create New User */
-export type UserCreateResDto = ServerMessageDto<AuditableUserDto | ServerError>;
+export type UserCreateResDto = EntityCreatedDto<AuditableUserDto | ServerError>;
 
 /** Response to Update User */
-export type UserUpdateResDto = ServerMessageDto<AuditableUserDto | ServerError>;
+export type UserUpdateResDto = EntityUpdatedDto<AuditableUserDto | ServerError>;
 
 /** Response to Delete User */
-export type UserDeleteResDto = ServerMessageDto< never | ServerError>;
+export type UserDeleteResDto = EntityDeletedDto< never | ServerError>;
 
 /** Response to list all Users */
-export type UserListAllResDto = ServerMessageDto<Pagable<AuditableUserDto> | ServerError>;
+export type UserListResDto = EntityFetchedPageDto<Pagable<AuditableUserDto> | ServerError>;
 
 /** Auditable forms of all dtos exported here */
 export type AuditableUserDto = UserDto & Auditable;
