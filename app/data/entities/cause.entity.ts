@@ -4,23 +4,21 @@
 
 import { AuditableCauseDto, CauseCreatedDto, CauseDto, CauseUpdatedDto } from "../../types/dtos/cause.dtos";
 import { FileDto } from "../../types/dtos/remote.file.dtos";
+import { EntityCreatedDto, EntityFetchedDto } from "../../types/dtos/server.message.dtos";
 import { Entity } from "../../types/enums/entities";
+import ICRUDREPO from "../../types/interfaces/crud.repo.interface";
 import CauseRepo from "../repos/cause.repo";
 import BaseEntity from "./base.entity";
 import User from "./user.dao";
 
-export default class Cause extends BaseEntity<CauseDto>{
-    causeId?: string;
-    owner?: User;
+export default class Cause extends BaseEntity<Cause,CauseDto>{
     title: string;
     description: string;
     attachments: FileDto[];
     
-    
     constructor(causeDto:AuditableCauseDto){
-        super(Entity.CAUSE,causeDto.id);
-        this.repo = CauseRepo.getRepo();
-        this.causeId = causeDto.id;
+        super(CauseRepo.getRepo(),Cause.map2Dto,causeDto.id);
+        this.id = causeDto.id;
         this.owner = causeDto.owner?new User(causeDto.owner):undefined;
         this.title = causeDto.title
         this.description = causeDto.description
@@ -31,11 +29,11 @@ export default class Cause extends BaseEntity<CauseDto>{
         this.updatedBy = causeDto.updatedBy? new User(causeDto.updatedBy):undefined;
         this.permissions = causeDto.permissions;
         this.sharedWith = causeDto.sharedWith?.map(dto=>new User(dto));
-    }
+    };
 
     static map2Dto(cause:Cause):CauseDto {
         return {
-            id: cause.causeId,
+            id: cause.id,
             title: cause.title,
             description: cause.description,
             attachments: cause.attachments,
@@ -43,42 +41,35 @@ export default class Cause extends BaseEntity<CauseDto>{
             permissions: cause.permissions,
             sharedWith: cause.sharedWith // Map Cause to CauseDTO
         } as CauseDto
-    }
-    
-    /** Introduce this to the Base Class as an abstract method */
-    map2Dto():CauseDto{
-        return Cause.map2Dto(this);
-    }
+    };
 
-    /**
+    /** Static CRUD Methods for GET and POST */
+    /** 
      * Creates a Cause in the database with given data.
      * @param causeDto 
      * @returns 
      */
-    static async create(causeDto: CauseDto):Promise<CauseCreatedDto> {
+    static async create(causeDto: CauseDto):Promise<EntityCreatedDto<CauseDto>> {
         try {
             return await CauseRepo.getRepo().create(causeDto);
         } catch (error) {
             throw Error();
         }
-    }
-    
+    };
 
-    /** 
-     * Update the Current Cause Instance in the Database 
+    /**
+     * Fetches Cause with given identifier.
+     * @param identifier 
+     * @returns 
      */
-    async update(): Promise<CauseUpdatedDto> {
-        if(this.causeId){
-            try {
-                return await this.repo.update(this.causeId,this.map2Dto());
-            } catch (error) {
-                throw new Error();
-            }
-        }else{
-            // Throw Cause does not exist on db or invalid id.
-            throw new Error();
+    static async get(identifier: string): Promise<EntityFetchedDto<CauseDto>> {
+        try{
+            return await CauseRepo.getRepo().get(identifier);
+        } catch (error){
+            throw Error();
         }
-    }
+    };
+
 
 
 } 

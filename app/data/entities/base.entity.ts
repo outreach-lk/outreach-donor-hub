@@ -5,20 +5,23 @@
  * browser: $browser or node $server
 */
 
-import { EntityCreatedDto } from "../../types/dtos/server.message.dtos";
+import { Auditable } from "../../types/auditable";
+import { EntityCreatedDto, EntityDeletedDto, EntityFetchedDto, EntityFetchedPageDto, EntityUpdatedDto } from "../../types/dtos/server.message.dtos";
 import { UserDto } from "../../types/dtos/user.dtos";
 import { Entity } from "../../types/enums/entities";
 import ICRUDREPO from "../../types/interfaces/crud.repo.interface";
 import { OwnablePermissions } from "../../types/ownable";
+import { Page } from "../../types/pagable";
 import MultiEnvEntity from "../multi.env.entity";
+import BaseRepo from "../repos/base.repo";
 import User from "./user.dao";
 
-export default class BaseEntity<D> extends MultiEnvEntity{
-    // $serverSecret Use this key to authorize actions on entities in the server.
-    private $serverSecret: string|null; 
-    protected $serverIdentifier?: string;
-    protected $serverEntity: Entity;
-    protected repo: ICRUDREPO;
+export default class BaseEntity<E,D> extends MultiEnvEntity{
+    protected $serverIdentifier?: string; //TODO: Redundant?
+    protected repo: ICRUDREPO<D>;
+    private mapper: (e:E)=>D;
+    id?: string;
+    owner?: User;
     createdOn?: Date | null;
     createdBy?: User;
     updatedOn?: Date;
@@ -26,42 +29,24 @@ export default class BaseEntity<D> extends MultiEnvEntity{
     permissions?: OwnablePermissions;
     sharedWith?: User[];
 
-    constructor(entity: Entity,id?:string,){
+    constructor(repo:ICRUDREPO<D>,mapper:(e:E)=>D,id?:string){
         super();
-        this.$serverIdentifier = id;
-        this.$serverEntity = entity;
-        this.$serverSecret = process.env.SERVER_SECRET || null; // Assign from environment   
+        this.$serverIdentifier = id; //TODO: Redundant?
+        this.repo = repo;
+        this.mapper = mapper;
     }
 
-    /** Entity CRUD Methods */
-    /**
-     * Save the current local cause instance to the database.
-     * To be used in the browser.
-     * @todo May need to be converted to a multi environment method.
-     * @returns AuditableCauseDto
-     */
-     async create(): Promise<EntityCreatedDto<D>> {
-        if(this.causeId){
-            // Do not allow creating 
-            throw Error(); 
-        }else if(this.isBrowser){
-            try {
-                return await this.repo.create({
-                    title: this.title,
-                    description: this.description,
-                    attachments: this.attachments
-                });
-            } catch (error) {
-                throw Error();
-            }
-        }else{
-            // Throw Environment Does Not Support this method.
+    /** CRUD Methods */
+    create(mapper:(e:E)=>D):Promise<EntityCreatedDto<D>>{
+        try {
+            return this.repo.create(mapper(this));
+        } catch (error) {
             throw Error();
         }
     }
 
     /** Server Exclusive Base Functions */
-    /** Share */
+    /** Share Entity With Users*/
     $serverShareWith(users: UserDto[]){
         if(this.isNode){
             //TODO: Implement Sharing
