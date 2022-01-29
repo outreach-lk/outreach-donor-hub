@@ -3,7 +3,7 @@
  * Entities intended to be used on client and server must extend this class
  * or implement their own logic to detect environment.
  */
-export default class MultiEnvEntity{
+export default class MultiEnv{
     protected isNode: boolean;
     protected isBrowser: boolean;
     constructor(){

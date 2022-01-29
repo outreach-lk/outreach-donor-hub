@@ -2,8 +2,8 @@
  * Parent Class for Cross Environment Data Items 
 */
 
-import MultiEnvEntity from "../multi.env.entity";
+import MultiEnv from "../multi.env";
 
-export default class BaseRepo extends MultiEnvEntity {
+export default class BaseRepo extends MultiEnv {
 
 }

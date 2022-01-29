@@ -10,10 +10,10 @@ import { EntityCreatedDto, EntityDeletedDto, EntityUpdatedDto } from "../../type
 import { UserDto } from "../../types/dtos/user.dtos";
 import ICRUDREPO from "../../types/interfaces/crud.repo.interface";
 import { OwnablePermissions } from "../../types/ownable";
-import MultiEnvEntity from "../multi.env.entity";
+import MultiEnv from "../multi.env";
 import User from "./user.dao";
 
-export default abstract class BaseEntity<E,D> extends MultiEnvEntity {
+export default abstract class BaseEntity<E,D> extends MultiEnv {
     protected repo: ICRUDREPO<D>;
     protected mapper: (e:E)=>D;
     protected reverseMapper: (d:D, e:E)=>void;
