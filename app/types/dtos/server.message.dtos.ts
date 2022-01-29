@@ -18,12 +18,12 @@ export type ServerMessageDto<T> = {
 export type ServerError = {
     message: string,
     code: number | string,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     stackTrace?: any
 }
 
 export type EntityCreatedDto<T> = ServerMessageDto<T>;
 export type EntityFetchedDto<T> = ServerMessageDto<T>;
-export type EntityFetchedPageDto<T> = ServerMessageDto<Pageable<T>>;
-export type EntityCreatedDto<T> = ServerMessageDto<T>;
+export type EntityFetchedPageDto<T> = ServerMessageDto<Pagable<T>>;
 export type EntityUpdatedDto<T> = ServerMessageDto<T>;
 export type EntityDeletedDto<T> = ServerMessageDto<T>;

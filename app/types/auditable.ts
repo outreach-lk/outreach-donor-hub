@@ -9,6 +9,9 @@ export type Auditable = {
     createdBy?: UserDto // User ID
     updatedOn?: Date,
     updatedBy?: UserDto
+    isDeleted?: boolean,
+    deletedOn?: Date,
+    deletedBy?: UserDto
 }
 
 

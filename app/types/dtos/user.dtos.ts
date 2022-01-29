@@ -9,7 +9,7 @@ import { EntityFetchedPageDto } from "./server.message.dtos";
 import { EntityUpdatedDto } from "./server.message.dtos";
 import { EntityDeletedDto } from "./server.message.dtos";
 import { EntityCreatedDto } from "./server.message.dtos";
-import { ServerError, ServerMessageDto } from "./server.message.dtos";
+import { ServerError } from "./server.message.dtos";
 
 /**
  * DTO for User Object

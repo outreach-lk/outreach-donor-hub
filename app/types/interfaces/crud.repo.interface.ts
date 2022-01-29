@@ -4,7 +4,7 @@ import { EntityDeletedDto } from "../dtos/server.message.dtos";
 import { EntityUpdatedDto } from "../dtos/server.message.dtos";
 import { EntityFetchedPageDto } from "../dtos/server.message.dtos";
 import { EntityFetchedDto } from "../dtos/server.message.dtos";
-import { Pagable, Page } from "../pagable";
+import { Page } from "../pagable";
 
 export default interface ICRUDREPO<T> {
     /** Get Methods */
@@ -21,5 +21,5 @@ export default interface ICRUDREPO<T> {
     update(identifier: string, data: T): Promise<EntityUpdatedDto<Auditable & T>>;
 
     /** Delete Methods */
-    delete(identifier: string): Promise<EntityDeletedDto<Audtiable & T>>;
+    delete(identifier: string): Promise<EntityDeletedDto<Auditable & T>>;
 }

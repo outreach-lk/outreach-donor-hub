@@ -12,7 +12,7 @@ import { FileDto } from "../../types/dtos/remote.file.dtos";
 import { EntityFetchedDto, EntityFetchedPageDto, EntityCreatedDto, EntityUpdatedDto, EntityDeletedDto } from "../../types/dtos/server.message.dtos";
 import ICRUDREPO from "../../types/interfaces/crud.repo.interface";
 import { Ownable } from "../../types/ownable";
-import { Pagable, Page } from "../../types/pagable";
+import { Page } from "../../types/pagable";
 import BaseRepo from "./base.repo";
 
 export default class CauseRepo extends BaseRepo implements ICRUDREPO<CauseDto>{
@@ -34,9 +34,9 @@ export default class CauseRepo extends BaseRepo implements ICRUDREPO<CauseDto>{
         throw new Error("Method not implemented.");
     }
     update(identifier: string, data: CauseDto): Promise<EntityUpdatedDto<Auditable & Ownable & { title: string; description: string; attachments: FileDto[]; }>> {
-        throw new Error("Method not implemented.");
+        return Promise.resolve({data} as EntityUpdatedDto<Auditable & Ownable & CauseDto>);
     }
-    delete(identifier: string): Promise<EntityDeletedDto<any>> {
+    delete(identifier: string): Promise<EntityDeletedDto<Auditable & Ownable & { title: string; description: string; attachments: FileDto[]; } >> {
         throw new Error("Method not implemented.");
     }
 
