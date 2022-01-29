@@ -10,6 +10,7 @@ const cause:Cause = new Cause({
     title: 'Sample Cause',
     description: 'Sample Desc.',
     attachments: [],
+    donations: []
 })
 
 describe("Creates Cause Entity and run CRUD methods on it", () => {
@@ -57,7 +58,8 @@ describe("Creates Cause Entity and run CRUD methods on it", () => {
         const cause = new Cause({
             title: "New Cause",
             description: "This cause is new",
-            attachments: []
+            attachments: [],
+            donations: []
         })
         const $create = jest.spyOn(cause,'create');
         cause.create()

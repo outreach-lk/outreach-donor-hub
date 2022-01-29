@@ -21,22 +21,22 @@ export default class CauseRepo extends BaseRepo implements ICRUDREPO<CauseDto>{
     constructor(){
         super();
     }
-    get(identifier: string): Promise<EntityFetchedDto<Auditable & Ownable & { title: string; description: string; attachments: FileDto[]; }>> {
+    get(identifier: string): Promise<EntityFetchedDto<Auditable & Ownable & CauseDto>> {
         throw new Error("Method not implemented.");
     }
     getAll(): Promise<EntityFetchedPageDto<Auditable & CauseDto[]>> {
         throw new Error("Method not implemented.");
     }
-    getPage(page: Page<CauseDto>): Promise<EntityFetchedPageDto<Auditable & Ownable & { title: string; description: string; attachments: FileDto[]; }>> {
+    getPage(page: Page<CauseDto>): Promise<EntityFetchedPageDto<Auditable & Ownable & CauseDto>> {
         throw new Error("Method not implemented.");
     }
-    create(data: CauseDto): Promise<EntityCreatedDto<Auditable & Ownable & { title: string; description: string; attachments: FileDto[]; }>> {
+    create(data: CauseDto): Promise<EntityCreatedDto<Auditable & Ownable & CauseDto>> {
         throw new Error("Method not implemented.");
     }
-    update(identifier: string, data: CauseDto): Promise<EntityUpdatedDto<Auditable & Ownable & { title: string; description: string; attachments: FileDto[]; }>> {
+    update(identifier: string, data: CauseDto): Promise<EntityUpdatedDto<Auditable & Ownable & CauseDto>> {
         return Promise.resolve({data} as EntityUpdatedDto<Auditable & Ownable & CauseDto>);
     }
-    delete(identifier: string): Promise<EntityDeletedDto<Auditable & Ownable & { title: string; description: string; attachments: FileDto[]; } >> {
+    delete(identifier: string): Promise<EntityDeletedDto<Auditable & Ownable & CauseDto >> {
         throw new Error("Method not implemented.");
     }
 

@@ -6,14 +6,15 @@ import { Auditable } from "../auditable";
 import { Pagable } from "../pagable";
 import { FileDto } from "./remote.file.dtos";
 import { Ownable } from "../ownable";
-import { ServerError, ServerMessageDto } from "./server.message.dtos";
+import { ServerError } from "./server.message.dtos";
 import { EntityCreatedDto } from "./server.message.dtos";
 import { EntityUpdatedDto } from "./server.message.dtos";
 
 export type CauseDto = Ownable & {
     title: string,
     description: string,
-    attachments: FileDto[]
+    attachments: FileDto[],
+    donations: any[]
 }
 
 export type CausePage = Pagable<CauseDto>

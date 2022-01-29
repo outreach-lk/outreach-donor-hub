@@ -9,13 +9,14 @@ import { EntityCreatedDto, EntityFetchedDto, EntityFetchedPageDto } from "../../
 import { Page } from "../../types/pagable";
 import CauseRepo from "../repos/cause.repo";
 import BaseEntity from "./base.entity";
+import { ICauseActions } from "./cause.entity.interface";
 import User from "./user.dao";
 
-export default class Cause extends BaseEntity<Cause,CauseDto>{
+export default class Cause extends BaseEntity<Cause,CauseDto> implements ICauseActions{
     title: string;
     description: string;
-    attachments: FileDto[];
-    
+    attachments: FileDto[]; // TODO: Convert to File Objects
+    donations: any[]; //TODO: 1.Create Donations 2. Should this rather be a Pagable of type Donation?
     constructor(causeDto:AuditableCauseDto){
         // eslint-disable-next-line @typescript-eslint/unbound-method
         super(CauseRepo.getRepo(),Cause.map2Dto,Cause.mapFromDto);
@@ -23,13 +24,18 @@ export default class Cause extends BaseEntity<Cause,CauseDto>{
         this.owner = causeDto.owner?new User(causeDto.owner):undefined;
         this.title = causeDto.title
         this.description = causeDto.description
-        this.attachments = causeDto?.attachments
+        this.attachments = causeDto?.attachments;
+        this.donations = causeDto.donations;
         this.createdOn = causeDto.createdOn?causeDto.createdOn:null;
         this.createdBy = causeDto.createdBy?new User(causeDto.createdBy):undefined;
         this.updatedOn = causeDto.updatedOn;
         this.updatedBy = causeDto.updatedBy? new User(causeDto.updatedBy):undefined;
         this.permissions = causeDto.permissions;
         this.sharedWith = causeDto.sharedWith?.map(dto=>new User(dto));
+    }
+
+    $browser_UploadCauseAttachments(files: FileDto[]): Promise<[Auditable & FileDto]> {
+        throw new Error("Method not implemented.");
     }
 
     /** Static CRUD Methods for GET and POST */
@@ -72,6 +78,8 @@ export default class Cause extends BaseEntity<Cause,CauseDto>{
         }
     }
 
+
+    /** Mappers */
     /**
      * Maps Cause to a Cause DTO
      * @param cause 
@@ -83,6 +91,7 @@ export default class Cause extends BaseEntity<Cause,CauseDto>{
             title: cause.title,
             description: cause.description,
             attachments: cause.attachments,
+            donations: cause.donations,
             owner: cause.owner, // TODO: Map User to UserDTO
             permissions: cause.permissions,
             sharedWith: cause.sharedWith // Map Cause to CauseDTO
@@ -99,6 +108,7 @@ export default class Cause extends BaseEntity<Cause,CauseDto>{
         cause.title = dto.title || cause.title;
         cause.description = dto.description || cause.description;
         cause.attachments = dto.attachments || cause.attachments;
+        cause.donations = dto.donations || cause.donations;
         cause.owner = dto.owner? new User(dto.owner): cause.owner
         cause.createdOn = dto.createdOn || cause.createdOn;
         cause.createdBy = dto.createdBy? new User(dto.createdBy): cause.createdBy;
