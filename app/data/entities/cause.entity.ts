@@ -9,7 +9,7 @@ import { EntityCreatedDto, EntityFetchedDto, EntityFetchedPageDto } from "../../
 import { Page } from "../../types/pagable";
 import CauseRepo from "../repos/cause.repo";
 import BaseEntity from "./base.entity";
-import { ICauseActions } from "./cause.entity.interface";
+import { ICauseActions } from "../../types/interfaces/cause.entity.interface";
 import User from "./user.dao";
 
 export default class Cause extends BaseEntity<Cause,CauseDto> implements ICauseActions{
