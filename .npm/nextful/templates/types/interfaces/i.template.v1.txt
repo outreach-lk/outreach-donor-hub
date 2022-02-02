@@ -1,0 +1,4 @@
+
+export interface I%NEXTFUL_ENTITY_NAMAE%Actions {
+    
+}
