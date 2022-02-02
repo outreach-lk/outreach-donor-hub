@@ -1,9 +1,12 @@
 /**
+ * Nextful Script
+ * @version 1.0.0
  * a simple utility to create entities and related dtos based on templates
  * @author @kulathilake shehanhere(at)gmail.com
  */
 const fs = require('fs');
 const {Command} = require('commander');
+const prompt = require('prompt');
 const path = require('path');
 const nextful = new Command();
 
@@ -30,8 +33,13 @@ nextful
 nextful.command('create')
 .description('Create REST entity class, repo and dtos')
 .argument('name', 'Entity Name') 
-.action((name)=>{
+.action(async (name)=>{
     var Name = String(name).charAt(0).toUpperCase().concat(String(name).slice(1)) // capitalize name.
+
+    const attributesMap = await promptAttributes(Name);
+
+    console.log(attributesMap);
+
     // load templates.
     var dtos = fs.readFileSync(__dirname + `/templates/types/dto/dto.template.${VERSION}.txt`,'utf-8');
     var entity = fs.readFileSync(__dirname + `/templates/entity/entity.template.${VERSION}.txt`,'utf-8');
@@ -84,4 +92,42 @@ function fileDeletionCb(err,path){
     }
 }
 
-module.exports = nextful
+async function promptAttributes(name){
+    console.log('Attributes of '+name)
+
+    let max = await prompt.get({
+        description: 'number of attributes',
+        name: 'val',
+        default: 1,
+        type: 'number'
+    })
+    const attribs =  await prompt.get({
+        description: 'Attribute',
+        maxItems: max.val,
+        name: 'names',
+        type: 'array'
+    });
+
+
+   return await recursivelyPromptTypes(attribs['names'].reverse());
+
+}
+
+async function recursivelyPromptTypes(attribnames=[]){
+    let typeMap = [];
+    if(attribnames.length === 0){
+        return typeMap;
+    }else{
+        const name = attribnames.pop();
+        let type = await prompt.get({
+            description: `type of ${name}`,
+            name: 'type',
+        });
+        typeMap.push({[name]: type['type']})
+        return [...typeMap,...await recursivelyPromptTypes(attribnames)]
+    }
+}
+
+function typeValidator(type){
+    return true;
+}
