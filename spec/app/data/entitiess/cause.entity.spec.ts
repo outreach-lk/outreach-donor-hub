@@ -1,9 +1,9 @@
-import Cause from "./cause.entity";
-import CauseRepo from "../repos/cause.repo";
-import { CauseDto } from "../../types/dtos/cause.dtos";
-import { EntityUpdatedDto } from "../../types/dtos/server.message.dtos";
-import { Auditable } from "../../types/auditable";
-import { Ownable } from "../../types/ownable";
+import Cause from "../../../../app/data/entities/cause.entity";
+import CauseRepo from "../../../../app/data/repos/cause.repo";
+import { CauseDto } from "../../../../app/types/dtos/cause.dtos";
+import { EntityUpdatedDto } from "../../../../app/types/dtos/server.message.dtos";
+import { Auditable } from "../../../../app/types/auditable";
+import { Ownable } from "../../../../app/types/ownable";
 
 const cause:Cause = new Cause({
     id: "hello",
