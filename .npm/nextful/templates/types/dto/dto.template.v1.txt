@@ -11,7 +11,7 @@ import { EntityCreatedDto } from "./server.message.dtos";
 import { EntityUpdatedDto } from "./server.message.dtos";
 
 export type %NEXTFUL_ENTITY_NAMAE%Dto = Ownable & {
-    
+    %ATTRIBS%
 }
 
 export type %NEXTFUL_ENTITY_NAMAE%Page = Pagable<%NEXTFUL_ENTITY_NAMAE%Dto>

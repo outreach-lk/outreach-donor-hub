@@ -14,6 +14,7 @@ import User from "./user.dao";
 
 export default class %NEXTFUL_ENTITY_NAMAE% extends BaseEntity<%NEXTFUL_ENTITY_NAMAE%,%NEXTFUL_ENTITY_NAMAE%Dto> implements I%NEXTFUL_ENTITY_NAMAE%Actions{
     // Define properties;
+     %ATTRIBS%
     constructor(%NEXTFUL_ENTITY_NAMAE%Dto:Auditable%NEXTFUL_ENTITY_NAMAE%Dto){
         // eslint-disable-next-line @typescript-eslint/unbound-method
         super(%NEXTFUL_ENTITY_NAMAE%Repo.getRepo(),%NEXTFUL_ENTITY_NAMAE%.map2Dto,%NEXTFUL_ENTITY_NAMAE%.mapFromDto);
