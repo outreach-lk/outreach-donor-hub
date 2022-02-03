@@ -119,15 +119,22 @@ async function recursivelyPromptTypes(attribnames=[]){
         return typeMap;
     }else{
         const name = attribnames.pop();
-        let type = await prompt.get({
+        let type = (await prompt.get({
             description: `type of ${name}`,
             name: 'type',
-        });
-        typeMap.push({[name]: type['type']})
+        }))['type'];
+        // Validate type 
+        if(isValidType(type)){
+            typeMap.push({[name]: type})
+        }else{
+            console.error(`Invalid Type: ${type}`)
+            console.log(`Valid Primitives: string, number, boolean`)
+            attribnames.push(name);
+        }
         return [...typeMap,...await recursivelyPromptTypes(attribnames)]
     }
 }
 
-function typeValidator(type){
+function isValidType(type){
     return true;
 }
