@@ -1,7 +1,7 @@
 /**
  * Nextful Script
  * @version 1.0.0
- * a simple utility to create entities and related dtos based on templates
+ * a simple utility to create entities and related dtos and repositories based on templates
  * @author @kulathilake shehanhere(at)gmail.com
  */
 const fs = require('fs');
@@ -76,22 +76,11 @@ nextful.command('delete')
 nextful.parse();
 
 
-function fileCreationCb(err,path){
-    if(err){
-        throw err;
-    }else{
-        console.log(`Created File: ${path}`)
-    }
-}
-
-function fileDeletionCb(err,path){
-    if(err){
-        throw err;
-    }else{
-        console.log(`Deleted File: ${path}`)
-    }
-}
-
+/**
+ * Prompts entity attributes and their types
+ * @param {string} name name of entity
+ * @returns {{name:type}[]} array of attribute name type pairs.
+ */
 async function promptAttributes(name){
     console.log('Attributes of '+name)
 
@@ -113,6 +102,10 @@ async function promptAttributes(name){
 
 }
 
+/**
+ * Recursively prompts types for given attribute names from user
+ * @param {string[]} attribnames string[]
+ */
 async function recursivelyPromptTypes(attribnames=[]){
     let typeMap = [];
     if(attribnames.length === 0){
@@ -135,6 +128,27 @@ async function recursivelyPromptTypes(attribnames=[]){
     }
 }
 
+/**
+ * @todo validate given type against all type definitions available and enitites created.
+ * @param {*} type 
+ * @returns 
+ */
 function isValidType(type){
     return true;
+}
+
+/** disk io callbacks */
+function fileCreationCb(err,path){
+    if(err){
+        throw err;
+    }else{
+        console.log(`Created File: ${path}`)
+    }
+}
+function fileDeletionCb(err,path){
+    if(err){
+        throw err;
+    }else{
+        console.log(`Deleted File: ${path}`)
+    }
 }
