@@ -7,7 +7,7 @@
 **/
 
 import { Auditable } from "../../types/auditable";
-import { ClaimEvidenceDto } from "../../types/dtos/claimEvidence.dtos";
+import { ClaimEvidenceDto } from "../../types/dtos/claim-evidence";
 import { FileDto } from "../../types/dtos/remote.file.dtos";
 import { EntityFetchedDto, EntityFetchedPageDto, EntityCreatedDto, EntityUpdatedDto, EntityDeletedDto } from "../../types/dtos/server.message.dtos";
 import ICRUDREPO from "../../types/interfaces/crud.repo.interface";

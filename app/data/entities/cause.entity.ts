@@ -11,12 +11,13 @@ import CauseRepo from "../repos/cause.repo";
 import BaseEntity from "./base.entity";
 import { ICauseActions } from "../../types/interfaces/cause.entity.interface";
 import User from "./user.dao";
+import Donation from "./donation.entity";
 
 export default class Cause extends BaseEntity<Cause,CauseDto> implements ICauseActions{
     title: string;
     description: string;
     attachments: FileDto[]; // TODO: Convert to File Objects
-    donations: any[]; //TODO: 1.Create Donations 2. Should this rather be a Pagable of type Donation?
+    donations: Donation[]; //TODO: 1.Create Donations 2. Should this rather be a Pagable of type Donation?
     constructor(causeDto:AuditableCauseDto){
         // eslint-disable-next-line @typescript-eslint/unbound-method
         super(CauseRepo.getRepo(),Cause.map2Dto,Cause.mapFromDto);

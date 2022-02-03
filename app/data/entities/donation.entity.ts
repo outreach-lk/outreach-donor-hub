@@ -13,7 +13,7 @@ import { IDonationActions } from "../../types/interfaces/donation.entity.interfa
 import User from "./user.dao";
 import Cause from "./cause.entity";
 import { DonationStatus } from "../../types/enums/status";
-import ClaimEvidence from "./claimEvidence.entity";
+import ClaimEvidence from "./claim-evidence";
 
 export default class Donation extends BaseEntity<Donation,DonationDto> implements IDonationActions{
     // Define properties;

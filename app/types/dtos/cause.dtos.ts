@@ -9,12 +9,13 @@ import { Ownable } from "../ownable";
 import { ServerError } from "./server.message.dtos";
 import { EntityCreatedDto } from "./server.message.dtos";
 import { EntityUpdatedDto } from "./server.message.dtos";
+import Donation from "../../data/entities/donation.entity";
 
 export type CauseDto = Ownable & {
     title: string,
     description: string,
     attachments: FileDto[],
-    donations: any[]
+    donations: Donation[]
 }
 
 export type CausePage = Pagable<CauseDto>

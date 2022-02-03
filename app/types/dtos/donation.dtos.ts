@@ -10,7 +10,7 @@ import { ServerError } from "./server.message.dtos";
 import { EntityCreatedDto } from "./server.message.dtos";
 import { EntityUpdatedDto } from "./server.message.dtos";
 import Cause from "../../data/entities/cause.entity";
-import ClaimEvidence from "../../data/entities/claimEvidence.entity";
+import ClaimEvidence from "../../data/entities/claim-evidence";
 import { DonationStatus } from "../enums/status";
 
 export type DonationDto = Ownable & {
