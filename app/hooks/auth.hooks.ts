@@ -1,6 +1,10 @@
 import { useContext } from "react";
-import AuthClientFactory from "../apis/auth/client/AuthClientFactory";
+import {authClientFactory} from "../apis/";
 import { AuthContext } from "../context/auth.context";
+import { LocalSession, LocalSessionContext, SessionDto } from "../types/dtos/auth.dtos";
+import { UserRole } from "../types/dtos/user.dtos";
+import { AuthProvider } from "../types/enums/providers";
+import { IAuthClient } from "../types/interfaces/auth.client.interface";
 
 /**
  * All auth related functionalities are accessible through this hook.
@@ -8,11 +12,13 @@ import { AuthContext } from "../context/auth.context";
  * @returns 
  */
 export function useAuth(){
-    const client = new AuthClientFactory().getClient();
+    const client = authClientFactory.getClient();
     const authCtx = useContext(AuthContext);
-    client.onSessionChange(authCtx.setSession);
     return {
         ...authCtx,
-        client
+        client: client
     }
 }
+
+
+

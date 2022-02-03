@@ -27,19 +27,16 @@ export default class MockAuthClient implements IAuthClient{
             }
         ],
     }
-    onSessionChange(callback: (session: LocalSession) => void): void {
-        this.sessionCallback = callback;
-    }
-    
-    session: LocalSession = {isAuthorized:false} as LocalSession;
-    sessionCallback?: (s: LocalSession)=>void;
+
     accessToken: string | undefined;
     refreshToken: string | undefined;
     provider: AuthProvider = AuthProvider.MOCK;
+
     signInWithEmail(email: string, password: string): Promise<SessionDto> {
 
         const user = this.data.logins.find(creds => creds.email === email && creds.password === password );
         if(user){
+            
             return new Promise(res=>{
                 res({
                     accessToken: 'xxxx',
