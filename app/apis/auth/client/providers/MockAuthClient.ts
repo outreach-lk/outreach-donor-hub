@@ -1,4 +1,4 @@
-import { SessionDto } from "../../../../types/dtos/auth.dtos";
+import { LocalSession, SessionDto } from "../../../../types/dtos/auth.dtos";
 import { UserDto, UserRole } from "../../../../types/dtos/user.dtos";
 import { AuthProvider } from "../../../../types/enums/providers";
 import { IAuthClient } from "../../../../types/interfaces/auth.client.interface";
@@ -8,7 +8,6 @@ import { IAuthClient } from "../../../../types/interfaces/auth.client.interface"
  * to be used for ui development and testing only.
  */
 export default class MockAuthClient implements IAuthClient{
-    
     private data = {
         logins: [
             {
@@ -28,6 +27,12 @@ export default class MockAuthClient implements IAuthClient{
             }
         ],
     }
+    onSessionChange(callback: (session: LocalSession) => void): void {
+        this.sessionCallback = callback;
+    }
+    
+    session: LocalSession = {isAuthorized:false} as LocalSession;
+    sessionCallback?: (s: LocalSession)=>void;
     accessToken: string | undefined;
     refreshToken: string | undefined;
     provider: AuthProvider = AuthProvider.MOCK;
