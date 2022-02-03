@@ -4,6 +4,7 @@
  export enum AuthProvider{
     FIREBASE = "FIREBASE",
     AWSCOGNITO = "AWSCOGNITO",
+    NEXTAUTH = "NEXTAUTH"
 }
 
 /**

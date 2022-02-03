@@ -1,15 +1,18 @@
 /**
  * Defines types & interface(s) relavent to all auth related client side functions.
  */
-import { UserDto } from "../dtos/user.dtos";
+import { SessionDto } from "../dtos/auth.dtos";
+import { UserDto, UserRole } from "../dtos/user.dtos";
 import { AuthProvider } from "../enums/providers";
 import { IAPIClient } from "./api.client.interface";
 
 /** All auth provider clients must implement this interface */
 export interface IAuthClient extends IAPIClient<AuthProvider> {
-    signInWithEmail(email:string, password:string): Promise<UserDto>
-    signInWithGoogle(): Promise<UserDto>
-    signInWithFacebook(): Promise<UserDto>
+    signInWithEmail(email:string, password:string): Promise<SessionDto>
+    signInWithGoogle(): Promise<SessionDto>
+    signInWithFacebook(): Promise<SessionDto>
+
+    signUpWithEmail(email:string, password:string, role: UserRole): Promise<SessionDto>
     confirmSignup(): Promise<void>
     requestPwdReset(email:string): Promise<void>
     confirmPwdReset(email:string, code:string, newPassword:string): Promise<void>
@@ -19,7 +22,6 @@ export interface IAuthClient extends IAPIClient<AuthProvider> {
      */
     refresh(refreshToken:string): Promise<void>;  
     changePassword(oldPassword:string, newPassword: string): Promise<void>
-    changePassword(newPassword:string): Promise<void>
     logout(): Promise<void>
     deleteAccount(): Promise<void>
 }
