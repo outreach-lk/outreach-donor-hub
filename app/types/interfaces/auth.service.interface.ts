@@ -1,23 +1,78 @@
 /**
  * Defines types & interface(s) relavent to all auth related server side functions.
+ * @kulathilake
  */
- import { OAuthProvider } from "next-auth/providers";
 import User from "../../data/entities/user.dao";
 import { SessionDto } from "../dtos/auth.dtos";
 import { UserRole } from "../dtos/user.dtos";
 import { OAuthProviders } from "../enums/providers";
 import IAPIService from "./api.service.interface";
-import { IAuthClient } from "./auth.client.interface";
- 
- /** All auth provider clients must implement this interface */
- export interface IAuthService extends IAPIService{
-    createSessionWithEmail(email:string, password:string):Promise<SessionDto>;
-    createSessionWithFederation(oAuthToken: string, oAuthProvider: OAuthProviders): Promise<SessionDto>;
-    revokeSession(session:SessionDto, accessToken: string): Promise<void>;
-    createUser(email:string, role: UserRole): Promise<User>;
-    findUser(email:string): Promise<User>;
-    /** Updates user data in the database including password*/
-    updateUser(user: User): Promise<User>;
- }
- 
- 
+
+/** All auth provider clients must implement this interface */
+export interface IAuthService extends IAPIService {
+  /**
+   * creates a user session for valid user credentials
+   * @param email user email.
+   * @param password user password
+   */
+  createSessionWithEmail(email: string, password: string): Promise<SessionDto>;
+
+  /**
+   * creates a user session for valid oAuthTokens from federation providers
+   * @param oAuthToken token issued by the OAuth provider
+   * @param oAuthProvider OAuth provider
+   */
+  createSessionWithFederation(
+    oAuthToken: string,
+    oAuthProvider: OAuthProviders
+  ): Promise<SessionDto>;
+
+  /**
+   * revokes an active user session by invalidating the accessToken
+   *
+   * Note: actual revocation may not happen for stateless sessions.
+   * this behaviour depends on the overall auth implementation
+   * @param session current session with or without the accessToken
+   * @param accessToken current accesstoken.
+   */
+  revokeSession(session: SessionDto, accessToken: string): Promise<void>;
+
+  /**
+   * creates a new user entity based on an email and a role.
+   * @param email email of the new user
+   * @param role role of the new user
+   */
+  createUser(email: string, role: UserRole): Promise<User>;
+
+  /**
+   * Finds a user by their email.
+   * @param email email to query with
+   */
+  findUserByEmail(email: string): Promise<User>;
+
+  /**
+   * Finds a user by their user id (uid)
+   * @param uid uid to query with
+   */
+  findUserByUid(uid: string): Promise<User>;
+
+  /**
+   * Updates a user entity with a given user instance.
+   * @param user user instance, with a valid uid
+   * @returns the same user instance in the argument.
+   */
+  updateUser(user: User): Promise<User>;
+
+  /**
+   * validates if a request on a given path with a given method is allowed for
+   * a user session identified by the accesstoken.
+   * @param path request path.
+   * @param method request method.
+   * @param accessToken accessToken in request authorization header.
+   */
+  isActionAllowed(
+    path: string,
+    method: string,
+    accessToken: string
+  ): Promise<boolean>;
+}
