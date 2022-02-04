@@ -1,4 +1,4 @@
-import User from "../../../../data/entities/user.dao";
+import User from "../../../../data/entities/user.entity";
 import { SessionDto } from "../../../../types/dtos/auth.dtos";
 import { UserRole } from "../../../../types/dtos/user.dtos";
 import { OAuthProviders } from "../../../../types/enums/providers";

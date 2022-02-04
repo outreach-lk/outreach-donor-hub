@@ -13,6 +13,7 @@ import UserRepo from "../repos/user.repo";
 import BaseEntity from "./base.entity";
 
 export default class User extends BaseEntity<User, UserDto> {
+  uid: string;
   email: string;
   firstName: string;
   lastName: string;
@@ -27,7 +28,8 @@ export default class User extends BaseEntity<User, UserDto> {
   constructor(user: AuditableUserDto) {
     // eslint-disable-next-line @typescript-eslint/unbound-method
     super(UserRepo.getRepo(), User.map2Dto, User.mapFromDto);
-    this._id = user.uid;
+    this._id = user.uid; // is equal to uid but protected.
+    this.uid = user.uid; // is public
     this.email = user.email;
     this.firstName = user.firstName;
     this.lastName = user.lastName;
@@ -64,7 +66,6 @@ export default class User extends BaseEntity<User, UserDto> {
     user.isVerifiedUser = dto.isVerifiedUser || user.isVerifiedUser;
     user.verification = dto.verification || user.verification;
     user.role = dto.role || user.role;
-    // user.owner = dto.owner? new User(dto.owner): user.owner
     user.createdOn = dto.createdOn || user.createdOn;
     user.createdBy = dto.createdBy ? new User(dto.createdBy) : user.createdBy;
     user.updatedOn = dto.updatedOn || user.updatedOn;
@@ -72,21 +73,17 @@ export default class User extends BaseEntity<User, UserDto> {
     user.isDeleted = dto.isDeleted || user.isDeleted;
     user.deletedOn = dto.deletedOn || user.deletedOn;
     user.deletedBy = dto.deletedBy ? new User(dto.deletedBy) : user.deletedBy;
-    // user.permissions = dto.permissions || user.permissions;
-    // user.sharedWith = dto.sharedWith? dto.sharedWith?.map(dto=>new User(dto)): user.sharedWith;
   }
 
   /**
    * adds a list of custom permisssions to this user.
    * $server only method
-   * @param permissions
+   * @param permissions array of custom permissions
    */
   $serverAddCustomPermission(permissions: Permissions[]): Promise<void> {
-    if (this.isNode && this.id) {
-      void this.repo.update(this.id, {
-        ...this.mapper(this),
-        custsomPermissions: permissions,
-      });
+    if (this.isNode && this._id) {
+      this.customPermissions =  Array.from(new Set(this.customPermissions?.concat(permissions)))
+      void this.repo.update(this._id, this.mapper(this));
       throw new Error("Not fully implemented");
     } else {
       throw new Error();

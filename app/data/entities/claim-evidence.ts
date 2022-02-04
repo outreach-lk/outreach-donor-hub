@@ -10,7 +10,7 @@ import { Page } from "../../types/pagable";
 import ClaimEvidenceRepo from "../repos/claimEvidence.repo";
 import BaseEntity from "./base.entity";
 import { IClaimEvidenceActions } from "../../types/interfaces/claimEvidence.entity.interface";
-import User from "./user.dao";
+import User from "./user.entity";
 import { ClaimStatus } from "../../types/enums/status";
 
 export default class ClaimEvidence extends BaseEntity<ClaimEvidence,ClaimEvidenceDto> implements IClaimEvidenceActions{

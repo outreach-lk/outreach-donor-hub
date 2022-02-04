@@ -10,7 +10,7 @@ import { Page } from "../../types/pagable";
 import CauseRepo from "../repos/cause.repo";
 import BaseEntity from "./base.entity";
 import { ICauseActions } from "../../types/interfaces/cause.entity.interface";
-import User from "./user.dao";
+import User from "./user.entity";
 import Donation from "./donation.entity";
 
 export default class Cause extends BaseEntity<Cause,CauseDto> implements ICauseActions{

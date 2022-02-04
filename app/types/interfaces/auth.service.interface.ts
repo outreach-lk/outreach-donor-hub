@@ -2,7 +2,7 @@
  * Defines types & interface(s) relavent to all auth related server side functions.
  * @kulathilake
  */
-import User from "../../data/entities/user.dao";
+import User from "../../data/entities/user.entity";
 import { SessionDto } from "../dtos/auth.dtos";
 import { UserRole } from "../dtos/user.dtos";
 import { OAuthProviders } from "../enums/providers";

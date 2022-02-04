@@ -11,7 +11,7 @@ import { UserDto } from "../../types/dtos/user.dtos";
 import ICRUDREPO from "../../types/interfaces/crud.repo.interface";
 import { OwnablePermissions } from "../../types/ownable";
 import MultiEnv from "../multi.env";
-import User from "./user.dao";
+import User from "./user.entity";
 
 export default abstract class BaseEntity<E,D> extends MultiEnv {
     protected repo: ICRUDREPO<D>;

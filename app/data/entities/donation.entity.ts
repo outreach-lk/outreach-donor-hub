@@ -10,7 +10,7 @@ import { Page } from "../../types/pagable";
 import DonationRepo from "../repos/donation.repo";
 import BaseEntity from "./base.entity";
 import { IDonationActions } from "../../types/interfaces/donation.entity.interface";
-import User from "./user.dao";
+import User from "./user.entity";
 import Cause from "./cause.entity";
 import { DonationStatus } from "../../types/enums/status";
 import ClaimEvidence from "./claim-evidence";
