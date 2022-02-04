@@ -6,11 +6,11 @@ import {Pagable} from '../pagable';
 
 export type ServerMessageDto<T> = {
     path: string,
-    method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'OPTION',
+    method: string,
     wasRequestAuthorized: boolean,
     serverTime: Date,
-    message: string,
-    code: number,
+    message?: string,
+    code?: number | string,
     data?: T,
     error?: T
 }

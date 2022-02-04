@@ -8,6 +8,14 @@
     MOCK = "MOCK"
 }
 
+/** 
+ * OAuth Federation Providers
+ */
+export enum OAuthProviders{
+    GOOGLE = "GOOGLE",
+    FACEBOOK = "FACEBOOK",
+    GITHUB = "GITHUB"
+}
 /**
  * Enum for File Storage Providers.
  */
