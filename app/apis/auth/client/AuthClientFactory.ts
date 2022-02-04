@@ -1,7 +1,7 @@
 import { AuthProvider } from "../../../types/enums/providers";
 import BaseClientFactory from "../../base.client.factory";
 import { IAuthClient } from "../../../types/interfaces/auth.client.interface";
-import FirebaseAuthClient from "./providers/FirebaseAuthClient";
+// import FirebaseAuthClient from "./providers/FirebaseAuthClient";
 // import NextAuthClient from "./providers/NextAuthClient";
 import MockAuthClient from "./providers/MockAuthClient";
 
