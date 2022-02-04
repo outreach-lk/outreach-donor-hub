@@ -7,7 +7,7 @@ import { UserRole } from '../../../../../app/types/dtos/user.dtos';
 import { OAuthProviders } from '../../../../../app/types/enums/providers';
 import { createServerError, createServerMessage } from '../../../../../app/utils/create-server-response';
 
-type body  = {
+export type body  = {
     email:string,
     oAuthToken: string,
     oAuthProvider: OAuthProviders,
@@ -16,7 +16,7 @@ type body  = {
 
 const auth = authServiceFactory.getService(process.env.SERVER_PRIVATE_KEY as string);
 
-export default function signUpHandler(
+export default function federatedSignUpHandler(
   req: NextApiRequest,
   res: NextApiResponse<ServerMessageDto<SessionDto|Error>>
 ) {

@@ -5,12 +5,12 @@ import { SessionDto } from '../../../../app/types/dtos/auth.dtos';
 import { ServerMessageDto } from '../../../../app/types/dtos/server.message.dtos';
 import { createServerError, createServerMessage } from '../../../../app/utils/create-server-response';
 
-type body  = {
+export type body  = {
    session: SessionDto
 }
 const auth = authServiceFactory.getService(process.env.SERVER_PRIVATE_KEY as string);
 
-export default function loginHandler(
+export default function logoutHandler(
   req: NextApiRequest,
   res: NextApiResponse<ServerMessageDto< null|Error>>
 ) {

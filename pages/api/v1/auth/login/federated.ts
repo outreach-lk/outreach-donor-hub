@@ -6,13 +6,13 @@ import { ServerMessageDto } from '../../../../../app/types/dtos/server.message.d
 import { OAuthProviders } from '../../../../../app/types/enums/providers';
 import { createServerError, createServerMessage } from '../../../../../app/utils/create-server-response';
 
-type body  = {
+export type body  = {
     oAuthToken: string,
     oAuthProvider: OAuthProviders
 }
 const auth = authServiceFactory.getService(process.env.SERVER_PRIVATE_KEY as string);
 
-export default function loginHandler(
+export default function federatedLoginHandler(
   req: NextApiRequest,
   res: NextApiResponse<ServerMessageDto<SessionDto|Error>>
 ) {

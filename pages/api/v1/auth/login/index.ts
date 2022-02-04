@@ -5,7 +5,7 @@ import { SessionDto } from '../../../../../app/types/dtos/auth.dtos';
 import { ServerMessageDto } from '../../../../../app/types/dtos/server.message.dtos';
 import { createServerError, createServerMessage } from '../../../../../app/utils/create-server-response';
 
-type body  = {
+export type body  = {
     email:string,
     password: string,
 }
