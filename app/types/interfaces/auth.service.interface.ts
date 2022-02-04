@@ -31,9 +31,11 @@ export interface IAuthService extends IAPIService {
    * revokes an active user session by invalidating the accessToken
    *
    * Note: actual revocation may not happen for stateless sessions.
-   * this behaviour depends on the overall auth implementation
+   * this behaviour depends on the overall auth implementation.
+   *
    * @param session current session with or without the accessToken
-   * @param accessToken current accesstoken.
+   * @param accessToken current accesstoken. can differ from accessToken 
+   * in the session to allow remote session revoking (depends on implementation).
    */
   revokeSession(session: SessionDto, accessToken: string): Promise<void>;
 
@@ -57,15 +59,18 @@ export interface IAuthService extends IAPIService {
   findUserByUid(uid: string): Promise<User>;
 
   /**
-   * Updates a user entity with a given user instance.
+   * Updates a user password with a given user instance.
    * @param user user instance, with a valid uid
    * @returns the same user instance in the argument.
    */
-  updateUser(user: User): Promise<User>;
+  updateUserPassword(newPassword: string): Promise<User>;
 
   /**
    * validates if a request on a given path with a given method is allowed for
-   * a user session identified by the accesstoken.
+   * a user session identified by the accesstoken. 
+   * 
+   * Additional validations may be required to ensure access to resources.
+   * 
    * @param path request path.
    * @param method request method.
    * @param accessToken accessToken in request authorization header.

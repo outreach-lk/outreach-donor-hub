@@ -24,7 +24,8 @@ export type UserDto = {
     isEmailVerified: boolean,
     isVerifiedUser: boolean,
     verification? : UserVerificationDto,
-    role?: UserRole
+    role?: UserRole,
+    custsomPermissions: Permissions[]
 }
 
 /**
@@ -48,7 +49,8 @@ export type UserVerificationDto = {
  export enum UserRole{
     ADMIN = "ADMIN",
     MODERATOR = "MODERATOR",
-    REGULAR = "REGULAR"
+    REGULAR = "REGULAR",
+    GUEST = "GUEST"
 }
 
 

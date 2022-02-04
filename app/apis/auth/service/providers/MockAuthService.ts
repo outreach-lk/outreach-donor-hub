@@ -1,4 +1,4 @@
-import userDao from "../../../../data/entities/user.dao";
+import User from "../../../../data/entities/user.dao";
 import { SessionDto } from "../../../../types/dtos/auth.dtos";
 import { UserRole } from "../../../../types/dtos/user.dtos";
 import { OAuthProviders } from "../../../../types/enums/providers";
@@ -17,19 +17,19 @@ export default class MockAuthService implements IAuthService {
   ): Promise<boolean> {
     throw new Error("Method not implemented.");
   }
-  findUserByEmail(email: string): Promise<userDao> {
+  findUserByEmail(email: string): Promise<User> {
     throw new Error("Method not implemented.");
   }
-  findUserByUid(uid: string): Promise<userDao> {
+  findUserByUid(uid: string): Promise<User> {
     throw new Error("Method not implemented.");
   }
-  findUser(email: string): Promise<userDao> {
+  findUser(email: string): Promise<User> {
     throw new Error("Method not implemented.");
   }
-  updateUser(user: userDao): Promise<userDao> {
+  updateUserPassword(newPassword: string): Promise<User> {
     throw new Error("Method not implemented.");
   }
-  createUser(email: string, role: UserRole): Promise<userDao> {
+  createUser(email: string, role: UserRole): Promise<User> {
     throw new Error("Method not implemented.");
   }
   createSessionWithEmail(email: string, password: string): Promise<SessionDto> {
