@@ -25,7 +25,7 @@ export type UserDto = {
     isVerifiedUser: boolean,
     verification? : UserVerificationDto,
     role?: UserRole,
-    custsomPermissions: Permissions[]
+    customPermissions: Permissions[]
 }
 
 /**

@@ -8,9 +8,13 @@
     "lint": "next lint",
     "test": "jest",
     "nextful": "node .npm/nextful",
-    "env": "node .npm/envGen"
+    "next-env-gen": "node .npm/env-gen",
+    "next-api-map": "node .npm/api-map"
+
   },
   "dependencies": {
+    "axios": "^0.25.0",
+    "firebase": "^9.6.6",
     "firebase-admin": "^10.0.2",
     "next": "^12.0.10",
     "next-auth": "^4.2.0",
