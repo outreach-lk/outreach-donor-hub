@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import {authClientFactory} from "../apis/";
 import { AuthContext } from "../context/auth.context";
+import { AuthProvider } from "../types/enums/providers";
 
 
 /**
@@ -10,7 +11,7 @@ import { AuthContext } from "../context/auth.context";
  * @returns 
  */
 export function useAuth(){
-    const client = authClientFactory.getClient();
+    const client = authClientFactory.getClient(AuthProvider.FIREBASE);
     const authCtx = useContext(AuthContext);
     return {
         ...authCtx,
