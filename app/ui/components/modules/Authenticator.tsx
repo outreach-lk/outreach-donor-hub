@@ -18,19 +18,49 @@ import {
 } from "@chakra-ui/react";
 import * as React from "react";
 import { useAuth } from "../../../hooks/auth.hooks";
-import { OAuthButtonGroup } from "../elements/auth/OAuthButtonGroup";
+import { OAuthProviders } from "../../../types/enums/providers";
+import {
+  OAuthButtonGroup,
+  Props as OAuthButtonGroupProps,
+} from "../elements/auth/OAuthButtonGroup";
 import { PasswordField } from "../elements/auth/PasswordField";
 
 export const Authenticator = () => {
   const { client } = useAuth();
-  const { signInWithEmail } = client;
+  const { signInWithEmail, signInWithGoogle } = client;
 
-  // TODO: move method binding logic elsewhere.
-  // TODO: use a wrapper Form element for all forms which 
-  // handles submissions and error messages.
-  const handleLogin: React.FormEventHandler = (e) => {
+  /** 
+   * Form sumbission handler for signing in with email and password
+   * TODO: use a wrapper Form element for all forms which
+   * TODO: capture form field values.
+   * handles submissions and error messages.
+  */
+  const handleSignInWithEmail: React.FormEventHandler = (e) => {
     e.preventDefault();
-    signInWithEmail.bind(client)("demo@shehan.clk", "hello");
+    signInWithEmail("demo@shehan.clk", "hello");
+  };
+
+  /**
+   button click handler for signing in with Google.
+   * @param e 
+   */
+  const handlesSignInWithGoogle: React.MouseEventHandler<HTMLButtonElement> = (
+    e
+  ) => {
+    e.preventDefault();
+    signInWithGoogle();
+  };
+
+  /**
+   * OAuth Button Group Component Props including the click handlers.
+   */
+  const oAuthBtnGroupProps: OAuthButtonGroupProps = {
+    handlers: [
+      {
+        name: OAuthProviders.GOOGLE,
+        handler: handlesSignInWithGoogle,
+      },
+    ],
   };
 
   return (
@@ -44,7 +74,7 @@ export const Authenticator = () => {
       boxShadow={{ base: "none", sm: "md" }}
       borderRadius={{ base: "none", sm: "xl" }}
     >
-      <form onSubmit={handleLogin}>
+      <form onSubmit={handleSignInWithEmail}>
         <Stack spacing="6">
           <Stack spacing="5">
             <FormControl>
@@ -70,7 +100,7 @@ export const Authenticator = () => {
               </Text>
               <Divider />
             </HStack>
-            <OAuthButtonGroup />
+            <OAuthButtonGroup handlers={oAuthBtnGroupProps.handlers} />
           </Stack>
         </Stack>
       </form>

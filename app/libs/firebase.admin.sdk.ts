@@ -1,9 +1,7 @@
 import admin from "firebase-admin";
 
 export default function init(): admin.app.App {
-  if (admin.apps?.length) {
-    return admin.app();
-  } else {
+  try{
     return admin.initializeApp({
       credential: admin.credential.cert({
         clientEmail: process.env.GOOGLE_SERVICE_ACCT_EMAIL,
@@ -19,5 +17,8 @@ export default function init(): admin.app.App {
         process.env.NEXT_PUBLIC_FIREBASE_STORAGE as string
       }.firebaseio.com`,
     });
+  } catch(err){
+    console.error(err);
+    throw err;
   }
 }

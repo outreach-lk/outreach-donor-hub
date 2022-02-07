@@ -2,6 +2,7 @@ import { useContext } from "react";
 import {authClientFactory} from "../apis/";
 import { AuthContext } from "../context/auth.context";
 import { AuthProvider } from "../types/enums/providers";
+import { IAuthClient } from "../types/interfaces/auth.client.interface";
 
 
 /**
@@ -15,7 +16,11 @@ export function useAuth(){
     const authCtx = useContext(AuthContext);
     return {
         ...authCtx,
-        client: client
+        client: {
+            signInWithEmail: client.signInWithEmail.bind(client),
+            signInWithGoogle: client.signInWithGoogle.bind(client)
+            
+        } as IAuthClient
     }
 }
 

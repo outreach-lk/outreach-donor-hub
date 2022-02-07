@@ -4,18 +4,21 @@ import { authServiceFactory } from "../../../../../../app/apis";
 import FirebaseAuthService from "../../../../../../app/apis/auth/service/providers/FirebaseAuthService";
 import { SessionDto } from "../../../../../../app/types/dtos/auth.dtos";
 import { ServerMessageDto } from "../../../../../../app/types/dtos/server.message.dtos";
-import { OAuthProviders } from "../../../../../../app/types/enums/providers";
+import {
+  AuthProvider,
+  OAuthProviders,
+} from "../../../../../../app/types/enums/providers";
 import {
   createServerError,
   createServerMessage,
 } from "../../../../../../app/utils/create-server-response";
 
-
 const auth = authServiceFactory.getService(
-  process.env.SERVER_PRIVATE_KEY as string
-) as FirebaseAuthService
+  process.env.SERVER_PRIVATE_KEY as string,
+  AuthProvider.FIREBASE
+) as FirebaseAuthService;
 
-export default function federatedLoginHandler(
+export default function customTokenIssuer(
   req: NextApiRequest,
   res: NextApiResponse<ServerMessageDto<SessionDto | Error>>
 ) {
