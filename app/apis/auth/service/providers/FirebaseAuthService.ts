@@ -23,6 +23,7 @@ export default class FirebaseAuthService implements IAuthService {
     this.serverPrivateKey = pvtKey;
     // should only be initialized in the server.
     this.admin = init();
+    console.log(this.admin);
   }
   /**
    * Signs in the user with a custom token.

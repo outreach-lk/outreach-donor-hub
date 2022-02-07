@@ -6,7 +6,6 @@ import { SessionDto } from "../../../../../../app/types/dtos/auth.dtos";
 import { ServerMessageDto } from "../../../../../../app/types/dtos/server.message.dtos";
 import {
   AuthProvider,
-  OAuthProviders,
 } from "../../../../../../app/types/enums/providers";
 import {
   createServerError,
@@ -15,10 +14,9 @@ import {
 
 const auth = authServiceFactory.getService(
   process.env.SERVER_PRIVATE_KEY as string,
-  AuthProvider.FIREBASE
 ) as FirebaseAuthService;
 
-export default function customTokenIssuer(
+export default function handler(
   req: NextApiRequest,
   res: NextApiResponse<ServerMessageDto<SessionDto | Error>>
 ) {
