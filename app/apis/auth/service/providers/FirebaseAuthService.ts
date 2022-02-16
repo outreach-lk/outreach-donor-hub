@@ -14,6 +14,8 @@ import { OAuthProviders } from "../../../../types/enums/providers";
 import { IAuthService } from "../../../../types/interfaces/auth.service.interface";
 import init from "../../../../libs/firebase.admin.sdk";
 import User from "../../../../data/entities/user.entity";
+import { DecodedIdToken } from "firebase-admin/lib/auth/token-verifier";
+import { generateSessionId } from "../../../../utils/generate-sesssion-id";
 
 export default class FirebaseAuthService implements IAuthService {
   private admin: admin.app.App;
@@ -23,7 +25,6 @@ export default class FirebaseAuthService implements IAuthService {
     this.serverPrivateKey = pvtKey;
     // should only be initialized in the server.
     this.admin = init();
-    console.log(this.admin);
   }
   /**
    * Signs in the user with a custom token.
@@ -45,8 +46,8 @@ export default class FirebaseAuthService implements IAuthService {
       return {
         accessToken: customToken,
         refreshToken: 'n/a',
-        sessionId: 'n/a',
-        user: User.map2Dto(user)
+        sessionId: generateSessionId(),
+        user: User.map2Dto(user) //FIXME: maps irrelevent fields such as isNode, isBrowser etc.
       } as SessionDto
     } catch (error) {
       throw error as Error;
@@ -58,8 +59,12 @@ export default class FirebaseAuthService implements IAuthService {
    */
   private async findUserByToken(token: string): Promise<User> {
     try {
-      const uid: string = (await this.admin.auth().verifyIdToken(token)).uid;
-      return await User.getUserByUid(uid);
+      const decodedToken: DecodedIdToken = (await this.admin.auth().verifyIdToken(token));
+      if(decodedToken){
+        return await User.getUserByUid(decodedToken.uid);
+      } else {
+        throw new Error("Invalid Token");
+      }
     } catch (error) {
       throw new Error("error fetching user from token");
     }

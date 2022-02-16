@@ -6,6 +6,5 @@ import StorageClientFactory from "./storage/client/StorageClientFactory";
 export const authClientFactory = new AuthClientFactory();
 export const storageClientFactory = new StorageClientFactory();
 
-/** API Service creators */
-export const authServiceFactory = new AuthServiceFactory();
+
 

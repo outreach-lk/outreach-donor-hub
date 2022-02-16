@@ -25,16 +25,16 @@ import {
 } from "../elements/auth/OAuthButtonGroup";
 import { PasswordField } from "../elements/auth/PasswordField";
 
-export const Authenticator = () => {
+export const SignInCard = () => {
   const { client } = useAuth();
   const { signInWithEmail, signInWithGoogle } = client;
 
-  /** 
+  /**
    * Form sumbission handler for signing in with email and password
    * TODO: use a wrapper Form element for all forms which
    * TODO: capture form field values.
    * handles submissions and error messages.
-  */
+   */
   const handleSignInWithEmail: React.FormEventHandler = (e) => {
     e.preventDefault();
     signInWithEmail("demo@shehan.clk", "hello");

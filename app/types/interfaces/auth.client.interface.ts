@@ -9,7 +9,7 @@ import { IAPIClient } from "./api.client.interface";
 
 /** All auth provider clients must implement this interface */
 export interface IAuthClient extends IAPIClient<AuthProvider> {
-    signInWithEmail(email:string, password:string): Promise<SessionDto>
+    signInWithEmail(email:string, password:string, persist?:boolean): Promise<SessionDto>
     signInWithGoogle(): Promise<SessionDto>
     signInWithFacebook(): Promise<SessionDto>
 

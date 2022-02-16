@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
+import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_APIKEY,
@@ -12,7 +13,14 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-export default function firebaseClientInit() {
-  const app = initializeApp(firebaseConfig);
-  getAnalytics(app);
+function firebaseClientInit(){
+  try {
+    return initializeApp(firebaseConfig);
+  } catch (error) {
+    // TODO Handle error
+  }
 }
+
+const app = firebaseClientInit();
+
+export default app;

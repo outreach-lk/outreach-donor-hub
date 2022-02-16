@@ -10,16 +10,25 @@ import {
   signInWithCustomToken,
   GoogleAuthProvider,
   signInWithPopup,
+  createUserWithEmailAndPassword,
 } from "firebase/auth";
 import axios from "axios";
 import apis from "../../../api-map.json";
+import app from "../../../../libs/firebase.client.sdk";
 
 /** Authentication Client for Provider Firebase */
 export default class FirebaseAuthClient implements IAuthClient {
   private auth: Auth;
   constructor() {
-    this.auth = getAuth();
+    this.auth = getAuth(app);
   }
+  /**
+   * Signs in the user and creates a session with a custom token to suit the needs of 
+   * the application using a token issued by firebase client when the user 
+   * signs in with email, google, or facebook.
+   * @param token Valid token issued by the firebase native auth system
+   * @returns {SessionDto} new SesssionDTO. 
+   */
   private async firebaseSignInWithCustomToken(
     token: string
   ): Promise<SessionDto> {
@@ -55,7 +64,11 @@ export default class FirebaseAuthClient implements IAuthClient {
     }
   }
 
-  signInWithEmail(email: string, password: string): Promise<SessionDto> {
+  signInWithEmail(
+    email: string,
+    password: string,
+    persist?: boolean
+  ): Promise<SessionDto> {
     return signInWithEmailAndPassword(this.auth, email, password)
       .then((res) => {
         return res.user
@@ -76,7 +89,6 @@ export default class FirebaseAuthClient implements IAuthClient {
     const provider = new GoogleAuthProvider();
     return signInWithPopup(this.auth, provider)
       .then((res) => {
-          console.log(res);
         return res.user
           .getIdToken()
           .then((token) => {
@@ -87,7 +99,6 @@ export default class FirebaseAuthClient implements IAuthClient {
           });
       })
       .catch((err) => {
-          console.log(err);
         throw err as Error;
       });
   }
@@ -99,7 +110,22 @@ export default class FirebaseAuthClient implements IAuthClient {
     password: string,
     role: UserRole
   ): Promise<SessionDto> {
-    throw new Error("Method not implemented.");
+    return createUserWithEmailAndPassword(this.auth, email, password)
+      .then((res) => {
+        //TODO: Call create sign-up api for saving user entity with role
+        console.log(res);
+        return res.user
+          .getIdToken()
+          .then((token) => {
+            return this.firebaseSignInWithCustomToken(token);
+          })
+          .catch((error) => {
+            throw new Error(error);
+          });
+      })
+      .catch((error) => {
+        throw new Error(error);
+      });
   }
   confirmSignup(email: string, code: string): Promise<SessionDto> {
     throw new Error("Method not implemented.");

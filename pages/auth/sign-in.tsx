@@ -13,8 +13,9 @@ import {
 import { NextPage } from "next";
 
 import { Logo } from "../../app/ui/components/elements/branding/Logo";
-import { Authenticator } from "../../app/ui/components/modules/Authenticator";
+import { SignInCard } from "../../app/ui/components/modules/signin.module";
 import { Footer } from "../../app/ui/components/modules/Footer";
+import Link from "next/link";
 
 const Login: NextPage = () => (
   <Box
@@ -34,13 +35,15 @@ const Login: NextPage = () => (
             </Heading>
             <HStack spacing="1" justify="center">
               <Text>Don't have an account?</Text>
-              <Button variant="link" colorScheme="blue">
-                Sign up
-              </Button>
+              <Link href={"/auth/sign-up"}>
+                <Button  variant="link" colorScheme="blue">
+                  Sign up
+                </Button>
+              </Link>
             </HStack>
           </Stack>
         </Stack>
-            <Authenticator/>
+            <SignInCard/>
       </Stack>
     </Container>
             <Footer/>

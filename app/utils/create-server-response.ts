@@ -25,6 +25,7 @@ export function createServerError(
     code?: number|string,
     message?: string
   ): ServerMessageDto<Error> {
+    console.log(error,message) //FIXME: Delegate to serverside logger
     return {
       code,
       message,

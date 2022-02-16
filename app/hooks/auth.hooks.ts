@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import {authClientFactory} from "../apis/";
+import {authClientFactory} from "../apis/clients";
 import { AuthContext } from "../context/auth.context";
 import { AuthProvider } from "../types/enums/providers";
 import { IAuthClient } from "../types/interfaces/auth.client.interface";
@@ -15,11 +15,13 @@ export function useAuth(){
     const client = authClientFactory.getClient(AuthProvider.FIREBASE);
     const authCtx = useContext(AuthContext);
     return {
-        ...authCtx,
+        isAuthorized: authCtx.isAuthorized,
+        sessionId: authCtx.sessionId,
+        user: authCtx.user,
         client: {
             signInWithEmail: client.signInWithEmail.bind(client),
-            signInWithGoogle: client.signInWithGoogle.bind(client)
-            
+            signInWithGoogle: client.signInWithGoogle.bind(client),
+            signUpWithEmail: client.signUpWithEmail.bind(client)
         } as IAuthClient
     }
 }
