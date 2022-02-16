@@ -30,7 +30,7 @@ export function SignupCard() {
   const handleUserSignUp: React.FormEventHandler = (e) => {
     e.preventDefault();
     signUpWithEmail(
-      `demo${Math.random()}@gmail.com`,
+      `demo${Math.random()}@gmail.com`, //FIXME: get values from form.
       "password",
       UserRole.REGULAR
     );

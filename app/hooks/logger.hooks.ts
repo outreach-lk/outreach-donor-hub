@@ -1,5 +1,5 @@
 /**
- * Hooks to use browser loggers and client telemetry
+ * Hooks to use browser loggers and client telemetry.
  * @kulathilake
  */
 

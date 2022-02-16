@@ -4,7 +4,7 @@ import { AuthContext } from "../context/auth.context";
 import { AuthProvider } from "../types/enums/providers";
 import { IAuthClient } from "../types/interfaces/auth.client.interface";
 import { useFeedback } from "./feedback.hook";
-import { useLogger } from "./logger.hook";
+import { useLogger } from "./logger.hooks";
 
 
 /**
@@ -12,11 +12,12 @@ import { useLogger } from "./logger.hook";
  * Should only be used in a react context, ideally inside an HOC to wrap
  * client with context.
  * @returns 
+ * @version 1.0.0b Uses Firebase as the Auth Provider
  */
 export function useAuth(){
     const client = authClientFactory.getClient(AuthProvider.FIREBASE);
     const authCtx = useContext(AuthContext);
-    const feedback = useFeedback()
+    const feedback = useFeedback();
     const logger = useLogger();
     const setSession = authCtx.setSession;
     return {
