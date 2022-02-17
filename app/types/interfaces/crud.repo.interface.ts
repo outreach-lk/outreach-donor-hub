@@ -1,9 +1,9 @@
 import { Auditable } from "../auditable";
-import { EntityCreatedDto } from "../dtos/server.message.dtos";
-import { EntityDeletedDto } from "../dtos/server.message.dtos";
-import { EntityUpdatedDto } from "../dtos/server.message.dtos";
-import { EntityFetchedPageDto } from "../dtos/server.message.dtos";
-import { EntityFetchedDto } from "../dtos/server.message.dtos";
+import { EntityCreatedDto } from "../dtos/server-message.dtos";
+import { EntityDeletedDto } from "../dtos/server-message.dtos";
+import { EntityUpdatedDto } from "../dtos/server-message.dtos";
+import { EntityFetchedPageDto } from "../dtos/server-message.dtos";
+import { EntityFetchedDto } from "../dtos/server-message.dtos";
 import { Page } from "../pagable";
 
 export default interface ICRUDREPO<T> {
@@ -18,7 +18,7 @@ export default interface ICRUDREPO<T> {
     create(data: T): Promise<EntityCreatedDto<Auditable & T>>;
 
     /** Update Methods */
-    update(identifier: string, data: T): Promise<EntityUpdatedDto<Auditable & T>>;
+    update(identifier: string, sdata: T): Promise<EntityUpdatedDto<Auditable & T>>;
 
     /** Delete Methods */
     delete(identifier: string): Promise<EntityDeletedDto<Auditable & T>>;

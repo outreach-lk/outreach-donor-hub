@@ -1,5 +1,5 @@
 import { SessionDto } from "../../../../types/dtos/auth.dtos";
-import { ServerMessageDto } from "../../../../types/dtos/server.message.dtos";
+import { ServerMessageDto } from "../../../../types/dtos/server-message.dtos";
 import { UserRole } from "../../../../types/dtos/user.dtos";
 import { AuthProvider } from "../../../../types/enums/providers";
 import { IAuthClient } from "../../../../types/interfaces/auth.client.interface";

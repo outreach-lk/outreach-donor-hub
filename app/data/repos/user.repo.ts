@@ -1,5 +1,5 @@
 import { Auditable } from "../../types/auditable";
-import { EntityFetchedDto, EntityFetchedPageDto, EntityCreatedDto, EntityUpdatedDto, EntityDeletedDto } from "../../types/dtos/server.message.dtos";
+import { EntityFetchedDto, EntityFetchedPageDto, EntityCreatedDto, EntityUpdatedDto, EntityDeletedDto } from "../../types/dtos/server-message.dtos";
 import { UserDto } from "../../types/dtos/user.dtos";
 import ICRUDREPO from "../../types/interfaces/crud.repo.interface";
 import { Page } from "../../types/pagable";

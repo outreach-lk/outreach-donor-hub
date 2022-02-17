@@ -4,11 +4,11 @@
 
 import { Auditable } from "../auditable";
 import { Pagable } from "../pagable";
-import { FileDto } from "./remote.file.dtos";
+import { FileDto } from "./remote-file.dtos";
 import { Ownable } from "../ownable";
-import { ServerError } from "./server.message.dtos";
-import { EntityCreatedDto } from "./server.message.dtos";
-import { EntityUpdatedDto } from "./server.message.dtos";
+import { ServerError } from "./server-message.dtos";
+import { EntityCreatedDto } from "./server-message.dtos";
+import { EntityUpdatedDto } from "./server-message.dtos";
 import { ClaimStatus } from "../enums/status";
 
 export type ClaimEvidenceDto = Ownable & {

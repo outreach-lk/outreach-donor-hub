@@ -1,6 +1,6 @@
 import { rejects } from "assert";
 import { LocalSession, SessionDto } from "../../../../types/dtos/auth.dtos";
-import { ServerMessageDto } from "../../../../types/dtos/server.message.dtos";
+import { ServerMessageDto } from "../../../../types/dtos/server-message.dtos";
 import { UserDto, UserRole } from "../../../../types/dtos/user.dtos";
 import { AuthProvider } from "../../../../types/enums/providers";
 import { IAuthClient } from "../../../../types/interfaces/auth.client.interface";
@@ -69,6 +69,7 @@ export default class MockAuthClient implements IAuthClient {
             res({
               accessToken: "xxxxx",
               refreshToken: "yyyy",
+              sessionId: 'xxxxx',
               user: {
                 email,
                 role

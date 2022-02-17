@@ -4,8 +4,8 @@
 
 import { Auditable } from "../../types/auditable";
 import { AuditableDonationDto, DonationDto } from "../../types/dtos/donation.dtos";
-import { FileDto } from "../../types/dtos/remote.file.dtos";
-import { EntityCreatedDto, EntityFetchedDto, EntityFetchedPageDto } from "../../types/dtos/server.message.dtos";
+import { FileDto } from "../../types/dtos/remote-file.dtos";
+import { EntityCreatedDto, EntityFetchedDto, EntityFetchedPageDto } from "../../types/dtos/server-message.dtos";
 import { Page } from "../../types/pagable";
 import DonationRepo from "../repos/donation.repo";
 import BaseEntity from "./base.entity";

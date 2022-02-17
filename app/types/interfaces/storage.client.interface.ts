@@ -2,7 +2,7 @@
  * Defines types and interface(s) relevant to client side file storage function.
  */
 
-import { FileDto, FileMetadata, RemoteFileDeleteResDto, RemoteFileUploadResDto } from "../dtos/remote.file.dtos";
+import { FileDto, FileMetadata, RemoteFileDeleteResDto, RemoteFileUploadResDto } from "../dtos/remote-file.dtos";
 
 
 /**

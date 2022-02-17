@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { authServiceFactory } from "../../../../../../app/apis/services";
 import FirebaseAuthService from "../../../../../../app/apis/auth/service/providers/FirebaseAuthService";
 import { SessionDto } from "../../../../../../app/types/dtos/auth.dtos";
-import { ServerMessageDto } from "../../../../../../app/types/dtos/server.message.dtos";
+import { ServerMessageDto } from "../../../../../../app/types/dtos/server-message.dtos";
 import { AuthProvider } from "../../../../../../app/types/enums/providers";
 import {
   createServerError,

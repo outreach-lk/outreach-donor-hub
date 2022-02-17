@@ -1,5 +1,5 @@
 import { NextApiRequest } from "next";
-import { ServerMessageDto } from "../types/dtos/server.message.dtos";
+import { ServerMessageDto } from "../types/dtos/server-message.dtos";
 
 export function createServerMessage<T>(
   data: T,

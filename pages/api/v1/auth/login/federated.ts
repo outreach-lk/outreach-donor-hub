@@ -2,7 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { authServiceFactory } from "../../../../../app/apis/services";
 import { SessionDto } from "../../../../../app/types/dtos/auth.dtos";
-import { ServerMessageDto } from "../../../../../app/types/dtos/server.message.dtos";
+import { ServerMessageDto } from "../../../../../app/types/dtos/server-message.dtos";
 import { OAuthProviders } from "../../../../../app/types/enums/providers";
 import {
   createServerError,

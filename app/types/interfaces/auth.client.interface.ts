@@ -2,7 +2,7 @@
  * Defines types & interface(s) relavent to all auth related client side functions.
  */
 import { LocalSession, SessionDto } from "../dtos/auth.dtos";
-import { ServerMessageDto } from "../dtos/server.message.dtos";
+import { ServerMessageDto } from "../dtos/server-message.dtos";
 import { UserDto, UserRole } from "../dtos/user.dtos";
 import { AuthProvider } from "../enums/providers";
 import { IAPIClient } from "./api.client.interface";

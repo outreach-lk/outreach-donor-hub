@@ -4,12 +4,12 @@
 
 import { Auditable } from "../auditable"
 import { Pagable } from "../pagable";
-import { FileDto } from "./remote.file.dtos";
-import { EntityFetchedPageDto } from "./server.message.dtos";
-import { EntityUpdatedDto } from "./server.message.dtos";
-import { EntityDeletedDto } from "./server.message.dtos";
-import { EntityCreatedDto } from "./server.message.dtos";
-import { ServerError } from "./server.message.dtos";
+import { FileDto } from "./remote-file.dtos";
+import { EntityFetchedPageDto } from "./server-message.dtos";
+import { EntityUpdatedDto } from "./server-message.dtos";
+import { EntityDeletedDto } from "./server-message.dtos";
+import { EntityCreatedDto } from "./server-message.dtos";
+import { ServerError } from "./server-message.dtos";
 
 /**
  * DTO for User Object

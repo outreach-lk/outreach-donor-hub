@@ -4,7 +4,7 @@
 
 import { Auditable } from "../auditable";
 import { FileStorageProvider } from "../enums/providers";
-import { ServerError, ServerMessageDto } from "./server.message.dtos";
+import { ServerError, ServerMessageDto } from "./server-message.dtos";
 
 /**
  * Representation of any file stored remotely.
