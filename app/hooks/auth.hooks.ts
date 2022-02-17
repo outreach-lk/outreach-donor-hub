@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import {authClientFactory} from "../apis/clients";
+import {authClientFactory} from "../adapters/clients";
 import { AuthContext } from "../context/auth.context";
 import { AuthProvider } from "../types/enums/providers";
 import { IAuthClient } from "../types/interfaces/auth.client.interface";

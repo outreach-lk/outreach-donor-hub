@@ -1,6 +1,6 @@
 import { SessionDto } from "../../../../types/dtos/auth.dtos";
 import { ServerMessageDto } from "../../../../types/dtos/server-message.dtos";
-import { UserRole } from "../../../../types/dtos/user.dtos";
+import { UserDto, UserRole } from "../../../../types/dtos/user.dtos";
 import { AuthProvider } from "../../../../types/enums/providers";
 import { IAuthClient } from "../../../../types/interfaces/auth.client.interface";
 import {
@@ -15,6 +15,8 @@ import {
 import axios from "axios";
 import apis from "../../../api-map.json";
 import app from "../../../../libs/firebase.client.sdk";
+import User from "../../../../data/entities/user.entity";
+import UserRepo from "../../../../data/repos/user.repo";
 
 /** Authentication Client for Provider Firebase */
 export default class FirebaseAuthClient implements IAuthClient {
@@ -23,11 +25,11 @@ export default class FirebaseAuthClient implements IAuthClient {
     this.auth = getAuth(app);
   }
   /**
-   * Signs in the user and creates a session with a custom token to suit the needs of 
-   * the application using a token issued by firebase client when the user 
+   * Signs in the user and creates a session with a custom token to suit the needs of
+   * the application using a token issued by firebase client when the user
    * signs in with email, google, or facebook.
    * @param token Valid token issued by the firebase native auth system
-   * @returns {SessionDto} new SesssionDTO. 
+   * @returns {SessionDto} new SesssionDTO.
    */
   private async firebaseSignInWithCustomToken(
     token: string
@@ -112,16 +114,29 @@ export default class FirebaseAuthClient implements IAuthClient {
   ): Promise<SessionDto> {
     return createUserWithEmailAndPassword(this.auth, email, password)
       .then((res) => {
-        //TODO: Call create sign-up api for saving user entity with role
-        console.log(res);
-        return res.user
-          .getIdToken()
-          .then((token) => {
-            return this.firebaseSignInWithCustomToken(token);
-          })
-          .catch((error) => {
-            throw new Error(error);
-          });
+        if (res?.user) {
+          return UserRepo.getRepo()
+            .create({
+              uid: res.user.uid,
+              email: res.user.email,
+              role: role
+            } as UserDto)
+            .then(() => {
+              return res.user
+                .getIdToken()
+                .then((token) => {
+                  return this.firebaseSignInWithCustomToken(token);
+                })
+                .catch((error) => {
+                  throw new Error(error); //FIXME: Handle Exception or throw meaningful error.
+                });
+            })
+            .catch(error=>{
+              throw new Error(error); //FIXME: Handle Exception or throw meaningful error.
+            })
+        } else {
+          throw new Error("Sign up failed"); //FIXME: Handle Exception or throw meaningful error.
+        }
       })
       .catch((error) => {
         throw new Error(error);
