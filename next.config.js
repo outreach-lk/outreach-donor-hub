@@ -2,9 +2,19 @@
 const nextConfig = {
   reactStrictMode: true,
   eslint: {
-    dirs: ['app','pages']
+    dirs: ["app", "pages"],
   },
-}
+  webpack: (config, options) => {
+    if(!options.isServer){
+      config.resolve = {
+        fallback: {
+          ...config.resolve.fallback,
+          fs: false
+        },
+      };
+    }
+    return config;
+  },
+};
 
 module.exports = nextConfig;
-

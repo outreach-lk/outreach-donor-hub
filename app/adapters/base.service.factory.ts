@@ -1,8 +1,10 @@
+import MultiEnv from "../data/multi.env";
+
 /** 
  * All api service factories should extend this
  * Each factory will only create a single service.
  */
-export default abstract class BaseServiceFactory<T,P> {
+export default abstract class BaseServiceFactory<T,P> extends MultiEnv {
     private _service:T | null= null;
     /**
      * A factory class for creating serverside service instances.

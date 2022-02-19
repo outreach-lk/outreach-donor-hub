@@ -7,7 +7,7 @@ export default class MultiEnv{
     protected isNode: boolean;
     protected isBrowser: boolean;
     constructor(){
-        this.isNode = (typeof window === undefined);
+        this.isNode = (typeof window === 'undefined');
         this.isBrowser = !this.isNode;
     }
 

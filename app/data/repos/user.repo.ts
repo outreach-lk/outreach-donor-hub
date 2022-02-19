@@ -1,5 +1,4 @@
 import { databaseClientFactory } from "../../adapters/clients";
-import { DatabaseClientFactory } from "../../adapters/database/client/db.client.factory";
 import { Auditable } from "../../types/auditable";
 import {
   EntityFetchedDto,
@@ -12,6 +11,7 @@ import { UserDto, UserRole } from "../../types/dtos/user.dtos";
 import { DatabaseProvider } from "../../types/enums/providers";
 import ICRUDREPO from "../../types/interfaces/crud.repo.interface";
 import { IDatabaseClient } from "../../types/interfaces/db.client.interface";
+import { IDatabaseService } from "../../types/interfaces/db.service.interface";
 import { Page } from "../../types/pagable";
 import BaseRepo from "./base.repo";
 
@@ -21,13 +21,12 @@ import BaseRepo from "./base.repo";
  */
 export default class UserRepo extends BaseRepo implements ICRUDREPO<UserDto> {
   private static _instance: UserRepo | null;
-  private dbClient: IDatabaseClient;
   private entity: string = "user";
 
   constructor() {
-    super();
-    this.dbClient = databaseClientFactory.getClient(DatabaseProvider.FIREBASE);
+    super(DatabaseProvider.FIREBASE);
   }
+  
 
   /**
    * Find user by userid.
@@ -64,7 +63,7 @@ export default class UserRepo extends BaseRepo implements ICRUDREPO<UserDto> {
         if(data.role === UserRole.ADMIN || data.role === UserRole.MODERATOR){
           throw new Error('elevated users need to be created through admin action');
         }
-        return this.dbClient.create<UserDto>(
+        return (this.db as IDatabaseClient).create<UserDto>(
           {
             ...data,
           },
@@ -72,7 +71,7 @@ export default class UserRepo extends BaseRepo implements ICRUDREPO<UserDto> {
           data.uid
         );
       } else {
-        throw new Error("Service not implemented");
+        return (this.db as IDatabaseService).save(data, this.entity, data.uid);
       }
     } catch (error) {
       throw error;
