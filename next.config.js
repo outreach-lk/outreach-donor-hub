@@ -1,4 +1,6 @@
 /** @type {import('next').NextConfig} */
+/** @type {import('webpack')} */
+const webpack = require('webpack');
 const nextConfig = {
   reactStrictMode: true,
   eslint: {
@@ -6,12 +8,10 @@ const nextConfig = {
   },
   webpack: (config, options) => {
     if(!options.isServer){
-      config.resolve = {
-        fallback: {
-          ...config.resolve.fallback,
-          fs: false
-        },
-      };
+      // Ignore all patterns that match backend services
+      config.plugins.push(new webpack.IgnorePlugin({
+        resourceRegExp: new RegExp('service') 
+      }))
     }
     return config;
   },

@@ -3,8 +3,6 @@
 */
 
 import { databaseClientFactory } from "../../adapters/clients";
-import DatabaseServiceFactory from "../../adapters/database/service/db.service.factory";
-import { databaseServiceFactory } from "../../adapters/services";
 import { DatabaseProvider } from "../../types/enums/providers";
 import { IDatabaseClient } from "../../types/interfaces/db.client.interface";
 import { IDatabaseService } from "../../types/interfaces/db.service.interface";
@@ -22,6 +20,7 @@ export default class BaseRepo extends MultiEnv {
     if(this.isBrowser){
       this.db = databaseClientFactory.getClient(provider);
     } else {
+       const databaseServiceFactory = require('../../adapters/services');
        this.db = databaseServiceFactory.getService(provider); 
     }
   }
