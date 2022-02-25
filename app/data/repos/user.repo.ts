@@ -35,9 +35,9 @@ export default class UserRepo extends BaseRepo implements ICRUDREPO<UserDto> {
   get(identifier: string): Promise<EntityFetchedDto<Auditable & UserDto>> {
     try {
         if(this.isBrowser) {
-            throw new Error('Method not implemented');
+          throw new Error('Method not implemented');
         } else {
-            throw new Error('Service not implemented');
+          return (this.db as IDatabaseService).find(identifier,this.entity);
         }
     } catch (error) {
         throw error;
