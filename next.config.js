@@ -9,6 +9,7 @@ const nextConfig = {
   webpack: (config, { isServer }) => {
     if (!isServer) {
         // set alias of node specific modules to false
+        // eg: service dependencies
         config.resolve.alias = {
             ...config.resolve.alias,
             'firebase-admin': false,
