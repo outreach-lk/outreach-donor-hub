@@ -15,7 +15,7 @@ import { IAuthService } from "../../../../types/interfaces/auth.service.interfac
 import init from "../../../../libs/firebase.admin.sdk";
 import User from "../../../../data/entities/user.entity";
 import { DecodedIdToken } from "firebase-admin/lib/auth/token-verifier";
-import { generateSessionId } from "../../../../utils/generate-sesssion-id";
+import { generateSessionId } from "../../../../utils/generate-ids";
 
 export default class FirebaseAuthService implements IAuthService {
   private admin: admin.app.App;

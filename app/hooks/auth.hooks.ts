@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import {authClientFactory} from "../adapters/clients";
 import { AuthContext } from "../context/auth.context";
+import { UserRole } from "../types/dtos/user.dtos";
 import { AuthProvider } from "../types/enums/providers";
 import { IAuthClient } from "../types/interfaces/auth.client.interface";
 import { useFeedback } from "./feedback.hook";
@@ -25,10 +26,55 @@ export function useAuth(){
         sessionId: authCtx.sessionId,
         user: authCtx.user,
         client: {
-            signInWithEmail: client.signInWithEmail.bind(client),
-            signInWithGoogle: client.signInWithGoogle.bind(client),
-            signInWithFacebook: client.signInWithFacebook.bind(client),
-            signUpWithEmail: client.signUpWithEmail.bind(client),
+            signInWithEmail: (email: string, password: string, persist?: boolean) => {
+                client.signInWithEmail(email, password, persist)
+                .then( session => {
+                    setSession({
+                        ...session,
+                        isAuthorized: true
+                    })
+                })
+                .catch((error) => feedback.show( error, {
+                    type: 'error',
+                }));
+            },
+            signInWithGoogle: () => {
+                client.signInWithGoogle()
+                .then( session => {
+                    setSession({
+                        ...session,
+                        isAuthorized: true
+                    })
+                })
+                .catch((error) => feedback.show( error, {
+                    type: 'error',
+                }));
+
+            },
+            signInWithFacebook: () => {
+                client.signInWithFacebook()
+                .then( session => {
+                    setSession({
+                        ...session,
+                        isAuthorized: true
+                    })
+                })
+                .catch((error) => feedback.show( error, {
+                    type: 'error',
+                }));
+            },
+            signUpWithEmail: (email:string, password: string, role: UserRole) => {
+                client.signUpWithEmail(email, password, role)
+                .then( session => {
+                    setSession({
+                        ...session,
+                        isAuthorized: true
+                    })
+                })
+                .catch((error) => feedback.show( error, {
+                    type: 'error',
+                }));
+            },
             confirmSignup: client.confirmSignup.bind(client),
             
         }
