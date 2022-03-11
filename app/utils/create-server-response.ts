@@ -1,5 +1,5 @@
 import { NextApiRequest } from "next";
-import { ServerMessageDto } from "../types/dtos/server.message.dtos";
+import { ServerMessageDto } from "../types/dtos/server-message.dtos";
 
 export function createServerMessage<T>(
   data: T,
@@ -25,6 +25,7 @@ export function createServerError(
     code?: number|string,
     message?: string
   ): ServerMessageDto<Error> {
+    console.log(error,message) //FIXME: Delegate to serverside logger
     return {
       code,
       message,

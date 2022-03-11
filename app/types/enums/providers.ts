@@ -25,3 +25,12 @@ export enum OAuthProviders{
     LOCALFILESYSTEM = "LOCALFILESYSTEM",
     OTHERHTTP = "OTHERHTTP",
 }
+
+/**
+ * Enum for Databse Providers.
+ */
+export enum DatabaseProvider{
+    FIREBASE = 'FIREBASE',
+    DYNAMODB = 'DYNAMODB',
+    
+}

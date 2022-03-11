@@ -23,7 +23,7 @@ export default class User extends BaseEntity<User, UserDto> {
   isVerifiedUser: boolean;
   verification?: UserVerificationDto;
   role?: UserRole;
-  customPermissions?: Permissions[];
+  customPermissions: Permissions[];
 
   constructor(user: AuditableUserDto) {
     // eslint-disable-next-line @typescript-eslint/unbound-method
@@ -38,7 +38,7 @@ export default class User extends BaseEntity<User, UserDto> {
     this.isVerifiedUser = user.isVerifiedUser;
     this.verification = user.verification;
     this.role = user.role;
-    this.customPermissions = user.custsomPermissions;
+    this.customPermissions = user.customPermissions;
   }
 
   /** Mappers */
@@ -75,6 +75,15 @@ export default class User extends BaseEntity<User, UserDto> {
     user.deletedBy = dto.deletedBy ? new User(dto.deletedBy) : user.deletedBy;
   }
 
+  static async getUserByUid(uid:string): Promise<User>{
+    return await UserRepo.getRepo().get(uid)
+    .then(res=>{
+      return new User(res.data as AuditableUserDto);
+    })
+    .catch(error=>{
+      throw error;
+    })
+  }
   /**
    * adds a list of custom permisssions to this user.
    * $server only method

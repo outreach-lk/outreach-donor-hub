@@ -1,9 +1,18 @@
-import '../app/ui/styles/globals.css'
-import type { AppProps } from 'next/app'
-import { useAuth } from '../app/hooks/auth.hooks'
+import { ChakraProvider } from '@chakra-ui/react'
+import { AppProps } from 'next/app'
+import { AuthProvider } from '../app/context/auth.context'
+import { FeedbackProvider } from '../app/context/feedback.context'
 
 function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+  return (
+    <ChakraProvider>
+      <AuthProvider>
+        <FeedbackProvider>
+          <Component {...pageProps} />
+        </FeedbackProvider>
+      </AuthProvider>
+    </ChakraProvider>
+  )
 }
 
 export default MyApp

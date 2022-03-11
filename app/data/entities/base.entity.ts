@@ -6,7 +6,7 @@
 */
 
 import { Auditable } from "../../types/auditable";
-import { EntityCreatedDto, EntityDeletedDto, EntityUpdatedDto } from "../../types/dtos/server.message.dtos";
+import { EntityCreatedDto, EntityDeletedDto, EntityUpdatedDto } from "../../types/dtos/server-message.dtos";
 import { UserDto } from "../../types/dtos/user.dtos";
 import ICRUDREPO from "../../types/interfaces/crud.repo.interface";
 import { OwnablePermissions } from "../../types/ownable";

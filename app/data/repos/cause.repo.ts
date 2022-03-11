@@ -8,18 +8,23 @@
 
 import { Auditable } from "../../types/auditable";
 import { CauseDto } from "../../types/dtos/cause.dtos";
-import { FileDto } from "../../types/dtos/remote.file.dtos";
-import { EntityFetchedDto, EntityFetchedPageDto, EntityCreatedDto, EntityUpdatedDto, EntityDeletedDto } from "../../types/dtos/server.message.dtos";
+import { FileDto } from "../../types/dtos/remote-file.dtos";
+import { EntityFetchedDto, EntityFetchedPageDto, EntityCreatedDto, EntityUpdatedDto, EntityDeletedDto } from "../../types/dtos/server-message.dtos";
+import { DatabaseProvider } from "../../types/enums/providers";
 import ICRUDREPO from "../../types/interfaces/crud.repo.interface";
 import { Ownable } from "../../types/ownable";
 import { Page } from "../../types/pagable";
 import BaseRepo from "./base.repo";
 
+/**
+ * Cause Data Access Repository
+ * @version 1.0.0b uses Firebase as Provider
+ */
 export default class CauseRepo extends BaseRepo implements ICRUDREPO<CauseDto>{
     private static _instance:CauseRepo | null;
     
     constructor(){
-        super();
+        super( DatabaseProvider.FIREBASE );
     }
     get(identifier: string): Promise<EntityFetchedDto<Auditable & Ownable & CauseDto>> {
         throw new Error("Method not implemented.");

@@ -4,10 +4,10 @@
 
 import { Auditable } from "../../types/auditable";
 import { AuditableClaimEvidenceDto, ClaimEvidenceDto } from "../../types/dtos/claim-evidence";
-import { FileDto } from "../../types/dtos/remote.file.dtos";
-import { EntityCreatedDto, EntityFetchedDto, EntityFetchedPageDto } from "../../types/dtos/server.message.dtos";
+import { FileDto } from "../../types/dtos/remote-file.dtos";
+import { EntityCreatedDto, EntityFetchedDto, EntityFetchedPageDto } from "../../types/dtos/server-message.dtos";
 import { Page } from "../../types/pagable";
-import ClaimEvidenceRepo from "../repos/claimEvidence.repo";
+import ClaimEvidenceRepo from "../repos/claim-evidence.repo";
 import BaseEntity from "./base.entity";
 import { IClaimEvidenceActions } from "../../types/interfaces/claimEvidence.entity.interface";
 import User from "./user.entity";

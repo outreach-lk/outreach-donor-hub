@@ -1,4 +1,4 @@
-import BaseClientFactory from "../../../../app/apis/base.client.factory";
+import BaseClientFactory from "../../../../app/adapters/base.client.factory";
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IMockClient {
     provider: MockProvider
