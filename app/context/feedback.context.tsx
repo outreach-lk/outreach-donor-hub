@@ -33,10 +33,12 @@ export function FeedbackProvider<P>(props: PropsWithChildren<P>){
             }else{
                 switch(f.type){
                     case 'toast':
+                        // Uses ChakraUI Toasts
                         toast({
                             title: f.title,
                             description: f.message,
-                            status: f.status
+                            status: f.status,
+                            isClosable: true,
                         })
                         break;
                     case 'notification':

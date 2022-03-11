@@ -36,6 +36,7 @@ export function useAuth(){
                 })
                 .catch((error) => feedback.show( error, {
                     type: 'error',
+                    title: 'Sign In Error'
                 }));
             },
             signInWithGoogle: () => {
@@ -48,6 +49,7 @@ export function useAuth(){
                 })
                 .catch((error) => feedback.show( error, {
                     type: 'error',
+                    title: 'Sign In Error'
                 }));
 
             },
@@ -61,6 +63,7 @@ export function useAuth(){
                 })
                 .catch((error) => feedback.show( error, {
                     type: 'error',
+                    title: 'Sign In Error'
                 }));
             },
             signUpWithEmail: (email:string, password: string, role: UserRole) => {
@@ -73,6 +76,7 @@ export function useAuth(){
                 })
                 .catch((error) => feedback.show( error, {
                     type: 'error',
+                    title: 'Sign Up Error'
                 }));
             },
             confirmSignup: client.confirmSignup.bind(client),
