@@ -31,13 +31,15 @@ export const SignInCard = () => {
 
   /**
    * Form sumbission handler for signing in with email and password
-   * TODO: use a wrapper Form element for all forms which
-   * TODO: capture form field values.
    * handles submissions and error messages.
    */
   const handleSignInWithEmail: React.FormEventHandler = (e) => {
     e.preventDefault();
-    signInWithEmail("demo@shehan.clk", "hello");
+    const target =  {
+      email: (e.target as any).email.value,
+      password: (e.target as any).password.value
+    }
+    signInWithEmail(target.email, target.password);
   };
 
   /**
