@@ -16,14 +16,15 @@ import {
   useBreakpointValue,
   useColorModeValue as mode,
 } from "@chakra-ui/react";
+import Link from "next/link";
 import * as React from "react";
-import { useAuth } from "../../../hooks/auth.hooks";
-import { OAuthProviders } from "../../../types/enums/providers";
+import { useAuth } from "../../../../hooks/auth.hooks";
+import { OAuthProviders } from "../../../../types/enums/providers";
 import {
   OAuthButtonGroup,
   Props as OAuthButtonGroupProps,
-} from "../elements/auth/OAuthButtonGroup";
-import { PasswordField } from "../elements/auth/PasswordField";
+} from "../../elements/auth/OAuthButtonGroup";
+import { PasswordField } from "../../elements/auth/PasswordField";
 
 export const SignInCard = () => {
   const { client } = useAuth();
@@ -87,12 +88,24 @@ export const SignInCard = () => {
           </Stack>
           <HStack justify="space-between">
             <Checkbox defaultIsChecked>Remember me</Checkbox>
+            <Link href={"/auth/reset"} passHref>
             <Button variant="link" colorScheme="blue" size="sm">
               Forgot password?
             </Button>
+            </Link>
           </HStack>
           <Stack spacing="6">
-            <Button type="submit" variant="primary">
+            <Button 
+             loadingText="Submitting"
+             size="lg"
+             bg={"blue.400"}
+             color={"white"}
+             _hover={{
+               bg: "blue.500",
+             }}
+             type="submit"
+             variant="primary"
+            >
               Sign in
             </Button>
             <HStack>

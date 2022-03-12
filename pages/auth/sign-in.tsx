@@ -13,7 +13,7 @@ import {
 import { NextPage } from "next";
 
 import { Logo } from "../../app/ui/components/elements/branding/Logo";
-import { SignInCard } from "../../app/ui/components/modules/signin.module";
+import { SignInCard } from "../../app/ui/components/modules/auth/signin.module";
 import { Footer } from "../../app/ui/components/modules/Footer";
 import Link from "next/link";
 
@@ -34,8 +34,8 @@ const Login: NextPage = () => (
               Log in to your account
             </Heading>
             <HStack spacing="1" justify="center">
-              <Text>Don't have an account?</Text>
-              <Link href={"/auth/sign-up"}>
+              <Text>Don&apos;t have an account?</Text>
+              <Link href={"/auth/sign-up"} passHref>
                 <Button  variant="link" colorScheme="blue">
                   Sign up
                 </Button>

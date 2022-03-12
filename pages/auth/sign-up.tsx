@@ -1,4 +1,4 @@
-/** Login Page */
+/** Sign up Page */
 import {
   Box,
   Button,
@@ -13,11 +13,11 @@ import {
 import { NextPage } from "next";
 
 import { Logo } from "../../app/ui/components/elements/branding/Logo";
-import { SignupCard } from "../../app/ui/components/modules/signup.module";
+import { SignupCard } from "../../app/ui/components/modules/auth/signup.module";
 import { Footer } from "../../app/ui/components/modules/Footer";
 import Link from "next/link";
 
-const Login: NextPage = () => (
+const Signup: NextPage = () => (
   <Box
     bg={mode(useBreakpointValue({ base: "white", sm: "gray.50" }), "gray.800")}
   >
@@ -35,7 +35,7 @@ const Login: NextPage = () => (
             </Heading>
             <HStack spacing="1" justify="center">
               <Text>Already have an account?</Text>
-              <Link href={"/auth/sign-in"}>
+              <Link href={"/auth/sign-in"} passHref>
                 <Button variant="link" colorScheme="blue">
                   Sign in
                 </Button>
@@ -50,4 +50,4 @@ const Login: NextPage = () => (
   </Box>
 );
 
-export default Login;
+export default Signup;

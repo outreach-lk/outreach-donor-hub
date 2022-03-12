@@ -80,6 +80,19 @@ export function useAuth(){
                 }));
             },
             confirmSignup: client.confirmSignup.bind(client),
+            resetPassword: (email: string) => {
+                client.requestPwdReset( email )
+                .then(()=> {
+                    feedback.show( 'Password Reset Link has been sent to your email' ,{
+                        type: 'success',
+                        title: 'Password Reset'
+                    })
+                })
+                .catch((error) => feedback.show( error, {
+                    type: 'error',
+                    title: 'Password Reset Error'
+                }));
+            }
             
         }
     }

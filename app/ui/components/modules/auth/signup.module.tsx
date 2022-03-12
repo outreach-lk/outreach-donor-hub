@@ -18,8 +18,8 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
-import { useAuth } from "../../../hooks/auth.hooks";
-import { UserRole } from "../../../types/dtos/user.dtos";
+import { useAuth } from "../../../../hooks/auth.hooks";
+import { UserRole } from "../../../../types/dtos/user.dtos";
 
 //FIXME: Break this into components and conform to a consistent theming.
 export function SignupCard() {

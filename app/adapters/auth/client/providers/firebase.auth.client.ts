@@ -11,6 +11,7 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   createUserWithEmailAndPassword,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 import axios from "axios";
 import apis from "../../../api-map.json";
@@ -119,7 +120,7 @@ export default class FirebaseAuthClient implements IAuthClient {
             .create({
               uid: res.user.uid,
               email: res.user.email,
-              role: role
+              role: role,
             } as UserDto)
             .then(() => {
               return res.user
@@ -131,9 +132,9 @@ export default class FirebaseAuthClient implements IAuthClient {
                   throw new Error(error); //FIXME: Handle Exception or throw meaningful error.
                 });
             })
-            .catch(error=>{
+            .catch((error) => {
               throw new Error(error); //FIXME: Handle Exception or throw meaningful error.
-            })
+            });
         } else {
           throw new Error("Sign up failed"); //FIXME: Handle Exception or throw meaningful error.
         }
@@ -146,7 +147,13 @@ export default class FirebaseAuthClient implements IAuthClient {
     throw new Error("Method not implemented.");
   }
   requestPwdReset(email: string): Promise<ServerMessageDto<any>> {
-    throw new Error("Method not implemented.");
+    return sendPasswordResetEmail(this.auth, email)
+      .then(() => {
+        return {} as ServerMessageDto<any>;
+      })
+      .catch((error) => {
+        throw new Error(error);
+      });
   }
   confirmPwdReset(
     email: string,
