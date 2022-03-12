@@ -32,8 +32,8 @@ export function SignupCard() {
     const target = {
       email: (e.target as any).email.value,
       password: (e.target as any).password.value,
-      firstName: (e.target as any).firstName.value,
-      lastName: (e.target as any).lastName.value,
+      // firstName: (e.target as any).firstName.value,
+      // lastName: (e.target as any).lastName.value,
     }
     signUpWithEmail(
       target.email, 
@@ -56,7 +56,7 @@ export function SignupCard() {
           borderRadius={{ base: "none", sm: "xl" }}
         >
           <Stack spacing={6}>
-            <HStack>
+            {/* <HStack>
                 <Box>
                   <FormControl id="firstName" isRequired>
                     <FormLabel>First Name</FormLabel>
@@ -69,7 +69,7 @@ export function SignupCard() {
                     <Input type="text" />
                   </FormControl>
                 </Box>
-              </HStack>
+              </HStack> */}
             <FormControl id="email" isRequired>
               <FormLabel>Email address</FormLabel>
               <Input type="email" />
