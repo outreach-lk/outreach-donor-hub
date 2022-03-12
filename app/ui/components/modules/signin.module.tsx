@@ -35,10 +35,10 @@ export const SignInCard = () => {
    */
   const handleSignInWithEmail: React.FormEventHandler = (e) => {
     e.preventDefault();
-    const target =  {
+    const target = {
       email: (e.target as any).email.value,
-      password: (e.target as any).password.value
-    }
+      password: (e.target as any).password.value,
+    };
     signInWithEmail(target.email, target.password);
   };
 

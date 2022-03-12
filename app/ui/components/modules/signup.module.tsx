@@ -34,12 +34,8 @@ export function SignupCard() {
       password: (e.target as any).password.value,
       // firstName: (e.target as any).firstName.value,
       // lastName: (e.target as any).lastName.value,
-    }
-    signUpWithEmail(
-      target.email, 
-      target.password,
-      UserRole.REGULAR
-    );
+    };
+    signUpWithEmail(target.email, target.password, UserRole.REGULAR);
   };
 
   return (
