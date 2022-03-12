@@ -6,11 +6,11 @@ import { FeedbackProvider } from '../app/context/feedback.context'
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ChakraProvider>
-      <AuthProvider>
         <FeedbackProvider>
-          <Component {...pageProps} />
+          <AuthProvider>
+            <Component {...pageProps} />
+          </AuthProvider>
         </FeedbackProvider>
-      </AuthProvider>
     </ChakraProvider>
   )
 }

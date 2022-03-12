@@ -39,6 +39,7 @@ export function FeedbackProvider<P>(props: PropsWithChildren<P>){
                             description: f.message,
                             status: f.status,
                             isClosable: true,
+                            position: 'top-end'
                         })
                         break;
                     case 'notification':
@@ -49,7 +50,7 @@ export function FeedbackProvider<P>(props: PropsWithChildren<P>){
                 f.visible = true;
             }
         })
-    },[visible])
+    },[toast, visible])
 
 
 
