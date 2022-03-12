@@ -1,3 +1,8 @@
+/**
+ * Provides Authentication & Authorization Context for the Client App
+ * Router Guard & Auth/Permission based redirection happens here.
+ * @author Shehan Kulathilake.
+ */
 import { useRouter } from "next/router";
 import { createContext, PropsWithChildren, useEffect, useState } from "react";
 import { getConfig } from "../config";
@@ -10,12 +15,6 @@ const AuthContext = createContext<LocalSessionContext>({
 } as LocalSessionContext);
 const { Consumer, Provider } = AuthContext;
 const config = getConfig();
-/**
- * Provides Authentication & Authorization Context for the Client App
- * Router Guard & Auth based redirection happens here.
- * @param props
- * @returns
- */
 export function AuthProvider<P>(props: PropsWithChildren<P>) {
   const { pathname, push } = useRouter();
   const [session, setSession] = useState<LocalSession>({
