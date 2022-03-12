@@ -17,6 +17,7 @@ const config = getConfig();
  * @returns
  */
 export function AuthProvider<P>(props: PropsWithChildren<P>) {
+  const { pathname, push } = useRouter();
   const [session, setSession] = useState<LocalSession>({
     isAuthorized: false,
   } as LocalSession);
@@ -27,8 +28,11 @@ export function AuthProvider<P>(props: PropsWithChildren<P>) {
    * 2. Mods & Admins should redirect to mod dashboard. TODO
    */
   const [postSignInPath, setPostSignInPath] = useState<string | null>(null);
+  /**
+   * Gate keeps content from loading until route permissions have been resolved.
+   * Shows the loader instead.
+   */
   const [showContent, setShowContent] = useState<boolean>(false);
-  const { pathname, push } = useRouter();
 
   /**
    * Checks if the current route is authorized for the user
@@ -36,6 +40,7 @@ export function AuthProvider<P>(props: PropsWithChildren<P>) {
    */
   useEffect(() => {
     const route = config.routes.find((route) => route.path === pathname);
+    setShowContent(false);
     if (route && route.isProtected && !session.isAuthorized) {
       setPostSignInPath(pathname);
       show("Please Login to Continue", {
@@ -45,8 +50,8 @@ export function AuthProvider<P>(props: PropsWithChildren<P>) {
       push({
         pathname: "/auth/sign-in",
       });
-    } else if (route && !route.isProtected) {
-      setShowContent(true);
+    } else {
+        setShowContent(true);
     }
     //TODO: also check permissions here.
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -74,7 +79,7 @@ export function AuthProvider<P>(props: PropsWithChildren<P>) {
         setSession,
       }}
     >
-      {showContent ? props.children : <FullScreenLoader/>}
+      {showContent ? props.children : <FullScreenLoader />}
     </Provider>
   );
 }
