@@ -8,6 +8,7 @@ import { createContext, PropsWithChildren, useEffect, useState } from "react";
 import { getConfig } from "../config";
 import { useFeedback } from "../hooks/feedback.hook";
 import { LocalSession, LocalSessionContext } from "../types/dtos/auth.dtos";
+import { UserRole } from "../types/dtos/user.dtos";
 import { FullScreenLoader } from "../ui/components/modules/loader";
 
 const AuthContext = createContext<LocalSessionContext>({
@@ -68,7 +69,18 @@ export function AuthProvider<P>(props: PropsWithChildren<P>) {
       push({
         pathname: postSignInPath,
       });
+    } else if ( session.isAuthorized && session.user ) {
+      if( session.user.role = UserRole.REGULAR ){
+        push({
+          pathname: '/'
+        })
+      } else if ( session.user.role === UserRole.ADMIN || session.user.role === UserRole.MODERATOR ){
+        push({
+          pathname: '/mod'
+        })
+      }
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [postSignInPath, session.isAuthorized, push]);
 
   return (

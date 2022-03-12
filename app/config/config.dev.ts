@@ -1,4 +1,5 @@
 import { AppConfig } from "../types/config";
+import { UserRole } from "../types/dtos/user.dtos";
 
 export const devConfig: AppConfig = {
     title: "Outreach Donor Hub",
@@ -28,6 +29,13 @@ export const devConfig: AppConfig = {
             path: '/auth/sign-up',
             isEntity: false,
             isProtected: false
+        },
+        {
+            id: 'mod-dashboard',
+            path: '/mod',
+            isEntity: false,
+            isProtected: true,
+            allowedRoles: [ UserRole.ADMIN, UserRole.MODERATOR ],
         }
     ]
 }
