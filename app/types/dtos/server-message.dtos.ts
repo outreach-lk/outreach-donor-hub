@@ -12,13 +12,12 @@ export type ServerMessageDto<T> = {
   message?: string;
   code?: number | string;
   data?: T;
-  error?: T;
+  error?: any;
 };
 
 export type ServerError = {
   message: string;
   code: number | string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   stackTrace?: any;
 };
 

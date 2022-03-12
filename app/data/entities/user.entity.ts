@@ -26,7 +26,6 @@ export default class User extends BaseEntity<User, UserDto> {
   customPermissions: Permissions[];
 
   constructor(user: AuditableUserDto) {
-    // eslint-disable-next-line @typescript-eslint/unbound-method
     super(UserRepo.getRepo(), User.map2Dto, User.mapFromDto);
     this._id = user.uid; // is equal to uid but protected.
     this.uid = user.uid; // is public
@@ -48,8 +47,19 @@ export default class User extends BaseEntity<User, UserDto> {
    * @returns
    */
   static map2Dto(user: User): UserDto {
+
     return {
-      ...user,
+      customPermissions: user.customPermissions,
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      isEmailVerified: user.isEmailVerified,
+      isVerifiedUser: user.isVerifiedUser,
+      uid: user.uid,
+      isMobileVerified: user.isMobileVerified,
+      mobile: user.mobile,
+      role: user.role,
+      verification: user.verification
     } as UserDto;
   }
   /**

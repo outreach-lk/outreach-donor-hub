@@ -47,7 +47,7 @@ export default class FirebaseAuthService implements IAuthService {
         accessToken: customToken,
         refreshToken: 'n/a',
         sessionId: generateSessionId(),
-        user: User.map2Dto(user) //FIXME: maps irrelevent fields such as isNode, isBrowser etc.
+        user: User.map2Dto(user) 
       } as SessionDto
     } catch (error) {
       throw error as Error;
