@@ -1,4 +1,5 @@
 import { rejects } from "assert";
+import { Observable } from "rxjs";
 import { LocalSession, SessionDto } from "../../../../types/dtos/auth.dtos";
 import { ServerMessageDto } from "../../../../types/dtos/server-message.dtos";
 import { UserDto, UserRole } from "../../../../types/dtos/user.dtos";
@@ -10,6 +11,16 @@ import { IAuthClient } from "../../../../types/interfaces/auth.client.interface"
  * to be used for ui development and testing only.
  */
 export default class MockAuthClient implements IAuthClient {
+  listenToAuthChanges(): Observable<any> {
+    throw new Error("Method not implemented.");
+  }
+  retrieveSession(): LocalSession {
+    throw new Error("Method not implemented.");
+  }
+  persistSession(session: LocalSession): void {
+    throw new Error("Method not implemented.");
+  }
+
   private data = {
     logins: [
       {

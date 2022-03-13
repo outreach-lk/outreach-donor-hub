@@ -1,4 +1,4 @@
-import { SessionDto } from "../../../../types/dtos/auth.dtos";
+import { LocalSession, SessionDto } from "../../../../types/dtos/auth.dtos";
 import { ServerMessageDto } from "../../../../types/dtos/server-message.dtos";
 import { UserDto, UserRole } from "../../../../types/dtos/user.dtos";
 import { AuthProvider } from "../../../../types/enums/providers";
@@ -12,18 +12,62 @@ import {
   signInWithPopup,
   createUserWithEmailAndPassword,
   sendPasswordResetEmail,
+  onAuthStateChanged,
+  signOut
 } from "firebase/auth";
 import axios from "axios";
 import apis from "../../../api-map.json";
 import app from "../../../../libs/firebase.client.sdk";
-import User from "../../../../data/entities/user.entity";
 import UserRepo from "../../../../data/repos/user.repo";
+import { Observable } from "rxjs";
+
 
 /** Authentication Client for Provider Firebase */
 export default class FirebaseAuthClient implements IAuthClient {
   private auth: Auth;
   constructor() {
     this.auth = getAuth(app);
+  }
+  retrieveSession(): LocalSession {
+    const sessionCopy = localStorage.getItem('session');
+    if(sessionCopy){
+      return JSON.parse(sessionCopy) as LocalSession;
+    }else{
+      throw null;
+    }
+
+  }
+  persistSession(session: LocalSession): void {
+    console.log(session)
+    const sessionCopy: LocalSession = {
+      ...session,
+      accessToken: '',
+    }
+    localStorage.setItem('session', JSON.stringify(sessionCopy));
+  }
+  listenToAuthChanges( ): Observable<any> {
+      return new Observable( subscriber => {
+        onAuthStateChanged( this.auth, async(user)=>{
+          if( user ){
+            const session = this.retrieveSession();
+            if (session) {
+              subscriber.next( {
+                accessToken: await user.getIdToken(),
+                refreshToken: user.refreshToken,
+                sessionId: session.sessionId,
+                user: session.user,
+                isAuthorized: session.isAuthorized
+              } as LocalSession );
+    
+            } else{
+              // Session does not exist, hence logout prompting login.
+              this.logout();
+            }
+          } else {
+            subscriber.next(null);
+          }
+      })
+    })
   }
   /**
    * Signs in the user and creates a session with a custom token to suit the needs of
@@ -172,7 +216,9 @@ export default class FirebaseAuthClient implements IAuthClient {
     throw new Error("Method not implemented.");
   }
   logout(): Promise<void> {
-    throw new Error("Method not implemented.");
+    return signOut( this.auth ).then(()=>{
+      localStorage.removeItem('session');
+    })
   }
   deleteAccount(): Promise<ServerMessageDto<any>> {
     throw new Error("Method not implemented.");

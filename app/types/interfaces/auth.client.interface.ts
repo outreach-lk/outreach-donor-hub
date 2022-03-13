@@ -1,6 +1,8 @@
 /**
  * Defines types & interface(s) relavent to all auth related client side functions.
  */
+
+import { Observable } from "rxjs";
 import { LocalSession, SessionDto } from "../dtos/auth.dtos";
 import { ServerMessageDto } from "../dtos/server-message.dtos";
 import { UserDto, UserRole } from "../dtos/user.dtos";
@@ -25,5 +27,11 @@ export interface IAuthClient extends IAPIClient<AuthProvider> {
     changePassword(oldPassword:string, newPassword: string): Promise<SessionDto>
     logout(): Promise<void>
     deleteAccount(): Promise<ServerMessageDto<any>> //TODO create a dto.
+    listenToAuthChanges(): Observable<any>;
+    // Saves the local session to the local storage with the access token redacted.
+    persistSession( session: LocalSession ): void
+    retrieveSession(): LocalSession | null
 }
+
+
 
