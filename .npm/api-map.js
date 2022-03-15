@@ -13,7 +13,7 @@ const path = require('path');
 
         }else{
             const paths = scan('./pages/api',l);
-            fs.writeFileSync('./app/apis/api-map.json',JSON.stringify(paths,null,2),{
+            fs.writeFileSync('./app/api/api-map.json',JSON.stringify(paths,null,2),{
                 encoding: 'utf-8'
             });
         }
