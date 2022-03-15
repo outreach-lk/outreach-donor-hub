@@ -1,7 +1,5 @@
 import BaseEntity from "./base.entity";
 import Cause from "./cause.entity";
-import CauseRepo from "../repos/cause.repo";
-import ICRUDREPO from "../../types/interfaces/crud.repo.interface";
 import { EntitySignature } from "../../utils/api-route-info";
 
 /**
