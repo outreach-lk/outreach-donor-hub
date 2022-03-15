@@ -1,5 +1,4 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
-import BaseEntity from "../../data/entities/base.entity";
 import { UserRole } from "../../types/dtos/user.dtos";
 import { getRouteInfo, isMethodAllowed } from "../../utils/api-route-info";
 import { createServerError } from "../../utils/create-server-response";
@@ -13,7 +12,7 @@ import { tokenInterceptor } from "../../utils/token-interceptor";
  * @param handler 
  */
 export async function withRoutePermissions(req: NextApiRequest, res: NextApiResponse, handler: NextApiHandler) {
-    let isAllowed: boolean = false;
+    let isAllowed = false;
     const user = await tokenInterceptor(req);
     const { isEntity, entitySignature, allowedRoles, isProtected } = getRouteInfo(new URL(req.url as string, req.headers.host), req.method as string);
     /**
@@ -34,12 +33,21 @@ export async function withRoutePermissions(req: NextApiRequest, res: NextApiResp
         /**
          * If the route points to an entity, fetch the said entity's 
          * owner, permissions & sharedWith details.
+         * TODO: Cache this Entity somewhere and prevent a second read 
+         * in the actual handler.
          */
         if(isEntity && entitySignature ) {
             const data = await fetchEntityFromSignature( entitySignature );
             let isOwner: boolean = false;
             let isSharedWith: boolean = false; 
-            let hasAccessPerm: boolean = false
+            let hasAccessPerm: boolean = false;
+            let isAdmin = user?.role === UserRole.ADMIN;
+            let isMod = user?.role === UserRole.MODERATOR;
+            /**
+             * If the current request is authenticated,
+             * continue with the checks. If not,
+             * do not allow, as this is a protected api.
+             */
             if( user ) {
                 isOwner = ( data.owner === user );
                 if(data.sharedWith) {
@@ -51,12 +59,19 @@ export async function withRoutePermissions(req: NextApiRequest, res: NextApiResp
                         hasAccessPerm = isMethodAllowed(data.permissions.owner, req.method as string);
                     } else if ( isSharedWith ) {
                         hasAccessPerm = isMethodAllowed(data.permissions.shared, req.method as string);
-                    } else if ( user.role === UserRole.ADMIN) {
+                    } else if ( isAdmin ) {
                         hasAccessPerm = isMethodAllowed(data.permissions.admins, req.method as string);
-                    } else if ( user.role === UserRole.MODERATOR ) {
+                    } else if ( isMod ) {
                         hasAccessPerm = isMethodAllowed(data.permissions.mods, req.method as string);
                     } 
                 }
+                /**
+                 * is allowed if all three of the following are met with
+                 * 1. already allowed by previous checks ( api authorization )
+                 * 2. user is either the owner or has the entity shared with them or are either an admin or a mod. (user)
+                 * 3. current method of access is given as an access permission. (method)
+                 */
+                isAllowed = isAllowed && (isOwner || isSharedWith || isAdmin || isMod ) && hasAccessPerm;
             } else {
                 isAllowed = false;
             }
@@ -65,6 +80,10 @@ export async function withRoutePermissions(req: NextApiRequest, res: NextApiResp
         isAllowed = true;
     }
 
+    /**
+     * proceed to the handler if allowed.
+     * send a 403 if not.
+     */
     if (isAllowed) {
         handler(req, res);
     } else {

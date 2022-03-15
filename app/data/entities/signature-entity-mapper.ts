@@ -5,7 +5,7 @@ import ICRUDREPO from "../../types/interfaces/crud.repo.interface";
 import { EntitySignature } from "../../utils/api-route-info";
 
 /**
- * Fetches an entity based on an entity meta data object.
+ * Fetches an entity based on an entity signature object.
  * @param signature 
  * @returns 
  */

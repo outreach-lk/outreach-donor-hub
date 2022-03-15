@@ -1,4 +1,4 @@
-import { databaseClientFactory } from "../../adapters/clients";
+import { databaseClientFactory } from "../../api/clients";
 import { Auditable } from "../../types/auditable";
 import {
   EntityFetchedDto,
