@@ -19,7 +19,6 @@ export default class Cause extends BaseEntity<Cause,CauseDto> implements ICauseA
     attachments: FileDto[]; // TODO: Convert to File Objects
     donations: Donation[]; //TODO: 1.Create Donations 2. Should this rather be a Pagable of type Donation?
     constructor(causeDto:AuditableCauseDto){
-        // eslint-disable-next-line @typescript-eslint/unbound-method
         super(CauseRepo.getRepo(),Cause.map2Dto,Cause.mapFromDto);
         this._id = causeDto.id;
         this.owner = causeDto.owner?new User(causeDto.owner):undefined;

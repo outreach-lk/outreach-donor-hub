@@ -18,7 +18,6 @@ export default class ClaimEvidence extends BaseEntity<ClaimEvidence,ClaimEvidenc
      attachments: FileDto
     status: ClaimStatus
     constructor(ClaimEvidenceDto:AuditableClaimEvidenceDto){
-        // eslint-disable-next-line @typescript-eslint/unbound-method
         super(ClaimEvidenceRepo.getRepo(),ClaimEvidence.map2Dto,ClaimEvidence.mapFromDto);
         this._id = ClaimEvidenceDto.id;
         this.attachments = ClaimEvidenceDto.attachments;

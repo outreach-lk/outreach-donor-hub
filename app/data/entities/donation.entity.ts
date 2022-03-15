@@ -23,7 +23,6 @@ export default class Donation extends BaseEntity<Donation,DonationDto> implement
     evidence: ClaimEvidence[]
     status: DonationStatus
     constructor(DonationDto:AuditableDonationDto){
-        // eslint-disable-next-line @typescript-eslint/unbound-method
         super(DonationRepo.getRepo(),Donation.map2Dto,Donation.mapFromDto);
         this._id = DonationDto.id;
         this.cause = DonationDto.cause;
