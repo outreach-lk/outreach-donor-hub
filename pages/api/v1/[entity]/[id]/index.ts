@@ -6,10 +6,11 @@
  */
 
 import { NextApiRequest, NextApiResponse } from "next";
+import { withCustomMiddleware } from "../../../../../app/api/middleware/wrapper";
 import { EntityCreatedDto, EntityDeletedDto, EntityFetchedDto, EntityUpdatedDto } from "../../../../../app/types/dtos/server-message.dtos";
 import { createServerError } from "../../../../../app/utils/create-server-response";
 
-export default function handler(
+function handler(
     req: NextApiRequest,
     res: NextApiResponse<
         EntityFetchedDto<any> |
@@ -31,3 +32,5 @@ export default function handler(
     }
 
 }
+
+export default withCustomMiddleware(handler);

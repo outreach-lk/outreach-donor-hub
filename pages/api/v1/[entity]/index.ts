@@ -5,10 +5,11 @@
  */
 
 import { NextApiRequest, NextApiResponse } from "next";
+import { withCustomMiddleware } from "../../../../app/api/middleware/wrapper";
 import { EntityCreatedDto, EntityFetchedPageDto } from "../../../../app/types/dtos/server-message.dtos";
 import { createServerError } from "../../../../app/utils/create-server-response";
 
-export default function handler(
+function handler(
     req: NextApiRequest,
     res: NextApiResponse<
         EntityFetchedPageDto<any> |
@@ -24,3 +25,5 @@ export default function handler(
         res.status(407).send(createServerError(error, req));
     }
 }
+
+export default withCustomMiddleware(handler);

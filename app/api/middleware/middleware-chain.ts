@@ -1,11 +1,14 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { ApiMiddleware } from "../../types/middleware";
 
+/**
+ * A simple object that allows chaining middleware
+ * handlers to an ordinary next api request.
+ */
 export class RequestMiddlewareChain {
     private handlers: ApiMiddleware[];
     private controller: NextApiHandler;
     private next: ApiMiddleware | null = null;
-    private nextIndex: number = 0;
 
     constructor(controller: NextApiHandler){
         this.handlers = [];
@@ -14,7 +17,9 @@ export class RequestMiddlewareChain {
 
     use(handler: ApiMiddleware): RequestMiddlewareChain {
         this.handlers.push(handler);
-        this.next = this.handlers[0];
+        if(this.next === null && this.handlers.length === 1) {
+            this.next = this.handlers.pop() as ApiMiddleware;
+        }
         return this;
     }
 
