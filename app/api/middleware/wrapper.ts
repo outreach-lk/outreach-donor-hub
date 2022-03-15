@@ -1,5 +1,5 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
-import { RequestMiddlewareChain } from "./middleware-chain";
+import { NextRequestMiddlewareChain } from "./middleware-chain";
 import { permissionCheck } from "./perm-check";
 import { serverLogger } from "./server-logger";
 
@@ -10,7 +10,7 @@ import { serverLogger } from "./server-logger";
  */
 export function withCustomMiddleware(handler: NextApiHandler): NextApiHandler{
     return (req: NextApiRequest, res: NextApiResponse) => {
-        new RequestMiddlewareChain(handler)
+        new NextRequestMiddlewareChain(handler)
         .use(serverLogger)
         .use(permissionCheck)
         .call(req,res)
