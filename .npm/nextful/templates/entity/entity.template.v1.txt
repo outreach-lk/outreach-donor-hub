@@ -1,0 +1,93 @@
+/**
+ * Cross Environment Data Access Object for %NEXTFUL_ENTITY_NAMAE%s
+**/
+
+import { Auditable } from "../../types/auditable";
+import { Auditable%NEXTFUL_ENTITY_NAMAE%Dto, %NEXTFUL_ENTITY_NAMAE%Dto } from "../../types/dtos/%NEXTFUL_ENTITY_PATH%.dtos";
+import { FileDto } from "../../types/dtos/remote.file.dtos";
+import { EntityCreatedDto, EntityFetchedDto, EntityFetchedPageDto } from "../../types/dtos/server.message.dtos";
+import { Page } from "../../types/pagable";
+import %NEXTFUL_ENTITY_NAMAE%Repo from "../repos/%NEXTFUL_ENTITY_PATH%.repo";
+import BaseEntity from "./base.entity";
+import { I%NEXTFUL_ENTITY_NAMAE%Actions } from "../../types/interfaces/%NEXTFUL_ENTITY_PATH%.entity.interface";
+import User from "./user.dao";
+
+export default class %NEXTFUL_ENTITY_NAMAE% extends BaseEntity<%NEXTFUL_ENTITY_NAMAE%,%NEXTFUL_ENTITY_NAMAE%Dto> implements I%NEXTFUL_ENTITY_NAMAE%Actions{
+    // Define properties;
+     %ATTRIBS%
+    constructor(%NEXTFUL_ENTITY_NAMAE%Dto:Auditable%NEXTFUL_ENTITY_NAMAE%Dto){
+        // eslint-disable-next-line @typescript-eslint/unbound-method
+        super(%NEXTFUL_ENTITY_NAMAE%Repo.getRepo(),%NEXTFUL_ENTITY_NAMAE%.map2Dto,%NEXTFUL_ENTITY_NAMAE%.mapFromDto);
+        this._id = %NEXTFUL_ENTITY_NAMAE%Dto.id;
+        this.owner = %NEXTFUL_ENTITY_NAMAE%Dto.owner?new User(%NEXTFUL_ENTITY_NAMAE%Dto.owner):undefined;
+        this.createdOn = %NEXTFUL_ENTITY_NAMAE%Dto.createdOn?%NEXTFUL_ENTITY_NAMAE%Dto.createdOn:null;
+        this.createdBy = %NEXTFUL_ENTITY_NAMAE%Dto.createdBy?new User(%NEXTFUL_ENTITY_NAMAE%Dto.createdBy):undefined;
+        this.updatedOn = %NEXTFUL_ENTITY_NAMAE%Dto.updatedOn;
+        this.updatedBy = %NEXTFUL_ENTITY_NAMAE%Dto.updatedBy? new User(%NEXTFUL_ENTITY_NAMAE%Dto.updatedBy):undefined;
+        this.permissions = %NEXTFUL_ENTITY_NAMAE%Dto.permissions;
+        this.sharedWith = %NEXTFUL_ENTITY_NAMAE%Dto.sharedWith?.map(dto=>new User(dto));
+    }
+
+    /** Static CRUD Methods for GET and POST */
+    /** 
+     * Creates a %NEXTFUL_ENTITY_NAMAE% in the database with given data.
+     * @param %NEXTFUL_ENTITY_NAMAE%Dto 
+     * @returns 
+     */
+    static async create(%NEXTFUL_ENTITY_NAMAE%Dto: %NEXTFUL_ENTITY_NAMAE%Dto):Promise<EntityCreatedDto<%NEXTFUL_ENTITY_NAMAE%Dto>> {
+        try {
+            return %NEXTFUL_ENTITY_NAMAE%Repo.getRepo().create(%NEXTFUL_ENTITY_NAMAE%Dto);
+        } catch (error) {
+            throw Error();
+        }
+    }
+
+    /**
+     * Fetches %NEXTFUL_ENTITY_NAMAE% with given identifier.
+     * @param identifier 
+     * @returns 
+     */
+    static async get(identifier: string): Promise<EntityFetchedDto<%NEXTFUL_ENTITY_NAMAE%Dto>> {
+        try{
+            return %NEXTFUL_ENTITY_NAMAE%Repo.getRepo().get(identifier);
+        } catch (error){
+            throw Error();
+        }
+    }
+
+    /**
+     * Fetches a page of %NEXTFUL_ENTITY_NAMAE%s
+     * @param page 
+     * @returns 
+     */
+    static async getPage(page: Page<%NEXTFUL_ENTITY_NAMAE%Dto>): Promise<EntityFetchedPageDto<%NEXTFUL_ENTITY_NAMAE%Dto>> {
+        try {
+            return %NEXTFUL_ENTITY_NAMAE%Repo.getRepo().getPage(page);
+        } catch (error) {
+            throw Error();
+        }
+    }
+
+
+    /** Mappers */
+    /**
+     * Maps %NEXTFUL_ENTITY_NAMAE% to a %NEXTFUL_ENTITY_NAMAE% DTO
+     * @param %NEXTFUL_ENTITY_NAMAE% 
+     * @returns 
+     */
+    static map2Dto(%NEXTFUL_ENTITY_NAMAE%:%NEXTFUL_ENTITY_NAMAE%):%NEXTFUL_ENTITY_NAMAE%Dto {
+        return {
+           
+        } as %NEXTFUL_ENTITY_NAMAE%Dto
+    }
+
+    /**
+     * Maps a dto to an instance 
+     * @param dto 
+     * @param %NEXTFUL_ENTITY_NAMAE% 
+     */
+    static mapFromDto(dto: Auditable & %NEXTFUL_ENTITY_NAMAE%Dto,%NEXTFUL_ENTITY_NAMAE%: %NEXTFUL_ENTITY_NAMAE%):void{
+        
+    }
+
+} 
