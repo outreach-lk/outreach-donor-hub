@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { authClientFactory } from "../../../../../app/adapters/clients";
+import { authClientFactory } from "../../../../../app/api/clients";
 import { UserRole } from "../../../../../app/types/dtos/user.dtos";
 import { AuthProvider } from "../../../../../app/types/enums/providers";
 

@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import {authClientFactory} from "../adapters/clients";
+import {authClientFactory} from "../api/clients";
 import { AuthContext } from "../context/auth.context";
 import { UserRole } from "../types/dtos/user.dtos";
 import { AuthProvider } from "../types/enums/providers";

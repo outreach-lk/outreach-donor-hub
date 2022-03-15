@@ -5,7 +5,7 @@
  */
 import { useRouter } from "next/router";
 import { createContext, PropsWithChildren, useEffect, useState } from "react";
-import { authClientFactory } from "../adapters/clients";
+import { authClientFactory } from "../api/clients";
 import { getConfig } from "../config";
 import { useFeedback } from "../hooks/feedback.hook";
 import { LocalSession, LocalSessionContext } from "../types/dtos/auth.dtos";
