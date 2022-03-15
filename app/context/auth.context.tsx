@@ -28,8 +28,6 @@ export function AuthProvider<P>(props: PropsWithChildren<P>) {
   const client = authClientFactory.getClient( AProvider.FIREBASE );
   /**
    * Path to push back to once user has successfully signed-in
-   * 1. Regular users should redirect to home TODO
-   * 2. Mods & Admins should redirect to mod dashboard. TODO
    */
   const [postSignInPath, setPostSignInPath] = useState<string | null>(null);
   /**
@@ -37,8 +35,19 @@ export function AuthProvider<P>(props: PropsWithChildren<P>) {
    * Shows the loader instead.
    */
   const [showContent, setShowContent] = useState<boolean>(false);
+  /**
+   * Prevents redirects until checks for retrieving persisted local sessions
+   * are complete.
+   */
   const [checkingPersistedSession,setCheckingStatus] = useState<boolean>(true);
 
+  /**
+   * Upon loading the Auth Provider, subscribes to an auth change 
+   * listener, and sets the local session state to the emitted value.
+   * The auth listener will also retrieve persisted sessions, and this
+   * listener will set the checking status to false upon completion.
+   * TODO: prevent the listener from checking if already checked once (ie. during a hard reload)
+   */
   useEffect(()=>{
     const listenerSub = client.listenToAuthChanges().subscribe({
       next(session){
@@ -58,11 +67,12 @@ export function AuthProvider<P>(props: PropsWithChildren<P>) {
 
   /**
    * Checks if the current route is authorized for the user
-   * If not redirects user to sign-in
+   * If not redirects user to sign-in.
+   * Also sets the current path as the path to redirect post-sign-in
    */
   useEffect(() => {
     // sets current path as post sign-in path unless it's auth
-    if( !pathname.match('auth' ) ){
+    if( !pathname.match('auth') ){
       setPostSignInPath(pathname);
     }
     // Do not proceed unless checks for persisted sessions are done.
@@ -71,6 +81,11 @@ export function AuthProvider<P>(props: PropsWithChildren<P>) {
     // Halt rendering children until authorization checks are done.
     setShowContent(false);
     if (route && route.isProtected && !session.isAuthorized) {
+      /**
+       * TODO: Set the message based on whether the redirection
+       * takes place as a result of unauthorized access or intentional
+       * logout action from a secured route.
+       */
       show("Please Login to Continue", {
         type: "error",
         title: "Access Denied",
@@ -81,7 +96,7 @@ export function AuthProvider<P>(props: PropsWithChildren<P>) {
     } else {
         setShowContent(true);
     }
-    //TODO: also check permissions here.
+    //TODO: also check route related permissions here.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname, session.isAuthorized, checkingPersistedSession]);
 
