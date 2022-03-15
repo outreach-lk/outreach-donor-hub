@@ -25,27 +25,30 @@ import { Observable } from "rxjs";
 /** Authentication Client for Provider Firebase */
 export default class FirebaseAuthClient implements IAuthClient {
   private auth: Auth;
+  private session: LocalSession;
+
   constructor() {
     this.auth = getAuth(app);
+    this.session = { isAuthorized: false } as LocalSession;
   }
-  retrieveSession(): LocalSession {
+  retrieveSession(): LocalSession | null {
     const sessionCopy = localStorage.getItem('session');
     if(sessionCopy){
       return JSON.parse(sessionCopy) as LocalSession;
     }else{
-      throw null;
+      return null;
     }
 
   }
   persistSession(session: LocalSession): void {
-    console.log(session)
+    this.session = session;
     const sessionCopy: LocalSession = {
       ...session,
       accessToken: '',
     }
     localStorage.setItem('session', JSON.stringify(sessionCopy));
   }
-  listenToAuthChanges( ): Observable<any> {
+  listenToAuthChanges( ): Observable<LocalSession | null> {
       return new Observable( subscriber => {
         onAuthStateChanged( this.auth, async(user)=>{
           if( user ){
@@ -60,8 +63,8 @@ export default class FirebaseAuthClient implements IAuthClient {
               } as LocalSession );
     
             } else{
-              // Session does not exist, hence logout prompting login.
-              this.logout();
+              this.persistSession( this.session );
+              subscriber.next( null );
             }
           } else {
             subscriber.next(null);
@@ -97,6 +100,13 @@ export default class FirebaseAuthClient implements IAuthClient {
             if (res.user) {
               this.accessToken = data.accessToken;
               this.refreshToken = res.user.refreshToken;
+              // Persist Session in Local storage
+              this.persistSession({
+                accessToken: data.accessToken,
+                refreshToken: data.refreshToken,
+                isAuthorized: true,
+                user: data.user
+              } as LocalSession)
               return data;
             } else {
               throw new Error();

@@ -12,7 +12,7 @@ import { LocalSession, LocalSessionContext } from "../types/dtos/auth.dtos";
 import { UserRole } from "../types/dtos/user.dtos";
 import { FullScreenLoader } from "../ui/components/modules/loader";
 import { AuthProvider as AProvider } from "../types/enums/providers"
-import { tap } from "rxjs";
+
 
 const AuthContext = createContext<LocalSessionContext>({
   isAuthorized: false,
@@ -61,11 +61,16 @@ export function AuthProvider<P>(props: PropsWithChildren<P>) {
    * If not redirects user to sign-in
    */
   useEffect(() => {
+    // sets current path as post sign-in path unless it's auth
+    if( !pathname.match('auth' ) ){
+      setPostSignInPath(pathname);
+    }
+    // Do not proceed unless checks for persisted sessions are done.
     if( checkingPersistedSession ) return;
     const route = config.routes.find((route) => route.path === pathname);
+    // Halt rendering children until authorization checks are done.
     setShowContent(false);
     if (route && route.isProtected && !session.isAuthorized) {
-      setPostSignInPath(pathname);
       show("Please Login to Continue", {
         type: "error",
         title: "Access Denied",

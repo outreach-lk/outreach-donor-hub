@@ -27,7 +27,7 @@ export interface IAuthClient extends IAPIClient<AuthProvider> {
     changePassword(oldPassword:string, newPassword: string): Promise<SessionDto>
     logout(): Promise<void>
     deleteAccount(): Promise<ServerMessageDto<any>> //TODO create a dto.
-    listenToAuthChanges(): Observable<any>;
+    listenToAuthChanges(): Observable<LocalSession | null>;
     // Saves the local session to the local storage with the access token redacted.
     persistSession( session: LocalSession ): void
     retrieveSession(): LocalSession | null
