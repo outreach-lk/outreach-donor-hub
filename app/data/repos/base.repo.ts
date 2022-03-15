@@ -2,11 +2,12 @@
  * Parent Class for Cross Environment Data Items 
 */
 
-import { databaseClientFactory } from "../../adapters/clients";
-import { databaseServiceFactory } from "../../adapters/services";
+import { databaseClientFactory } from "../../api/clients";
+import { databaseServiceFactory } from "../../api/services";
 import { DatabaseProvider } from "../../types/enums/providers";
 import { IDatabaseClient } from "../../types/interfaces/db.client.interface";
 import { IDatabaseService } from "../../types/interfaces/db.service.interface";
+import BaseEntity from "../entities/base.entity";
 import MultiEnv from "../multi.env";
 
 /**
@@ -15,6 +16,7 @@ import MultiEnv from "../multi.env";
 export default class BaseRepo extends MultiEnv {
 
   protected db: IDatabaseClient | IDatabaseService = {} as IDatabaseClient;
+  protected cached?: BaseEntity<any,any>;
 
   constructor(provider: DatabaseProvider) {
     super();
