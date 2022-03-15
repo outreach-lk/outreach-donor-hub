@@ -5,7 +5,7 @@ import { ApiMiddleware } from "../../types/middleware";
  * A simple object that allows chaining middleware
  * handlers to an ordinary next api request.
  */
-export class RequestMiddlewareChain {
+export class NextRequestMiddlewareChain {
     private handlers: ApiMiddleware[];
     private controller: NextApiHandler;
     private next: ApiMiddleware | null = null;
@@ -15,7 +15,7 @@ export class RequestMiddlewareChain {
         this.controller = controller;
     }
 
-    use(handler: ApiMiddleware): RequestMiddlewareChain {
+    use(handler: ApiMiddleware): NextRequestMiddlewareChain {
         this.handlers.push(handler);
         if(this.next === null && this.handlers.length === 1) {
             this.next = this.handlers.pop() as ApiMiddleware;
