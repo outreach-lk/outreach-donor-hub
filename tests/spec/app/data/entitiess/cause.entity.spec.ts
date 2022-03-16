@@ -32,7 +32,6 @@ describe("Creates Cause Entity and run CRUD methods on it", () => {
                 }} as EntityUpdatedDto<Auditable & Ownable & CauseDto>) )
         // mock delete on causerepo
         jest.spyOn(CauseRepo.prototype, 'delete')
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         .mockImplementation((_id:string)=>Promise.resolve({
             data: {
                 isDeleted: true,

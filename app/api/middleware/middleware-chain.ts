@@ -4,6 +4,7 @@ import { ApiMiddleware } from "../../types/middleware";
 /**
  * A simple object that allows chaining middleware
  * handlers to an ordinary next api request.
+ * @kulathilake
  */
 export class NextRequestMiddlewareChain {
     private handlers: ApiMiddleware[];
@@ -24,6 +25,7 @@ export class NextRequestMiddlewareChain {
     }
 
     call(req: NextApiRequest, res: NextApiResponse ) {
+        if(res.headersSent) return;
         this.handlers.reverse();
         if(this.next){
             this.next(req,res,()=>{
@@ -32,7 +34,7 @@ export class NextRequestMiddlewareChain {
                 } else {
                     this.next = null;
                 }
-                this.call(req,res);
+                this.call(req,res)
             })
         } else {
             return this.controller( req, res);
