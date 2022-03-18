@@ -3,7 +3,9 @@ import { NextApiHandler, NextApiRequest, NextApiResponse } from "next/types";
 export type ApiMiddleware = (
     req: NextApiRequest, 
     res: NextApiResponse, 
-    next: CallNextHandler ) => void | Promise<void>
+    next: CallNextHandler,
+    error?: any
+    ) => void | Promise<void>
 
 
-export type CallNextHandler = ()=>void;
+export type CallNextHandler = (error?:any)=>void;

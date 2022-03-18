@@ -24,20 +24,30 @@ export class NextRequestMiddlewareChain {
         return this;
     }
 
-    call(req: NextApiRequest, res: NextApiResponse ) {
+    private onError(error:any){
+
+    }
+
+    call(req: NextApiRequest, res: NextApiResponse,error?:any) {
         if(res.headersSent) return;
         this.handlers.reverse();
+        return new Promise((resolve,reject)=>{
         if(this.next){
-            this.next(req,res,()=>{
-                if(this.handlers.length){
-                    this.next = this.handlers.pop() as ApiMiddleware;
-                } else {
-                    this.next = null;
-                }
-                this.call(req,res)
-            })
-        } else {
-            return this.controller( req, res);
-        }
+                this.next(req,res,(error?:any)=>{
+                    if(this.handlers.length){
+                        this.next = this.handlers.pop() as ApiMiddleware;
+                    } else {
+                        this.next = null;
+                    }
+                    if(error){
+                        resolve( this.call(req,res,error) );
+                    }else{
+                        resolve(this.call(req,res));
+                    }
+                })
+            } else {
+                resolve(this.controller( req, res));
+            }
+        })
     }
 }
