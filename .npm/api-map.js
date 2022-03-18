@@ -56,7 +56,7 @@ function scan(root,paths = []){
             const responseTypeRegex = new RegExp("NextApiResponse<.*?>")
             const responseType = file.match(responseTypeRegex);
             const handlerDesc = {
-                path: `${String(root).replace('pages/','')}/${String(curr).slice(0,-3)}`,
+                path: `${String(root).replace('pages/','/')}/${String(curr).slice(0,-3)}`,
                 responseType: responseType?`${responseType[0]}`:null,
                 request: {
                     body: {}
