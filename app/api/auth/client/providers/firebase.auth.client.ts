@@ -50,12 +50,12 @@ export default class FirebaseAuthClient implements IAuthClient {
   }
   listenToAuthChanges( ): Observable<LocalSession | null> {
       return new Observable( subscriber => {
-        onAuthStateChanged( this.auth, async(user)=>{
+        onAuthStateChanged( this.auth, (user)=>{
           if( user ){
             const session = this.retrieveSession();
             if (session) {
               subscriber.next( {
-                accessToken: await user.getIdToken(),
+                accessToken: this.accessToken,
                 refreshToken: user.refreshToken,
                 sessionId: session.sessionId,
                 user: session.user,

@@ -4,6 +4,8 @@ import { CauseDto } from "../../../../../app/types/dtos/cause.dtos";
 import { EntityUpdatedDto } from "../../../../../app/types/dtos/server-message.dtos";
 import { Auditable } from "../../../../../app/types/auditable";
 import { Ownable } from "../../../../../app/types/ownable";
+jest.mock('../../../../../app/data/repos/base.repo');
+
 const cause:Cause = new Cause({
     id: "hello",
     title: 'Sample Cause',
