@@ -10,12 +10,13 @@ import { ServerError } from "./server-message.dtos";
 import { EntityCreatedDto } from "./server-message.dtos";
 import { EntityUpdatedDto } from "./server-message.dtos";
 import Donation from "../../data/entities/donation.entity";
+import { DonationDto } from "./donation.dtos";
 
 export type CauseDto = Ownable & {
     title: string,
     description: string,
     attachments: FileDto[],
-    donations: Donation[]
+    donations: DonationDto[]
 }
 
 export type CausePage = Pagable<CauseDto>

@@ -21,17 +21,17 @@ export default class Cause extends BaseEntity<Cause,CauseDto> implements ICauseA
     constructor(causeDto:AuditableCauseDto){
         super(CauseRepo.getRepo(),Cause.map2Dto,Cause.mapFromDto);
         this._id = causeDto.id;
-        this.owner = causeDto.owner?new User(causeDto.owner):undefined;
+        this.owner = causeDto.owner;
         this.title = causeDto.title
         this.description = causeDto.description
         this.attachments = causeDto?.attachments;
-        this.donations = causeDto.donations;
+        this.donations = causeDto.donations?.map(dto=> new Donation(dto));
         this.createdOn = causeDto.createdOn?causeDto.createdOn:null;
-        this.createdBy = causeDto.createdBy?new User(causeDto.createdBy):undefined;
+        this.createdBy = causeDto.createdBy
         this.updatedOn = causeDto.updatedOn;
-        this.updatedBy = causeDto.updatedBy? new User(causeDto.updatedBy):undefined;
+        this.updatedBy = causeDto.updatedBy;
         this.permissions = causeDto.permissions;
-        this.sharedWith = causeDto.sharedWith?.map(dto=>new User(dto));
+        this.sharedWith = causeDto.sharedWith;
     }
 
     $browser_UploadCauseAttachments(files: FileDto[]): Promise<[Auditable & FileDto]> {

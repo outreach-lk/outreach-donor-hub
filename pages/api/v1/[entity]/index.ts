@@ -5,14 +5,9 @@
  */
 
 import { NextApiRequest, NextApiResponse } from "next";
-import { withCustomMiddleware } from "../../../../app/api/middleware/wrapper";
-import CauseRepo from "../../../../app/data/repos/cause.repo";
-import DonationRepo from "../../../../app/data/repos/donation.repo";
 import { getRepoFromEntityName } from "../../../../app/data/repos/name-repo-mapper";
-import UserRepo from "../../../../app/data/repos/user.repo";
-import { EntityCreatedDto, EntityFetchedDto, EntityFetchedPageDto } from "../../../../app/types/dtos/server-message.dtos";
+import { EntityCreatedDto, EntityFetchedPageDto } from "../../../../app/types/dtos/server-message.dtos";
 import ICRUDREPO from "../../../../app/types/interfaces/crud.repo.interface";
-import { IDatabaseService } from "../../../../app/types/interfaces/db.service.interface";
 import { createServerError, createServerMessage } from "../../../../app/utils/create-server-response";
 
 
@@ -40,6 +35,7 @@ export default function handler(
             res.status(407).send(createServerError(error, req));
         }
     } catch (error) {
+        console.log(error);
         res.status(500).send(createServerError(error as Error, req));
     }
 }

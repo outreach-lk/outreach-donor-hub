@@ -77,12 +77,12 @@ export default class User extends BaseEntity<User, UserDto> {
     user.verification = dto.verification || user.verification;
     user.role = dto.role || user.role;
     user.createdOn = dto.createdOn || user.createdOn;
-    user.createdBy = dto.createdBy ? new User(dto.createdBy) : user.createdBy;
+    user.createdBy = dto.createdBy || user.createdBy;
     user.updatedOn = dto.updatedOn || user.updatedOn;
-    user.updatedBy = dto.updatedBy ? new User(dto.updatedBy) : user.updatedBy;
+    user.updatedBy = dto.updatedBy || user.updatedBy;
     user.isDeleted = dto.isDeleted || user.isDeleted;
     user.deletedOn = dto.deletedOn || user.deletedOn;
-    user.deletedBy = dto.deletedBy ? new User(dto.deletedBy) : user.deletedBy;
+    user.deletedBy = dto.deletedBy || user.deletedBy;
   }
 
   static async getUserByUid(uid:string): Promise<User>{

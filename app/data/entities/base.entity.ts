@@ -11,23 +11,22 @@ import { UserDto } from "../../types/dtos/user.dtos";
 import ICRUDREPO from "../../types/interfaces/crud.repo.interface";
 import { OwnablePermissions } from "../../types/ownable";
 import MultiEnv from "../multi.env";
-import User from "./user.entity";
 
 export default abstract class BaseEntity<E,D> extends MultiEnv {
     protected repo: ICRUDREPO<D>;
     protected mapper: (e:E)=>D;
     protected reverseMapper: (d:D, e:E)=>void;
     protected _id?: string;
-    owner?: User;
+    owner?: string;
     createdOn?: Date | null;
-    createdBy?: User;
+    createdBy?: string;
     updatedOn?: Date;
-    updatedBy?: User;
+    updatedBy?: string;
     permissions?: OwnablePermissions;
-    sharedWith?: User[];
+    sharedWith?: string[];
     isDeleted?: boolean;
     deletedOn?: Date;
-    deletedBy?: User;
+    deletedBy?: string;
 
     /**
      * 

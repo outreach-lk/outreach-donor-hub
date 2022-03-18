@@ -1,7 +1,6 @@
 import { Auditable } from "../auditable";
 import { EntityCreatedDto, EntityDeletedDto, EntityFetchedDto, EntityFetchedPageDto, EntityUpdatedDto } from "../dtos/server-message.dtos";
 import { Page } from "../pagable";
-import ICRUDREPO from "./crud.repo.interface";
 
 /**
  * Direct database access client for browsers where such access is allowed. (eg: Firestore)
@@ -17,7 +16,7 @@ export interface IDatabaseClient {
     /** Query Methods */
 
     /** Create Methods */
-    create<T>(data: T, entity: string, id: string): Promise<EntityCreatedDto<Auditable & T>>;
+    create<T>(data: T, entity: string, id?: string): Promise<EntityCreatedDto<Auditable & T>>;
 
     /** Update Methods */
     update<T>(identifier: string, sdata: T): Promise<EntityUpdatedDto<Auditable & T>>;

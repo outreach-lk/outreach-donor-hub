@@ -12,6 +12,8 @@ import { FileDto } from "../../types/dtos/remote-file.dtos";
 import { EntityFetchedDto, EntityFetchedPageDto, EntityCreatedDto, EntityUpdatedDto, EntityDeletedDto } from "../../types/dtos/server-message.dtos";
 import { DatabaseProvider } from "../../types/enums/providers";
 import ICRUDREPO from "../../types/interfaces/crud.repo.interface";
+import { IDatabaseClient } from "../../types/interfaces/db.client.interface";
+import { IDatabaseService } from "../../types/interfaces/db.service.interface";
 import { Ownable } from "../../types/ownable";
 import { Page } from "../../types/pagable";
 import BaseRepo from "./base.repo";
@@ -22,6 +24,7 @@ import BaseRepo from "./base.repo";
  */
 export default class CauseRepo extends BaseRepo implements ICRUDREPO<CauseDto>{
     private static _instance:CauseRepo | null;
+    private entity = 'cause'
     
     constructor(){
         super( DatabaseProvider.FIREBASE );
@@ -36,7 +39,16 @@ export default class CauseRepo extends BaseRepo implements ICRUDREPO<CauseDto>{
         throw new Error("Method not implemented.");
     }
     create(data: CauseDto): Promise<EntityCreatedDto<Auditable & Ownable & CauseDto>> {
-        throw new Error("Method not implemented.");
+        if (this.isBrowser) {
+            return (this.db as IDatabaseClient).create<CauseDto>(
+              {
+                ...data,
+              },
+              this.entity,
+            );
+          } else {
+            return (this.db as IDatabaseService).save(data, this.entity);
+          }
     }
     update(identifier: string, data: CauseDto): Promise<EntityUpdatedDto<Auditable & Ownable & CauseDto>> {
         return Promise.resolve({data} as EntityUpdatedDto<Auditable & Ownable & CauseDto>);

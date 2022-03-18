@@ -5,6 +5,7 @@ import { Page } from "../../../../types/pagable";
 import init from "../../../../libs/firebase.admin.sdk";
 import {Firestore} from 'firebase-admin/firestore'
 import { getDocPath } from "../../../../utils/firebase-utils";
+import { generateEntityId } from "../../../../utils/generate-ids";
 export default class FirebaseDatabaseService implements IDatabaseService{
     private serverPrivateKey: string;
     private firestore: Firestore;
@@ -40,7 +41,20 @@ export default class FirebaseDatabaseService implements IDatabaseService{
         throw new Error("Method not implemented.");
     }
     save<T>(data: T, entity: string, id?: string): Promise<EntityCreatedDto<Auditable & T>> {
-        throw new Error("Method not implemented.");
+        if(!id) id = generateEntityId(entity);
+        return this.firestore.collection(entity).doc(id).create(data)
+        .then(()=>{
+            return {
+                method: 'n/a',
+                serverTime: new Date(),
+                path: 'n/a',
+                wasRequestAuthorized: true,
+                data: data
+            } as EntityCreatedDto<Auditable & T>
+        })
+        .catch(error => {
+            throw new Error('Error Running Save on db')
+        } )
     }
     update<T>(identifier: string, data: T, entity: string): Promise<EntityUpdatedDto<Auditable & T>> {
         throw new Error("Method not implemented.");

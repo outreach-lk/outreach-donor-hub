@@ -4,7 +4,7 @@ import BaseServiceFactory from "../../base.service.factory";
 import FirebaseDatabaseService from "./providers/firebase.db.service";
 
 
-export default class DatabaseServiceFactory extends BaseServiceFactory<IDatabaseService, DatabaseProvider>{
+export class DatabaseServiceFactory extends BaseServiceFactory<IDatabaseService, DatabaseProvider>{
     protected createService(serverPrivateKey: string, provider?: DatabaseProvider): IDatabaseService {
         if(this.isNode){
             switch(provider){
@@ -16,5 +16,6 @@ export default class DatabaseServiceFactory extends BaseServiceFactory<IDatabase
             return ({} as IDatabaseService);
         }
     }
-
 }
+
+export default new DatabaseServiceFactory();

@@ -14,7 +14,7 @@ import ClaimEvidence from "../../data/entities/claim-evidence";
 import { DonationStatus } from "../enums/status";
 
 export type DonationDto = Ownable & {
-    cause: Cause
+    cause: string
     amount: number
     note: string
     evidence: ClaimEvidence[]

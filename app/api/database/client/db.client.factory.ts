@@ -3,7 +3,7 @@ import { IDatabaseClient } from "../../../types/interfaces/db.client.interface";
 import BaseClientFactory from "../../base.client.factory";
 import FirebaseDatabseClient from "./providers/firebase.db.client";
 
-export class DatabaseClientFactory<E,D> extends BaseClientFactory<IDatabaseClient,DatabaseProvider>{
+export class DatabaseClientFactory extends BaseClientFactory<IDatabaseClient,DatabaseProvider>{
     protected createClient(provider?: any): IDatabaseClient {
         switch (provider){
             default:
@@ -13,3 +13,5 @@ export class DatabaseClientFactory<E,D> extends BaseClientFactory<IDatabaseClien
     }
 
 }
+
+export default new DatabaseClientFactory();
