@@ -1,3 +1,4 @@
+
 import { ChakraProvider } from '@chakra-ui/react'
 import { AppProps } from 'next/app'
 import { AuthProvider } from '../app/context/auth.context'

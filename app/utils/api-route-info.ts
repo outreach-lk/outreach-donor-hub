@@ -1,6 +1,6 @@
 import { UserRole } from '../types/dtos/user.dtos';
 import { AccessPerms } from '../types/ownable';
-;
+
 /**
  * Returns the basic information about an api route from the path.
  * @param path 

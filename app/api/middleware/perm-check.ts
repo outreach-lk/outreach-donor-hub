@@ -39,11 +39,11 @@ export async function permissionCheck(req: NextApiRequest, res: NextApiResponse,
          */
         if (isEntity && entitySignature) {
             const data = await fetchEntityFromSignature(entitySignature);
-            let isOwner: boolean = false;
-            let isSharedWith: boolean = false;
-            let hasAccessPerm: boolean = false;
-            let isAdmin = user?.role === UserRole.ADMIN;
-            let isMod = user?.role === UserRole.MODERATOR;
+            let isOwner = false;
+            let isSharedWith = false;
+            let hasAccessPerm = false;
+            const isAdmin = user?.role === UserRole.ADMIN;
+            const isMod = user?.role === UserRole.MODERATOR;
             /**
              * If the current request is authenticated,
              * continue with the checks. If not,

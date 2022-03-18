@@ -1,4 +1,7 @@
-import axios from "axios";
+/* eslint-disable @typescript-eslint/unbound-method */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-floating-promises */
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { NextRequestMiddlewareChain } from "../../../../../app/api/middleware/middleware-chain"
 import { ApiMiddleware, CallNextHandler } from "../../../../../app/types/middleware";
@@ -18,18 +21,18 @@ function middleware2(req:NextApiRequest ,res: NextApiResponse,next: CallNextHand
     console.log('middleware2')
     req.body = {middleware: 'middleware2'};
     next();
-};
-async function middleware3(req:NextApiRequest ,res: NextApiResponse,next: CallNextHandler){
+}
+function middleware3(req:NextApiRequest ,res: NextApiResponse,next: CallNextHandler){
     console.log('middleware3')
     req.body = {middleware: 'middleware3'};
     setTimeout(()=>{
         next();
     },100)
-};
+}
 
 describe('Middleware Chain', ()=>{
     beforeEach(()=>{
-        handler = (req,res)=>{}
+        handler = (req,res)=>{res.send('')}
         chain = new NextRequestMiddlewareChain( handler );
         jest.spyOn((chain as any).handlers, 'pop');
     });
@@ -56,7 +59,7 @@ describe('Middleware Chain', ()=>{
 describe('call',()=>{
     beforeEach(()=>{
         handler = jest.fn((req,res)=>{
-
+            res.send('')
         })
         chain = new NextRequestMiddlewareChain( handler );
         req = new MockNextReq();
@@ -100,7 +103,7 @@ describe('call',()=>{
     })
     it('should call the handler with latest modified request when n middleware are added', ()=>{
         chain.use( middleware1 ).use( middleware2 )
-        chain.call(req,res);
+        void chain.call(req,res);
         expect( handler ).toHaveBeenCalledWith({
             ...req,
             body: {middleware: 'middleware2'}
@@ -126,7 +129,7 @@ describe('call',()=>{
             }
         }
         
-        chain.use( middleware1 ).use( failingMiddleware ).use( errorHandlingMiddleware ).call(req,res);
+        void chain.use( middleware1 ).use( failingMiddleware ).use( errorHandlingMiddleware ).call(req,res);
         expect( chain.call ).toHaveBeenCalledWith(req,res,error);
         expect( handler ).not.toHaveBeenCalled();
     })

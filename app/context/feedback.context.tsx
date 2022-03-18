@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/ban-types */
+/* eslint-disable @typescript-eslint/no-empty-function */
 import { createContext, PropsWithChildren, useEffect, useState } from "react";
 import { useToast } from '@chakra-ui/react'
 

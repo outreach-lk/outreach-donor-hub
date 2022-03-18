@@ -2,7 +2,7 @@
   "v1": {
     "root": "./api/v1",
     "auth": {
-      "root": "api/v1/auth",
+      "root": "/api/v1/auth",
       "sign-up": {
         "root": "api/v1/auth/sign-up",
         "index": {
@@ -28,18 +28,18 @@
         }
       },
       "login": {
-        "root": "api/v1/auth/login",
+        "root": "/api/v1/auth/login",
         "index": {
-          "path": "api/v1/auth/login/index",
+          "path": "/api/v1/auth/login/index",
           "responseType": "NextApiResponse<ServerMessageDto<SessionDto | Error>",
           "request": {
             "body": {}
           }
         },
         "firebase": {
-          "root": "api/v1/auth/login/firebase",
+          "root": "/api/v1/auth/login/firebase",
           "custom-token": {
-            "path": "api/v1/auth/login/firebase/custom-token",
+            "path": "/api/v1/auth/login/firebase/custom-token",
             "responseType": "NextApiResponse<ServerMessageDto<SessionDto | Error>",
             "request": {
               "body": {}
@@ -47,7 +47,7 @@
           }
         },
         "federated": {
-          "path": "api/v1/auth/login/federated",
+          "path": "/api/v1/auth/login/federated",
           "responseType": "NextApiResponse<ServerMessageDto<SessionDto | Error>",
           "request": {
             "body": {}
@@ -56,18 +56,18 @@
       }
     },
     "[entity]": {
-      "root": "api/v1/[entity]",
+      "root": "/api/v1/[entity]",
       "index": {
-        "path": "api/v1/[entity]/index",
+        "path": "/api/v1/[entity]/index",
         "responseType": null,
         "request": {
           "body": {}
         }
       },
       "[id]": {
-        "root": "api/v1/[entity]/[id]",
+        "root": "/api/v1/[entity]/[id]",
         "index": {
-          "path": "api/v1/[entity]/[id]/index",
+          "path": "/api/v1/[entity]/[id]/index",
           "responseType": null,
           "request": {
             "body": {}

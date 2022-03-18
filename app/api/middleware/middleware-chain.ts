@@ -24,16 +24,13 @@ export class NextRequestMiddlewareChain {
         return this;
     }
 
-    private onError(error:any){
-
-    }
-
-    call(req: NextApiRequest, res: NextApiResponse,error?:any) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    call(req: NextApiRequest, res: NextApiResponse,_error?:Error|unknown) {
         if(res.headersSent) return;
         this.handlers.reverse();
-        return new Promise((resolve,reject)=>{
+        return new Promise((resolve)=>{
         if(this.next){
-                this.next(req,res,(error?:any)=>{
+                void this.next(req,res,(error?)=>{
                     if(this.handlers.length){
                         this.next = this.handlers.pop() as ApiMiddleware;
                     } else {
@@ -42,11 +39,11 @@ export class NextRequestMiddlewareChain {
                     if(error){
                         resolve( this.call(req,res,error) );
                     }else{
-                        resolve(this.call(req,res));
+                        resolve( this.call(req,res));
                     }
                 })
             } else {
-                resolve(this.controller( req, res));
+                resolve( this.controller( req, res) );
             }
         })
     }

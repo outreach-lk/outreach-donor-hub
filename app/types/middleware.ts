@@ -1,4 +1,4 @@
-import { NextApiHandler, NextApiRequest, NextApiResponse } from "next/types";
+import { NextApiRequest, NextApiResponse } from "next/types";
 
 export type ApiMiddleware = (
     req: NextApiRequest, 

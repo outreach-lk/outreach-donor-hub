@@ -21,7 +21,7 @@ import BaseRepo from "./base.repo";
  */
 export default class UserRepo extends BaseRepo implements ICRUDREPO<UserDto> {
   private static _instance: UserRepo | null;
-  private entity: string = "user";
+  private entity = "user";
 
   constructor() {
     super(DatabaseProvider.FIREBASE);

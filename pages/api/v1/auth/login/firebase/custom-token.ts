@@ -20,7 +20,7 @@ export default function handler(
   res: NextApiResponse<ServerMessageDto<SessionDto | Error>>
 ) {
   if (req.method === "POST") {
-    (auth as FirebaseAuthService)
+    ( auth )
       .createSessionWithToken(req.headers.authorization as string)
       .then((session) =>
         res.send(createServerMessage<SessionDto>(session, req))
