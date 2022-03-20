@@ -7,6 +7,9 @@ export const devConfig: AppConfig = {
     laguages: ['en','si','tam'],
     version: "1.0.0b",
     routes: [
+        /**
+         * Client Side Routes
+         */
         {
             id: 'test',
             path: '/test',
@@ -38,6 +41,9 @@ export const devConfig: AppConfig = {
             isProtected: true,
             allowedRoles: [ UserRole.ADMIN, UserRole.MODERATOR ],
         },
+        /**
+         * API Routes
+         */
         {
             id: 'api-cause-fetch-page',
             path: '/api/v1/cause',
