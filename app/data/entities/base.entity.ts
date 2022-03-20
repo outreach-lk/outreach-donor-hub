@@ -15,7 +15,6 @@ import MultiEnv from "../multi.env";
 export default abstract class BaseEntity<E,D> extends MultiEnv {
     protected repo: ICRUDREPO<D>;
     protected mapper: (e:E)=>D;
-    protected reverseMapper: (d:D, e:E)=>void;
     protected _id?: string;
     owner?: string;
     createdOn?: Date | null;
@@ -35,11 +34,10 @@ export default abstract class BaseEntity<E,D> extends MultiEnv {
      * @param reverseMapper dto to entity mapper
      * @param id serverside identity of the entity
      */
-    constructor(repo:ICRUDREPO<D>,mapper:(e: E)=>D,reverseMapper:(d:D,e:E)=>void){
+    constructor(repo:ICRUDREPO<D>,mapper:(e: E)=>D){
         super();
         this.repo = repo;
         this.mapper = mapper;
-        this.reverseMapper = reverseMapper;
     }
     public get id():string|undefined{
         return this._id;
@@ -47,6 +45,13 @@ export default abstract class BaseEntity<E,D> extends MultiEnv {
     protected set id(id:string|undefined){
         this._id = id;
     }
+
+    /**
+     * Updates an existing entity instance with a dto.
+     * @param d 
+     * @param e 
+     */
+    abstract mapInstanceToDto(dto: Auditable & D, entity:E):void
 
     /**
      * Persists the current entity in the database as a new entity.
@@ -60,7 +65,7 @@ export default abstract class BaseEntity<E,D> extends MultiEnv {
                const createRes = this.repo.create(this.mapper(this as unknown as E));
             //  updates current entity instance.
                void createRes
-               .then(res => this.reverseMapper(res.data as D,this as unknown as E));
+               .then(res => this.mapInstanceToDto(res.data as D,this as unknown as E));
                return createRes; 
            }
        } catch (error) {
@@ -78,7 +83,7 @@ export default abstract class BaseEntity<E,D> extends MultiEnv {
                 const updateRes = this.repo.update(this._id,d||this.mapper(this as unknown as E))
         //  updates current entity instance.        
                 void updateRes
-                .then(res => this.reverseMapper(res.data as D,this as unknown as E))
+                .then(res => this.mapInstanceToDto(res.data as D,this as unknown as E))
                 return updateRes;
             }else{
                 throw new Error('invalid_identifier');
@@ -94,7 +99,7 @@ export default abstract class BaseEntity<E,D> extends MultiEnv {
             if(this.id){
                 const deleteRes = this.repo.delete(this.id);
                 void deleteRes
-                .then(res => this.reverseMapper(res.data as D,this as unknown as E))
+                .then(res => this.mapInstanceToDto(res.data as D,this as unknown as E))
                 return deleteRes;
             }else{
                 throw new Error("invalid_identifier");
@@ -103,6 +108,7 @@ export default abstract class BaseEntity<E,D> extends MultiEnv {
             throw new Error();
         }
     }
+
 
     /** CRUD Methods */
     
@@ -126,6 +132,5 @@ export default abstract class BaseEntity<E,D> extends MultiEnv {
             throw new Error();
         }
     }
-
 
 }

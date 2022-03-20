@@ -9,15 +9,15 @@ import { Ownable } from "../ownable";
 import { ServerError } from "./server-message.dtos";
 import { EntityCreatedDto } from "./server-message.dtos";
 import { EntityUpdatedDto } from "./server-message.dtos";
-import Cause from "../../data/entities/cause.entity";
-import ClaimEvidence from "../../data/entities/claim-evidence";
 import { DonationStatus } from "../enums/status";
+import { CauseDto } from "./cause.dtos";
+import { ClaimEvidenceDto } from "./claim-evidence";
 
 export type DonationDto = Ownable & {
-    cause: string
+    cause: CauseDto
     amount: number
     note: string
-    evidence: ClaimEvidence[]
+    evidence: ClaimEvidenceDto[]
     status: DonationStatus
 }
 

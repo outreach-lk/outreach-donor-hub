@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/unbound-method */
 /**
  * Cross Environment Data Access Object for Causes
 **/
@@ -10,16 +11,16 @@ import { Page } from "../../types/pagable";
 import CauseRepo from "../repos/cause.repo";
 import BaseEntity from "./base.entity";
 import { ICauseActions } from "../../types/interfaces/cause.entity.interface";
-import User from "./user.entity";
 import Donation from "./donation.entity";
 
 export default class Cause extends BaseEntity<Cause,CauseDto> implements ICauseActions{
+
     title: string;
     description: string;
     attachments: FileDto[]; // TODO: Convert to File Objects
     donations: Donation[]; //TODO: 1.Create Donations 2. Should this rather be a Pagable of type Donation?
     constructor(causeDto:AuditableCauseDto){
-        super(CauseRepo.getRepo(),Cause.map2Dto,Cause.mapFromDto);
+        super(CauseRepo.getRepo(),Cause.map2Dto);
         this._id = causeDto.id;
         this.owner = causeDto.owner;
         this.title = causeDto.title
@@ -91,34 +92,29 @@ export default class Cause extends BaseEntity<Cause,CauseDto> implements ICauseA
             title: cause.title,
             description: cause.description,
             attachments: cause.attachments,
-            donations: cause.donations,
+            donations: cause.donations? cause.donations.map(don=>Donation.map2Dto(don)):[],
             owner: cause.owner, // TODO: Map User to UserDTO
             permissions: cause.permissions,
             sharedWith: cause.sharedWith // Map Cause to CauseDTO
         } as CauseDto
     }
 
-    /**
-     * Maps a dto to an instance 
-     * @param dto 
-     * @param cause 
-     */
-    static mapFromDto(dto: Auditable & CauseDto,cause: Cause):void{
+    mapInstanceToDto(dto: Auditable & CauseDto, cause: Cause): void {
         cause.id = dto.id || cause.id;
         cause.title = dto.title || cause.title;
         cause.description = dto.description || cause.description;
         cause.attachments = dto.attachments || cause.attachments;
-        cause.donations = dto.donations || cause.donations;
-        cause.owner = dto.owner? new User(dto.owner): cause.owner
+        cause.donations = dto.donations? dto.donations.map(d=>new Donation(d)): cause.donations;
+        cause.owner = dto.owner || cause.owner
         cause.createdOn = dto.createdOn || cause.createdOn;
-        cause.createdBy = dto.createdBy? new User(dto.createdBy): cause.createdBy;
+        cause.createdBy = dto.createdBy || cause.createdBy;
         cause.updatedOn = dto.updatedOn || cause.updatedOn;
-        cause.updatedBy = dto.updatedBy? new User(dto.updatedBy): cause.updatedBy;
+        cause.updatedBy = dto.updatedBy || cause.updatedBy;
         cause.isDeleted = dto.isDeleted || cause.isDeleted;
         cause.deletedOn =  dto.deletedOn || cause.deletedOn;
-        cause.deletedBy = dto.deletedBy? new User(dto.deletedBy): cause.deletedBy;
+        cause.deletedBy = dto.deletedBy || cause.deletedBy;
         cause.permissions = dto.permissions || cause.permissions;
-        cause.sharedWith = dto.sharedWith? dto.sharedWith?.map(dto=>new User(dto)): cause.sharedWith;
+        cause.sharedWith = dto.sharedWith || cause.sharedWith;
     }
 
 } 
