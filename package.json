@@ -6,7 +6,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest",
+    "test": "jest --coverage",
     "nextful": "node .npm/nextful",
     "next-env-gen": "node .npm/env-gen",
     "next-api-map": "node .npm/api-map"
