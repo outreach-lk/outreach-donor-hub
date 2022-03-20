@@ -7,7 +7,7 @@ import { Pagable } from "../pagable";
 export type ServerMessageDto<T> = {
   path: string;
   method: string;
-  wasRequestAuthorized: boolean;
+  authorizationPresent: boolean;
   serverTime: Date;
   message?: string;
   code?: number | string;

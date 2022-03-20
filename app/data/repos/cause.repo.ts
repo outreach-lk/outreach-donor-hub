@@ -35,11 +35,16 @@ export default class CauseRepo extends BaseRepo implements ICRUDREPO<CauseDto>{
     getAll(): Promise<EntityFetchedPageDto<Auditable & CauseDto[]>> {
         throw new Error("Method not implemented.");
     }
-    getPage(page: Page<CauseDto>): Promise<EntityFetchedPageDto<Auditable & Ownable & CauseDto>> {
-        throw new Error("Method not implemented.");
+    getPage(page: Page): Promise<EntityFetchedPageDto<Auditable & Ownable & CauseDto>> {
+        if(this.isBrowser){
+            throw new Error("Method not Implemented.");
+        }else {
+            return (this.db as IDatabaseService).findPage(page,this.entity);
+        }
     }
     create(data: CauseDto): Promise<EntityCreatedDto<Auditable & Ownable & CauseDto>> {
         if (this.isBrowser) {
+            // FIXME: Call the API instead
             return (this.db as IDatabaseClient).create<CauseDto>(
               {
                 ...data,

@@ -10,7 +10,7 @@ export default interface ICRUDREPO<T> {
     /** Get Methods */
     get(identifier: string): Promise<EntityFetchedDto<Auditable&T>>;
     getAll(): Promise<EntityFetchedPageDto<Auditable & T[]>>;
-    getPage(page: Page<T>): Promise<EntityFetchedPageDto<Auditable & T>>;
+    getPage(page: Page): Promise<EntityFetchedPageDto<Auditable & T>>;
     
     /** Query Methods */
 

@@ -10,6 +10,9 @@ export default class MockAuthService implements IAuthService {
   constructor(pvtkey: string) {
     this.serverPrivateKey = pvtkey;
   }
+  findUserByToken(token: string): Promise<User> {
+    throw new Error("Method not implemented.");
+  }
   isActionAllowed(
     path: string,
     method: string,

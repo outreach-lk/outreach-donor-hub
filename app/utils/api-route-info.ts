@@ -1,3 +1,5 @@
+import { NextApiRequest } from 'next';
+import { getConfig } from '../config';
 import { UserRole } from '../types/dtos/user.dtos';
 import { AccessPerms } from '../types/ownable';
 
@@ -6,11 +8,28 @@ import { AccessPerms } from '../types/ownable';
  * @param path 
  * @returns 
  */
-export function getRouteInfo(url:URL, method: string): ApiRouteInfo{
-    const path = url.pathname;
-    // TODO: Search for Route Info using path & method
-    return {
-    } as ApiRouteInfo
+export function getRouteInfo(req: NextApiRequest): ApiRouteInfo{
+    const _isEntity = req.query.entity && req.query.id;
+    const pathToMatch = _isEntity? `/api/v1/${req.query.entity as string}/:id`:req.url
+    const route = getConfig().routes.find(r => 
+        r.path.match(pathToMatch as string) &&
+        r.isApi === true &&
+        r.apiMethod === req.method
+        );
+    if(route){
+        return {
+            isEntity: route.isEntity,
+            isProtected: route.isProtected,
+            allowedRoles: route.allowedRoles,
+            path: route.path,
+            entitySignature: route.isEntity?{
+                entityType: req.query.entity,
+                entityId: req.query.id
+            }: null
+        } as ApiRouteInfo
+    } else {
+        throw new Error('invalid_path')
+    }
 }
 
 /**
@@ -60,17 +79,3 @@ export type EntitySignature = {
     entityId: string,
 }
 
-/**
- * TODO: Move to enum directory
- */
-export enum HTTPMethod {
-    CONNECT = 'CONNECT',
-    DELETE = 'DELETE',
-    GET = 'GET',
-    HEAD = 'HEAD',
-    OPTIONS = 'OPTIONS',
-    PATCH = 'PATCH',
-    POST = 'POST',
-    PUT = 'PUT',
-    TRACE = 'TRACE',
-}

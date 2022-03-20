@@ -3,9 +3,9 @@
  * @kulathilake
  */
 
-import ICRUDREPO from "../../types/interfaces/crud.repo.interface";
-import CauseRepo from "./cause.repo";
-import UserRepo from "./user.repo";
+import ICRUDREPO from "../types/interfaces/crud.repo.interface";
+import CauseRepo from "../data/repos/cause.repo";
+import UserRepo from "../data/repos/user.repo";
 
 export function getRepoFromEntityName(name: string): ICRUDREPO<any> {
     switch(name){

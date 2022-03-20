@@ -11,7 +11,10 @@ import { authServiceFactory } from "../api/services";
  * @version 1.0.0b uses Firebase as the Provider
  */
 export async function tokenInterceptor(req:NextApiRequest): Promise<User | null> {
-    const auth = authServiceFactory.getService( AuthProvider.FIREBASE );
+    const auth = authServiceFactory.getService( 
+        process.env.SERVER_PRIVATE_KEY as string,
+        AuthProvider.FIREBASE
+    );
     if( req.headers.authorization ){
         const token = req.headers.authorization;
         try {

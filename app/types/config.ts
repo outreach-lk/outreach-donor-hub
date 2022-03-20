@@ -3,13 +3,14 @@
  */
 
 import { UserRole } from "./dtos/user.dtos"
+import { HTTPMethod } from "./enums/api"
 import { Permissions } from "./enums/permissions"
 
 export type AppConfig = {
     title: string,
     laguages: string[],
     version: string,
-    routes: AppRoutes[]
+    routes: AppRoutes[],
 }
 
 export type AppRoutes = {
@@ -19,12 +20,15 @@ export type AppRoutes = {
     /**@default null no role check */
     allowedRoles?: UserRole[]
     /** 
-     * View Page of an Entity.
+     * A path to a single Entity.
+     * Not true for Entity Collections
      * Used to grant elevated access to the entity
      * */
     isEntity: boolean,
     /**
      * Required Permissions on an entity to view this path
      */
-    entityPerms?: Permissions[]
+    entityPerms?: Permissions[],
+    isApi?: boolean,
+    apiMethod?: HTTPMethod
 }

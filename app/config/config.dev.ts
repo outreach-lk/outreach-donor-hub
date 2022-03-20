@@ -1,5 +1,6 @@
 import { AppConfig } from "../types/config";
 import { UserRole } from "../types/dtos/user.dtos";
+import { HTTPMethod } from "../types/enums/api";
 
 export const devConfig: AppConfig = {
     title: "Outreach Donor Hub",
@@ -36,6 +37,32 @@ export const devConfig: AppConfig = {
             isEntity: false,
             isProtected: true,
             allowedRoles: [ UserRole.ADMIN, UserRole.MODERATOR ],
+        },
+        {
+            id: 'api-cause-fetch-page',
+            path: '/api/v1/cause',
+            isApi: true,
+            isEntity: false,
+            isProtected: false,
+            apiMethod: HTTPMethod.GET
+        },
+        {
+            id: 'api-cause-create-entity',
+            path: '/api/v1/cause',
+            isApi: true,
+            isEntity: true,
+            isProtected: true,
+            apiMethod: HTTPMethod.POST,
+            allowedRoles: [ UserRole.REGULAR, UserRole.ADMIN, UserRole.MODERATOR ]
+        },
+        {
+            id: 'api-cause-view-entity',
+            path: '/api/v1/cause/:id',
+            isApi: true,
+            isEntity: true,
+            isProtected: false,
+            apiMethod: HTTPMethod.GET,
+            allowedRoles: [ UserRole.REGULAR, UserRole.ADMIN, UserRole.MODERATOR, UserRole.GUEST ]
         }
     ]
 }

@@ -21,27 +21,22 @@ export default class FirebaseDatabseClient implements IDatabaseClient{
     getAll<T>(): Promise<EntityFetchedPageDto<Auditable & T[]>> {
         throw new Error("Method not implemented.");
     }
-    getPage<T>(page: Page<T>): Promise<EntityFetchedPageDto<Auditable & T>> {
+    getPage<T>(page: Page): Promise<EntityFetchedPageDto<Auditable & T>> {
         throw new Error("Method not implemented.");
     }
     create<T>(data: T, entity: string, id: string): Promise<EntityCreatedDto<Auditable & T>> {
-        try {
-            const document = doc(this.db, entity, id)
-            return setDoc( document, data)
-            .then(()=>{
-                return {
-                    method: 'n/a',
-                    path: 'n/a',
-                    serverTime: new Date(),
-                    wasRequestAuthorized: !!this.auth.currentUser,
-                    code: '201',
-                    data,
-                } as EntityCreatedDto<Auditable & T>;
-            })
-
-        } catch (error) {
-            throw error; //FIXME handle exception or throw meaningful error.
-        }
+        const document = doc(this.db, entity, id)
+        return setDoc( document, data)
+        .then(()=>{
+            return {
+                method: 'n/a',
+                path: 'n/a',
+                serverTime: new Date(),
+                authorizationPresent: !!this.auth.currentUser,
+                code: '201',
+                data,
+            } as EntityCreatedDto<Auditable & T>;
+        })
     }
     update<T>(identifier: string, sdata: T): Promise<EntityUpdatedDto<Auditable & T>> {
         throw new Error("Method not implemented.");
