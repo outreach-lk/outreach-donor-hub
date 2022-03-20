@@ -80,9 +80,14 @@ export default class ClaimEvidence extends BaseEntity<ClaimEvidence,ClaimEvidenc
      * @param ClaimEvidence 
      * @returns 
      */
-    static map2Dto(ClaimEvidence:ClaimEvidence):ClaimEvidenceDto {
+    static map2Dto(entity:ClaimEvidence):ClaimEvidenceDto {
         return {
-           
+           id: entity.id,
+           attachments: entity.attachments,
+           status: entity.status,
+           owner: entity.owner,
+           permissions: entity.permissions,
+           sharedWith: entity.sharedWith
         } as ClaimEvidenceDto
     }
 

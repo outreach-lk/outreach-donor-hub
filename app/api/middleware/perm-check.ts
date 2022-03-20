@@ -1,8 +1,8 @@
-import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
+import {  NextApiRequest, NextApiResponse } from "next";
 import { UserRole } from "../../types/dtos/user.dtos";
 import { getRouteInfo, isMethodAllowed } from "../../utils/api-route-info";
 import { createServerError } from "../../utils/create-server-response";
-import { fetchEntityFromSignature } from "../../data/entities/signature-entity-mapper";
+import { fetchEntityFromSignature } from "../../utils/signature-entity-mapper";
 import { tokenInterceptor } from "../../utils/token-interceptor";
 import { CallNextHandler } from "../../types/middleware";
 
@@ -50,10 +50,9 @@ export async function permissionCheck(req: NextApiRequest, res: NextApiResponse,
              * do not allow, as this is a protected api.
              */
             if (user) {
-                isOwner = (data.owner === user);
+                isOwner = (data.owner === user.uid);
                 if (data.sharedWith) {
-                    // FIXME: indexOf may not work properly
-                    isSharedWith = (data.sharedWith?.indexOf(user) > -1)
+                    isSharedWith = (data.sharedWith?.indexOf(user.uid) > -1)
                 }
                 if (data.permissions) {
                     if (isOwner) {

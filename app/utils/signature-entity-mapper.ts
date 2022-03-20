@@ -1,7 +1,7 @@
-import BaseEntity from "./base.entity";
-import Cause from "./cause.entity";
-import { EntitySignature } from "../../utils/api-route-info";
-import { CauseDto } from "../../types/dtos/cause.dtos";
+import BaseEntity from "../data/entities/base.entity";
+import Cause from "../data/entities/cause.entity";
+import { EntitySignature } from "./api-route-info";
+import { CauseDto } from "../types/dtos/cause.dtos";
 
 /**
  * Fetches an entity based on an entity signature object.

@@ -2,16 +2,15 @@
 * Defines dtos relevant to Donation
 */
 
-import { Auditable } from "../auditable";
-import { Pagable } from "../pagable";
-import { FileDto } from "./remote-file.dtos";
-import { Ownable } from "../ownable";
-import { ServerError } from "./server-message.dtos";
-import { EntityCreatedDto } from "./server-message.dtos";
-import { EntityUpdatedDto } from "./server-message.dtos";
-import { DonationStatus } from "../enums/status";
-import { CauseDto } from "./cause.dtos";
-import { ClaimEvidenceDto } from "./claim-evidence";
+import type { Auditable } from "../auditable";
+import type { Pagable } from "../pagable";
+import type { Ownable } from "../ownable";
+import type { ServerError } from "./server-message.dtos";
+import type { EntityCreatedDto } from "./server-message.dtos";
+import type { EntityUpdatedDto } from "./server-message.dtos";
+import type { DonationStatus } from "../enums/status";
+import type { CauseDto } from "./cause.dtos";
+import type { ClaimEvidenceDto } from "./claim-evidence";
 
 export type DonationDto = Ownable & {
     cause: CauseDto
