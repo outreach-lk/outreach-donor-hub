@@ -32,9 +32,21 @@ function handler(
             res.status(500).send(createServerError(error,req))
         })
     } else if (req.method === 'PUT') {
-        // TODO: Handle Update Entity
+        repo.update(id as string, req.body)
+        .then(data => {
+            res.status(200).send(createServerMessage(data,req));
+        })
+        .catch((error: Error) => {
+            res.status(500).send(createServerError(error,req));
+        })
     } else if (req.method === 'DELETE') {
-        // TODO: Handle Delete Entity
+        repo.delete(id as string)
+        .then(data => {
+            res.status(200).send(createServerMessage(data,req));
+        })
+        .catch((error: Error) => {
+            res.status(500).send(createServerError(error,req));
+        })
     } else {
         const error = new Error("invalid_method_error");
         res.status(407).send(createServerError(error, req));
