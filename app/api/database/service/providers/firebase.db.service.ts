@@ -95,10 +95,27 @@ export default class FirebaseDatabaseService implements IDatabaseService{
         } )
     }
     update<T>(identifier: string, data: T, entity: string): Promise<EntityUpdatedDto<Auditable & T>> {
-        throw new Error("Method not implemented.");
+        return this.firestore.doc(getDocPath(entity,identifier)).update(data)
+        .then(() => {
+            return {
+                method: 'firebase_db_service:save',
+                serverTime: new Date(),
+                path: 'n/a',
+                authorizationPresent: true,
+                data: {...data}
+            } as EntityUpdatedDto<Auditable & T>
+        })
     }
     delete<T>(identifier: string, entity: string): Promise<EntityDeletedDto<Auditable & T>> {
-        throw new Error("Method not implemented.");
+       return this.firestore.doc(getDocPath(entity,identifier)).delete()
+       .then(()=>{
+           return {
+            method: 'firebase_db_service:save',
+            serverTime: new Date(),
+            path: 'n/a',
+            authorizationPresent: true,
+           } as EntityDeletedDto<Auditable & T>
+       })
     }
     
 }
