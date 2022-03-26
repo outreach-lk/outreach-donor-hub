@@ -6,19 +6,25 @@ import init from "../../../../libs/firebase.admin.sdk";
 import {Firestore} from 'firebase-admin/firestore'
 import { getDocPath } from "../../../../utils/firebase-utils";
 import { generateEntityId } from "../../../../utils/generate-ids";
+import { AccessPerms, Ownable } from "../../../../types/ownable";
+import userEntity from "../../../../data/entities/user.entity";
 export default class FirebaseDatabaseService implements IDatabaseService{
     private serverPrivateKey: string;
     private firestore: Firestore;
+    authenticatedUser: userEntity | null;
+    
 
     constructor(key:string){
         this.serverPrivateKey = key;
         this.firestore = init().firestore();
+        this.authenticatedUser = null;
     }
 
     find<T>(identifier: string, entity: string): Promise<EntityFetchedDto<Auditable & T>> {
-        return this.firestore.doc( getDocPath(entity, identifier) ).get()
+        return this.firestore.doc( getDocPath(entity, identifier) )
+        .get()
         .then(doc => {
-            if(doc.exists){
+            if(doc.exists && !doc.data()?.isDeleted){
                 return {
                     method: 'firebase_db_service:find',
                     serverTime: new Date(),
@@ -30,10 +36,8 @@ export default class FirebaseDatabaseService implements IDatabaseService{
                 throw new Error ('Item Not Found')
             }
         })
-        .catch(error => {
-            throw new Error('Error Running Find on db')
-        })
     }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     findAll<T>(entity: string): Promise<EntityFetchedPageDto<Auditable & T[]>> {
         throw new Error("Method not implemented.");
     }
@@ -60,6 +64,7 @@ export default class FirebaseDatabaseService implements IDatabaseService{
             }
         }
         return query
+            .where('isDeleted','!=',true)
             .get()
             .then(data => {
                 return {
@@ -77,28 +82,50 @@ export default class FirebaseDatabaseService implements IDatabaseService{
     }
     save<T>(data: T, entity: string, id?: string): Promise<EntityCreatedDto<Auditable & T>> {
         if(!id) id = generateEntityId(entity);
+        if ((data as any).permissions) {
+            delete (data as any).permissions
+        }
         return this.firestore.collection(entity).doc(id).create({
             _id: id,
-            ...data
-        })
+            id,
+            ...data,
+            permissions: {
+                owner: [AccessPerms.MODIFY, AccessPerms.READ, AccessPerms.DELETE],
+                shared: [AccessPerms.READ, AccessPerms.MODIFY],
+                mods: [AccessPerms.MODIFY, AccessPerms.READ,],
+                admins: [AccessPerms.MODIFY, AccessPerms.READ, AccessPerms.DELETE]
+            },
+            createdOn: new Date(),
+            createdBy: this.authenticatedUser?.uid,
+            isDeleted: false,
+            owner: this.authenticatedUser?.uid,
+            sharedWith: [this.authenticatedUser?.uid]
+        } as Auditable & Ownable & T)
         .then(()=>{
             return {
                 method: 'firebase_db_service:save',
                 serverTime: new Date(),
                 path: 'n/a',
                 authorizationPresent: true,
-                data: data
+                data: {
+                    ...data,
+                    _id: id
+                }
             } as EntityCreatedDto<Auditable & T>
         })
-        .catch(error => {
-            throw new Error('Error Running Save on db')
-        } )
     }
     update<T>(identifier: string, data: T, entity: string): Promise<EntityUpdatedDto<Auditable & T>> {
-        return this.firestore.doc(getDocPath(entity,identifier)).update(data)
+        if ((data as any).permissions) {
+            delete (data as any).permissions
+        }
+        return this.firestore.doc(getDocPath(entity,identifier)).update({
+            ...data,
+            updatedBy: this.authenticatedUser?.uid,
+            updatedOn: new Date()
+        } as Auditable & Ownable & T)
         .then(() => {
             return {
-                method: 'firebase_db_service:save',
+                method: 'firebase_db_service:update',
                 serverTime: new Date(),
                 path: 'n/a',
                 authorizationPresent: true,
@@ -107,10 +134,14 @@ export default class FirebaseDatabaseService implements IDatabaseService{
         })
     }
     delete<T>(identifier: string, entity: string): Promise<EntityDeletedDto<Auditable & T>> {
-       return this.firestore.doc(getDocPath(entity,identifier)).delete()
+       return this.firestore.doc(getDocPath(entity,identifier)).update({
+           isDeleted: true,
+           deletedBy: this.authenticatedUser?.uid,
+           deletedOn: new Date()     
+       } as Auditable)
        .then(()=>{
            return {
-            method: 'firebase_db_service:save',
+            method: 'firebase_db_service:delete',
             serverTime: new Date(),
             path: 'n/a',
             authorizationPresent: true,

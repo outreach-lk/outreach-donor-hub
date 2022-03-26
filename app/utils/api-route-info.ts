@@ -59,7 +59,11 @@ export function isMethodAllowed( perms: AccessPerms[], method: string):boolean {
             default:
                 throw new Error('invalid_access_method');
         }
-    return perms.includes( accessType );
+    if(perms){
+        return perms.includes( accessType );
+    }else{
+        throw new Error('malformed_entity')
+    }
 }
 
 /**

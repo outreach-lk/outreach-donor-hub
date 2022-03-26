@@ -69,6 +69,24 @@ export const devConfig: AppConfig = {
             isProtected: false,
             apiMethod: HTTPMethod.GET,
             allowedRoles: [ UserRole.REGULAR, UserRole.ADMIN, UserRole.MODERATOR, UserRole.GUEST ]
-        }
+        },
+        {
+            id: 'api-cause-update-entity',
+            path: '/api/v1/cause/:id',
+            isApi: true,
+            isEntity: true,
+            isProtected: true,
+            apiMethod: HTTPMethod.PUT,
+            allowedRoles: [ UserRole.REGULAR, UserRole.ADMIN, UserRole.MODERATOR ]
+        },
+        {
+            id: 'api-cause-delete-entity',
+            path: '/api/v1/cause/:id',
+            isApi: true,
+            isEntity: true,
+            isProtected: true,
+            apiMethod: HTTPMethod.DELETE,
+            allowedRoles: [ UserRole.REGULAR, UserRole.ADMIN, UserRole.MODERATOR ]
+        },
     ]
 }

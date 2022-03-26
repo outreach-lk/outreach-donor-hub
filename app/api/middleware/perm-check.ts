@@ -6,6 +6,8 @@ import { fetchEntityFromSignature } from "../../utils/signature-entity-mapper";
 import { tokenInterceptor } from "../../utils/token-interceptor";
 import { CallNextHandler } from "../../types/middleware";
 import User from "../../data/entities/user.entity";
+import databaseServiceFactory from "../database/service/db.service.factory";
+import { DatabaseProvider } from "../../types/enums/providers";
 
 /**
  * Checks if access to 
@@ -20,7 +22,12 @@ export async function permissionCheck(req: NextApiRequest, res: NextApiResponse,
     try{
         user = await tokenInterceptor(req);
         const { isEntity, entitySignature, allowedRoles, isProtected } = getRouteInfo(req);
-        console.log(entitySignature);
+        /**
+         * Sets Database Service Authenticated User Property 
+         * for Auditing Purposes
+        */
+        if(user) databaseServiceFactory.getService( DatabaseProvider.FIREBASE ).authenticatedUser = user;
+        
         /**
          * Unless the route isProtected always set isAllowed to true.
          * If not, continue to the rest of the checks.
@@ -31,18 +38,17 @@ export async function permissionCheck(req: NextApiRequest, res: NextApiResponse,
              * that is in the allowed roles list
              */
             if (user && user.role) {
-                isAllowed = isAllowed && (allowedRoles.indexOf(user.role) > -1)
+                isAllowed = (allowedRoles.indexOf(user.role) > -1);
             } else {
                 isAllowed = false
             }
-    
             /**
              * If the route points to an entity, fetch the said entity's 
              * owner, permissions & sharedWith details.
              * TODO: Cache this Entity somewhere and prevent a second read 
              * in the actual handler.
              */
-            if (isEntity && entitySignature) {
+            if (isEntity && entitySignature && entitySignature.entityId) {
                 const data = await fetchEntityFromSignature(entitySignature);
                 let isOwner = false;
                 let isSharedWith = false;
@@ -55,18 +61,19 @@ export async function permissionCheck(req: NextApiRequest, res: NextApiResponse,
                  * do not allow, as this is a protected api.
                  */
                 if (user) {
-                    isOwner = (data.owner === user.uid);
+
+                    isOwner = (data.owner === user.uid && data.owner !== undefined);
                     if (data.sharedWith) {
                         isSharedWith = (data.sharedWith?.indexOf(user.uid) > -1)
                     }
                     if (data.permissions) {
                         if (isOwner) {
                             hasAccessPerm = isMethodAllowed(data.permissions.owner, req.method as string);
-                        } else if (isSharedWith) {
+                        } else if (!isOwner && isSharedWith) {
                             hasAccessPerm = isMethodAllowed(data.permissions.shared, req.method as string);
-                        } else if (isAdmin) {
+                        } else if (!isOwner && !isSharedWith && isAdmin) {
                             hasAccessPerm = isMethodAllowed(data.permissions.admins, req.method as string);
-                        } else if (isMod) {
+                        } else if (!isOwner && !isSharedWith && !isAdmin &&isMod) {
                             hasAccessPerm = isMethodAllowed(data.permissions.mods, req.method as string);
                         }
                     }

@@ -66,7 +66,6 @@ export default class FirebaseAuthService implements IAuthService {
         throw new Error("Invalid Token");
       }
     } catch (error) {
-      console.log(error);
       throw new Error("error fetching user from token");
     }
   }

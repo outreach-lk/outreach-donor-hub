@@ -8,7 +8,6 @@
 
 import { Auditable } from "../../types/auditable";
 import { CauseDto } from "../../types/dtos/cause.dtos";
-import { FileDto } from "../../types/dtos/remote-file.dtos";
 import { EntityFetchedDto, EntityFetchedPageDto, EntityCreatedDto, EntityUpdatedDto, EntityDeletedDto } from "../../types/dtos/server-message.dtos";
 import { DatabaseProvider } from "../../types/enums/providers";
 import ICRUDREPO from "../../types/interfaces/crud.repo.interface";
@@ -30,7 +29,11 @@ export default class CauseRepo extends BaseRepo implements ICRUDREPO<CauseDto>{
         super( DatabaseProvider.FIREBASE );
     }
     get(identifier: string): Promise<EntityFetchedDto<Auditable & Ownable & CauseDto>> {
-        throw new Error("Method not implemented.");
+        if(this.isBrowser){
+            throw new Error('Method not Implemented');
+        }else {
+            return (this.db as IDatabaseService).find(identifier,this.entity);
+        }
     }
     getAll(): Promise<EntityFetchedPageDto<Auditable & CauseDto[]>> {
         throw new Error("Method not implemented.");
@@ -56,10 +59,18 @@ export default class CauseRepo extends BaseRepo implements ICRUDREPO<CauseDto>{
           }
     }
     update(identifier: string, data: CauseDto): Promise<EntityUpdatedDto<Auditable & Ownable & CauseDto>> {
-        return Promise.resolve({data} as EntityUpdatedDto<Auditable & Ownable & CauseDto>);
+        if(this.isBrowser){
+            throw new Error('Method not implemented')
+        } else {
+            return (this.db as IDatabaseService).update(identifier,data,this.entity)
+        }
     }
     delete(identifier: string): Promise<EntityDeletedDto<Auditable & Ownable & CauseDto >> {
-        throw new Error("Method not implemented.");
+        if(this.isBrowser){
+            throw new Error('Method not implemented');
+        }else {
+            return (this.db as IDatabaseService).delete(identifier, this.entity);
+        }
     }
 
     /** Returns the repo instance. */
