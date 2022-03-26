@@ -11,7 +11,7 @@ export interface IDatabaseClient {
     /** Get Methods */
     get<T>(identifier: string, entity: string): Promise<EntityFetchedDto<Auditable&T>>;
     getAll<T>(): Promise<EntityFetchedPageDto<Auditable & T[]>>;
-    getPage<T>(page: Page): Promise<EntityFetchedPageDto<Auditable & T>>;
+    getPage<T>(page: Page, entity: string): Promise<EntityFetchedPageDto<Auditable & T>>;
     
     /** Query Methods */
 
@@ -19,9 +19,9 @@ export interface IDatabaseClient {
     create<T>(data: T, entity: string, id?: string): Promise<EntityCreatedDto<Auditable & T>>;
 
     /** Update Methods */
-    update<T>(identifier: string, sdata: T): Promise<EntityUpdatedDto<Auditable & T>>;
+    update<T>(identifier: string, sdata: T, entity: string): Promise<EntityUpdatedDto<Auditable & T>>;
 
     /** Delete Methods */
-    delete<T>(identifier: string): Promise<EntityDeletedDto<Auditable & T>>;
+    delete<T>(identifier: string, entity: string): Promise<EntityDeletedDto<Auditable & T>>;
     
 }
