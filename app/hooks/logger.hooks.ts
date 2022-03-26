@@ -4,9 +4,11 @@
  */
 
 export function useLogger(){
-
+    return {
+        log: console.log
+    }
 }
 
 export function useTelemetry(){
-
+    return {}
 }
