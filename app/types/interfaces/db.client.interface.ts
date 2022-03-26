@@ -9,9 +9,9 @@ import { Page } from "../pagable";
  */
 export interface IDatabaseClient {
     /** Get Methods */
-    get<T>(identifier: string): Promise<EntityFetchedDto<Auditable&T>>;
+    get<T>(identifier: string, entity: string): Promise<EntityFetchedDto<Auditable&T>>;
     getAll<T>(): Promise<EntityFetchedPageDto<Auditable & T[]>>;
-    getPage<T>(page: Page<T>): Promise<EntityFetchedPageDto<Auditable & T>>;
+    getPage<T>(page: Page): Promise<EntityFetchedPageDto<Auditable & T>>;
     
     /** Query Methods */
 

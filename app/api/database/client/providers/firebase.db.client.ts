@@ -15,7 +15,7 @@ export default class FirebaseDatabseClient implements IDatabaseClient{
         this.auth = getAuth(app);
     }
 
-    get<T>(identifier: string): Promise<EntityFetchedDto<Auditable & T>> {
+    get<T>(identifier: string, entity: string): Promise<EntityFetchedDto<Auditable & T>> {
         throw new Error("Method not implemented.");
     }
     getAll<T>(): Promise<EntityFetchedPageDto<Auditable & T[]>> {

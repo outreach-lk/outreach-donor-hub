@@ -28,7 +28,8 @@ export function useEntity(entity: string) {
                 show(error,{
                     type:"error",
                     title: `${entityDisplayName} Fetch Error`
-                })
+                });
+                throw error;
             })
         },
         fetchEntityPage: (page: Page)=>{
@@ -38,7 +39,8 @@ export function useEntity(entity: string) {
                 show(error.message as string,{
                     type: "error",
                     title: `${entityDisplayName} Fetch Error`
-                })
+                });
+                throw error;
             })
         },
         createEntity: <T>(data: T)=>{
@@ -48,7 +50,8 @@ export function useEntity(entity: string) {
                 show(error,{
                     type: 'error',
                     title: `${entityDisplayName} Create Error`
-                })
+                });
+                throw error;
             })
         },
         updateEntity: <T>(id:string, data:T)=>{
@@ -58,7 +61,9 @@ export function useEntity(entity: string) {
                 show(error,{
                     type:'error',
                     title: `${entityDisplayName} Update Error`
-                })
+                });
+                throw error;
+
             })
         },
         deleteEntity: (id: string)=>{
@@ -68,7 +73,8 @@ export function useEntity(entity: string) {
                 show(error,{
                     type:'error',
                     title: `${entityDisplayName} Delete Error`
-                })
+                });
+                throw error;
             })
         },
         checkEntityPerms: ()=> {

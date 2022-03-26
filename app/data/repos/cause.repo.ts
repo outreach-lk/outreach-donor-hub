@@ -6,6 +6,7 @@
  * Note: Actual data access may happen in methods implemented elsewhere.
 **/
 
+import axios from "axios";
 import { Auditable } from "../../types/auditable";
 import { CauseDto } from "../../types/dtos/cause.dtos";
 import { EntityFetchedDto, EntityFetchedPageDto, EntityCreatedDto, EntityUpdatedDto, EntityDeletedDto } from "../../types/dtos/server-message.dtos";
@@ -16,6 +17,7 @@ import { IDatabaseService } from "../../types/interfaces/db.service.interface";
 import { Ownable } from "../../types/ownable";
 import { Page } from "../../types/pagable";
 import BaseRepo from "./base.repo";
+import apiMap from '../../api/api-map.json';
 
 /**
  * Cause Data Access Repository
@@ -28,9 +30,12 @@ export default class CauseRepo extends BaseRepo implements ICRUDREPO<CauseDto>{
     constructor(){
         super( DatabaseProvider.FIREBASE );
     }
-    get(identifier: string): Promise<EntityFetchedDto<Auditable & Ownable & CauseDto>> {
+    async get(identifier: string): Promise<EntityFetchedDto<Auditable & Ownable & CauseDto>> {
         if(this.isBrowser){
-            throw new Error('Method not Implemented');
+            const path = apiMap.v1["[entity]"]["[id]"].root
+                .replace("[entity]",this.entity)
+                .replace("[id]",identifier)
+            return (await axios.get(path)).data as EntityFetchedDto< Auditable & Ownable & CauseDto>;
         }else {
             return (this.db as IDatabaseService).find(identifier,this.entity);
         }

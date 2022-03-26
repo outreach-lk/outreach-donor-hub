@@ -55,3 +55,8 @@ function handler(
 }
 
 export default withCustomMiddleware(handler);
+export const config = {
+    api: {
+      externalResolver: true
+    }
+  }
