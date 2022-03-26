@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 /**
  * Provides Authentication & Authorization Context for the Client App
  * Router Guard & Auth/Permission based redirection happen here.
@@ -62,7 +63,6 @@ export function AuthProvider<P>(props: PropsWithChildren<P>) {
     return () => {
       listenerSub.unsubscribe();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
 
   /**
@@ -97,7 +97,6 @@ export function AuthProvider<P>(props: PropsWithChildren<P>) {
         setShowContent(true);
     }
     //TODO: also check route related permissions here.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname, session.isAuthorized, checkingPersistedSession]);
 
   /**
@@ -115,7 +114,7 @@ export function AuthProvider<P>(props: PropsWithChildren<P>) {
           pathname: postSignInPath,
         });
       } else if ( session.isAuthorized && session.user ) {
-        if( session.user.role = UserRole.REGULAR ){
+        if( session.user.role === UserRole.REGULAR ){
           push({
             pathname: '/'
           })
@@ -126,7 +125,6 @@ export function AuthProvider<P>(props: PropsWithChildren<P>) {
         }
       }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [postSignInPath, session]);
 
   return (
@@ -136,7 +134,6 @@ export function AuthProvider<P>(props: PropsWithChildren<P>) {
         setSession,
       }}
     >
-      <button onClick={client.logout.bind(client)}>logout</button>
       {showContent ? props.children : <FullScreenLoader />}
     </Provider>
   );
