@@ -16,12 +16,16 @@ export function CauseActions() {
 
     >
       <Button 
-        backgroundColor={"purple"} 
-        color={"white"} 
+        colorScheme={"blue"}
         style={{marginRight:'10px'}}
         >Donate</Button>
-      <Button style={{marginRight:'10px'}}>Share</Button>
-      <Button>Report</Button>
+      <Button 
+      colorScheme={"linkedin"}
+      style={{marginRight:'10px'}}>
+          Share</Button>
+      <Button
+        colorScheme={"red"}
+      >Report</Button>
     </Box>
   );
 }
