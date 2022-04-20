@@ -23,6 +23,7 @@ export const Footer = () => (
     mx="0"
     py={"12"}
     px={{ base: "4", md: "8" }}
+    pb={"4"}
     bg={useColorModeValue("gray.100", "gray.900")}
   >
     <Stack>
@@ -32,7 +33,7 @@ export const Footer = () => (
         align="flex-start"
         justify="space-between"
       >
-         <Stack direction={"column"} align="center" >
+         <Stack direction={"column"} >
           <Wrap align={"center"}>
             <Logo /> <Heading size="lg">DonorHub</Heading>
           </Wrap>
@@ -82,9 +83,9 @@ export const Footer = () => (
         </Stack> */}
         <NewsLetterSubscribe />
       </Wrap>
-      <Box>
+      <Stack direction={"row"} justify="center">
             <Copyright alignSelf={{ base: "center", sm: "start" }} />
-          </Box>
+      </Stack>
     </Stack>
   </Box>
 );
