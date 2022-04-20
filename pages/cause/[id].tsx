@@ -81,10 +81,9 @@ export default function CausePage() {
                   <Heading size={'md'}>
                       Cause Activity
                   </Heading>
-                  <Timeline />
               </Box>
               {/* Similar Causes */}
-                <TimelineEvent/>
+                <Timeline/>
             </Container>
           </>
         );

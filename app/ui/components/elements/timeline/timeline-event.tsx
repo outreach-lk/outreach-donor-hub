@@ -9,15 +9,14 @@ export function TimelineEvent() {
     return <BellIcon/>
   }  
   return (
-    <Box>
       <Stack direction="row" h="100px" p={4}>
         <Avatar icon={getIcon()}/>
         <Divider orientation="vertical" />
         <Box>
         <Heading size={"sm"}>Created</Heading>
         <Text>23.02.2022</Text>
+        <Text>The VStack component is a component which is only facing the vertd a divider and vertical spacing between the items.</Text>
         </Box>
       </Stack>
-    </Box>
   );
 }
