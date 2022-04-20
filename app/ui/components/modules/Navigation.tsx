@@ -15,8 +15,12 @@ import {
   Stack,
   useColorMode,
   Center,
+  Text,
+  Wrap,
+  Heading
 } from '@chakra-ui/react';
 import { MoonIcon, SunIcon } from '@chakra-ui/icons';
+import { Logo } from '../elements/branding/Logo';
 
 const NavLink = ({ children }: { children: ReactNode }) => (
   <Link
@@ -37,9 +41,15 @@ export function Nav() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
-      <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
+      <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4} shadow="md" position={"sticky"}>
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
-          <Box>Logo</Box>
+            <Wrap align={"center"} spacing="20px">
+                <Logo/>
+                <Heading color="linkedin.700">
+                 DonorHub
+                </Heading>
+            </Wrap>
+
 
           <Flex alignItems={'center'}>
             <Stack direction={'row'} spacing={7}>

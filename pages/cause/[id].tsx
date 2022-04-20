@@ -77,13 +77,14 @@ export default function CausePage() {
                 display="flex"
                 flexDirection={{ base: "column", sm: "row" }}
                 justifyContent="space-between"      
+                flexWrap={"wrap"}
               >
-                  <Heading size={'md'}>
-                      Cause Activity
-                  </Heading>
+                <Heading size={'md'}>
+                    Cause Activity
+                </Heading>
+                <Timeline/>
               </Box>
               {/* Similar Causes */}
-                <Timeline/>
             </Container>
           </>
         );
