@@ -5,7 +5,9 @@
 import React, { useEffect, useState } from "react";
 import { useEntity } from "../../../../../hooks/entity";
 import { SingleEntityPageProps } from "../../../../../types/props/entity.props";
+import { Footer } from "../../../modules/Footer";
 import { FullScreenLoader } from "../../../modules/loader";
+import { Nav } from "../../../modules/Navigation";
 
 export function EntityPage<T>(props: SingleEntityPageProps<T>) {
     /**
@@ -39,7 +41,6 @@ export function EntityPage<T>(props: SingleEntityPageProps<T>) {
             fetchEntity(props.entity + '-' +props.id)
             .then( (d) => {
                 if(d && d.data && d.data.data){
-                    console.log(d.data.data)
                     setEntityData(d.data.data as T);
                 }else {
                     setEntityData(null);
@@ -56,7 +57,9 @@ export function EntityPage<T>(props: SingleEntityPageProps<T>) {
         return (
             /* Child components are responsible for showing entity data  */
             <>
+                <Nav/>
                {props.children(entityData) }
+               <Footer/>
             </>
         )
     }else if (error && !isLoading) {

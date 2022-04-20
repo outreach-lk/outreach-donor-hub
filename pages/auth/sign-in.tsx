@@ -16,11 +16,13 @@ import { Logo } from "../../app/ui/components/elements/branding/Logo";
 import { SignInCard } from "../../app/ui/components/modules/auth/signin.module";
 import { Footer } from "../../app/ui/components/modules/Footer";
 import Link from "next/link";
+import { Nav } from "../../app/ui/components/modules/Navigation";
 
 const Login: NextPage = () => (
   <Box
     bg={mode(useBreakpointValue({ base: "white", sm: "gray.50" }), "gray.800")}
   >
+    <Nav/>
     <Container
       maxW="lg"
       py={{ base: "0", md: "8" }}

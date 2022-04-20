@@ -16,11 +16,13 @@ import {
   import { Footer } from "../../app/ui/components/modules/Footer";
   import Link from "next/link";
 import { ResetCard } from "../../app/ui/components/modules/auth/pwd-reset.module";
+import { Nav } from "../../app/ui/components/modules/Navigation";
   
   const Signup: NextPage = () => (
     <Box
       bg={mode(useBreakpointValue({ base: "white", sm: "gray.50" }), "gray.800")}
     >
+      <Nav/>
       <Container
         maxW="lg"
         py={{ base: "0", md: "8" }}
