@@ -15,6 +15,7 @@ import { useRouter } from "next/router";
 import { CauseDto } from "../../app/types/dtos/cause.dtos";
 import { CauseActions } from "../../app/ui/components/elements/cause/cause.actions";
 import { CauseStats } from "../../app/ui/components/elements/cause/cause.stats";
+import { TimelineEvent } from "../../app/ui/components/elements/timeline/timeline-event";
 import { EntityPage } from "../../app/ui/components/layouts/pages/entity/entity.layout";
 import { Timeline } from "../../app/ui/components/modules/activity-timeline/timeline.module";
 
@@ -83,7 +84,7 @@ export default function CausePage() {
                   <Timeline />
               </Box>
               {/* Similar Causes */}
-
+                <TimelineEvent/>
             </Container>
           </>
         );
