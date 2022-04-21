@@ -22,7 +22,7 @@ const Login: NextPage = () => (
   <Box
     bg={mode(useBreakpointValue({ base: "white", sm: "gray.50" }), "gray.800")}
   >
-    <Nav/>
+    <Nav />
     <Container
       maxW="lg"
       py={{ base: "0", md: "8" }}
@@ -38,18 +38,18 @@ const Login: NextPage = () => (
             <HStack spacing="1" justify="center">
               <Text>Don&apos;t have an account?</Text>
               <Link href={"/auth/sign-up"} passHref>
-                <Button  variant="link" colorScheme="blue">
+                <Button variant="link" colorScheme="blue">
                   Sign up
                 </Button>
               </Link>
             </HStack>
           </Stack>
         </Stack>
-            <SignInCard/>
+        <SignInCard />
       </Stack>
     </Container>
-            <Footer/>
+    <Footer />
   </Box>
 );
 
-export default Login
+export default Login;

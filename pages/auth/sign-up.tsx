@@ -22,7 +22,7 @@ const Signup: NextPage = () => (
   <Box
     bg={mode(useBreakpointValue({ base: "white", sm: "gray.50" }), "gray.800")}
   >
-    <Nav/>
+    <Nav />
     <Container
       maxW="lg"
       py={{ base: "0", md: "8" }}

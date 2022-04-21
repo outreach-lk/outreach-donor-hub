@@ -28,12 +28,12 @@ export const Footer = () => (
   >
     <Stack>
       <Wrap
-        direction={{ base: "row",xs:"column" }}
+        direction={{ base: "row", xs: "column" }}
         spacing="4"
         align="flex-start"
         justify="space-between"
       >
-         <Stack direction={"column"} >
+        <Stack direction={"column"}>
           <Wrap align={"center"}>
             <Logo /> <Heading size="lg">DonorHub</Heading>
           </Wrap>
@@ -84,7 +84,7 @@ export const Footer = () => (
         <NewsLetterSubscribe />
       </Wrap>
       <Stack direction={"row"} justify="center">
-            <Copyright alignSelf={{ base: "center", sm: "start" }} />
+        <Copyright alignSelf={{ base: "center", sm: "start" }} />
       </Stack>
     </Stack>
   </Box>

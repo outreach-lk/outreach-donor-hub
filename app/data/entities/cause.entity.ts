@@ -81,9 +81,7 @@ export default class Cause
    * @param page
    * @returns
    */
-  static async getPage(
-    page: Page
-  ): Promise<EntityFetchedPageDto<CauseDto>> {
+  static async getPage(page: Page): Promise<EntityFetchedPageDto<CauseDto>> {
     try {
       return CauseRepo.getRepo().getPage(page);
     } catch (error) {
