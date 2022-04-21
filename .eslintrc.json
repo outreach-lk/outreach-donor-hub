@@ -23,7 +23,8 @@
   // all plugins (eslint-plugin-xxx) go here:
   "plugins": [
     "@typescript-eslint",
-    "@next/eslint-plugin-next" // https://github.com/vercel/next.js/blob/canary/packages/eslint-plugin-next/lib/index.js
+    "@next/eslint-plugin-next", // https://github.com/vercel/next.js/blob/canary/packages/eslint-plugin-next/lib/index.js
+    "react-hooks"
   ],
 
   // all configs (eslint-config-xxx) go here:
@@ -38,6 +39,8 @@
     // ...add rules which you'd like to disable
     "react/react-in-jsx-scope": "off",
     "@typescript-eslint/no-unsafe-member-access":"off",
-    "@typescript-eslint/no-explicit-any":"off"
+    "@typescript-eslint/no-explicit-any":"off",
+    "react-hooks/rules-of-hooks": "error", // Checks rules of Hooks
+    "react-hooks/exhaustive-deps": "warn" // Checks effect dependencies
   }
 }
