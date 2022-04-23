@@ -10,12 +10,10 @@ import {
   MenuList,
   MenuItem,
   MenuDivider,
-  useDisclosure,
   useColorModeValue,
   Stack,
   useColorMode,
   Center,
-  Text,
   Wrap,
   Heading,
 } from "@chakra-ui/react";
@@ -24,25 +22,12 @@ import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 import { Logo } from "../elements/branding/Logo";
 import { useAuth } from "../../../hooks/auth.hooks";
 
-const NavLink = ({ children }: { children: ReactNode }) => (
-  <Link
-    px={2}
-    py={1}
-    rounded={"md"}
-    _hover={{
-      textDecoration: "none",
-      bg: useColorModeValue("gray.200", "gray.700"),
-    }}
-    href={"#"}
-  >
-    {children}
-  </Link>
-);
-
 export function Nav() {
   const { colorMode, toggleColorMode } = useColorMode();
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const { isAuthorized } = useAuth();
+  const { isAuthorized, client } = useAuth();
+  const handleLogout = () => {
+    client.logout();
+  }
   return (
     <>
       <Box
@@ -92,7 +77,7 @@ export function Nav() {
                   <MenuDivider />
                   <MenuItem>Your Servers</MenuItem>
                   <MenuItem>Account Settings</MenuItem>
-                  <MenuItem>Logout</MenuItem>
+                  <MenuItem onClick={handleLogout}>Logout</MenuItem>
                 </MenuList>
               </Menu>
               :

@@ -34,7 +34,7 @@ export function useAuth(){
                         isAuthorized: true
                     })
                 })
-                .catch((error) => feedback.show( error, {
+                .catch((error: Error) => feedback.show( error, {
                     type: 'error',
                     title: 'Sign In Error'
                 }));
@@ -47,7 +47,7 @@ export function useAuth(){
                         isAuthorized: true
                     })
                 })
-                .catch((error) => feedback.show( error, {
+                .catch((error: Error) => feedback.show( error, {
                     type: 'error',
                     title: 'Sign In Error'
                 }));
@@ -61,7 +61,7 @@ export function useAuth(){
                         isAuthorized: true
                     })
                 })
-                .catch((error) => feedback.show( error, {
+                .catch((error: Error) => feedback.show( error, {
                     type: 'error',
                     title: 'Sign In Error'
                 }));
@@ -74,7 +74,7 @@ export function useAuth(){
                         isAuthorized: true
                     })
                 })
-                .catch((error) => feedback.show( error, {
+                .catch((error: Error) => feedback.show( error, {
                     type: 'error',
                     title: 'Sign Up Error'
                 }));
@@ -88,11 +88,18 @@ export function useAuth(){
                         title: 'Password Reset'
                     })
                 })
-                .catch((error) => feedback.show( error, {
+                .catch((error: Error) => feedback.show( error, {
                     type: 'error',
                     title: 'Password Reset Error'
                 }));
-            }
+            },
+            logout: () => {
+                client.logout()
+                .catch((error: Error) => feedback.show( error, {
+                    type: 'error',
+                    title: 'Logout Error'
+                }));
+            },
             
         }
     }
