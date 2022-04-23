@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 /**
  * Provides Authentication & Authorization Context for the Client App
@@ -32,7 +33,6 @@ export function AuthProvider<P>(props: PropsWithChildren<P>) {
    * Path to push back to once user has successfully signed-in
    */
   const [postSignInPath, setPostSignInPath] = useState<string | null>(null);
-  const [postSignInQuery, setPostSignInQuery] = useState<ParsedUrlQuery | null>(null)
   /**
    * Gatekeeps content from loading until route permissions have been resolved.
    * Shows the loader instead.
@@ -76,9 +76,6 @@ export function AuthProvider<P>(props: PropsWithChildren<P>) {
     // sets current path as post sign-in path unless it's auth
     if( !pathname.match('auth') ){
       setPostSignInPath(pathname);
-      if(query) {
-        setPostSignInQuery(query);
-      }
     }
     // Do not proceed unless checks for persisted sessions are done.
     if( checkingPersistedSession ) return;
@@ -117,7 +114,7 @@ export function AuthProvider<P>(props: PropsWithChildren<P>) {
       if (session.isAuthorized && postSignInPath) {
         push({
           pathname: postSignInPath,
-          query: postSignInQuery
+          query: query
         });
       } else if ( session.isAuthorized && session.user ) {
         if( session.user.role === UserRole.REGULAR ){
@@ -131,7 +128,7 @@ export function AuthProvider<P>(props: PropsWithChildren<P>) {
         }
       }
     }
-  }, [postSignInPath, postSignInQuery, session]);
+  }, [postSignInPath, session]);
 
   return (
     <Provider

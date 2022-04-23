@@ -10,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { CauseDto } from "../../app/types/dtos/cause.dtos";
+import { AttachmentCarousel } from "../../app/ui/components/elements/carousel";
 import { CauseActions } from "../../app/ui/components/elements/cause/cause.actions";
 import { CauseStats } from "../../app/ui/components/elements/cause/cause.stats";
 import { EntityPage } from "../../app/ui/components/layouts/pages/entity/entity.layout";
@@ -47,6 +48,9 @@ export default function CausePage() {
                   >
                     {data.description}
                   </Text>
+                  {data.attachments&&
+                    <AttachmentCarousel files={data.attachments}/>
+                  }
                 </Box>
                 {/* Cause Stats  */}
                 <Box
