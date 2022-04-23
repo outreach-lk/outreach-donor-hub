@@ -33,6 +33,7 @@ export function AuthProvider<P>(props: PropsWithChildren<P>) {
    * Path to push back to once user has successfully signed-in
    */
   const [postSignInPath, setPostSignInPath] = useState<string | null>(null);
+  const [postSignInQuery, setPostSignInQuery] = useState<ParsedUrlQuery | null>(null);
   /**
    * Gatekeeps content from loading until route permissions have been resolved.
    * Shows the loader instead.
@@ -76,6 +77,10 @@ export function AuthProvider<P>(props: PropsWithChildren<P>) {
     // sets current path as post sign-in path unless it's auth
     if( !pathname.match('auth') ){
       setPostSignInPath(pathname);
+      // Set Post SignIn Query if there is at least one query param.
+      if(query && Object.keys(query).length){
+        setPostSignInQuery(query);
+      }
     }
     // Do not proceed unless checks for persisted sessions are done.
     if( checkingPersistedSession ) return;
@@ -99,7 +104,7 @@ export function AuthProvider<P>(props: PropsWithChildren<P>) {
         setShowContent(true);
     }
     //TODO: also check route related permissions here.
-  }, [pathname, session.isAuthorized, checkingPersistedSession]);
+  }, [pathname, query, session.isAuthorized, checkingPersistedSession]);
 
   /**
    * Once the user Signs-in redirect back to
@@ -114,7 +119,7 @@ export function AuthProvider<P>(props: PropsWithChildren<P>) {
       if (session.isAuthorized && postSignInPath) {
         push({
           pathname: postSignInPath,
-          query: query
+          query: postSignInQuery
         });
       } else if ( session.isAuthorized && session.user ) {
         if( session.user.role === UserRole.REGULAR ){
