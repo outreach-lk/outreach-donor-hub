@@ -23,7 +23,7 @@ const settings = {
 };
 
 export function AttachmentCarousel(props: AttachmentCarouselProps) {
-  const [slider, setSlider] = useState<Slider | null>(null);
+  const [, setSlider] = useState<Slider | null>(null);
   return (
     <Box
       position={"relative"}

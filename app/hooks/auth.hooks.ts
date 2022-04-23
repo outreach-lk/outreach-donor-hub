@@ -19,7 +19,6 @@ export function useAuth(){
     const client = authClientFactory.getClient(AuthProvider.FIREBASE);
     const authCtx = useContext(AuthContext);
     const feedback = useFeedback();
-    const logger = useLogger();
     const setSession = authCtx.setSession;
     return {
         isAuthorized: authCtx.isAuthorized,
