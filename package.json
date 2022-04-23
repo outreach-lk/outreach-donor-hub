@@ -16,6 +16,7 @@
     "@chakra-ui/react": "^1.8.3",
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
+    "@types/react-slick": "^0.23.8",
     "@types/uuid": "^8.3.4",
     "axios": "^0.25.0",
     "firebase": "^9.6.6",

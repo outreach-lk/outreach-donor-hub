@@ -13,6 +13,7 @@ import { LocalSession, LocalSessionContext } from "../types/dtos/auth.dtos";
 import { UserRole } from "../types/dtos/user.dtos";
 import { FullScreenLoader } from "../ui/components/modules/loader";
 import { AuthProvider as AProvider } from "../types/enums/providers"
+import { ParsedUrlQuery } from "querystring";
 
 
 const AuthContext = createContext<LocalSessionContext>({
@@ -21,7 +22,7 @@ const AuthContext = createContext<LocalSessionContext>({
 const { Consumer, Provider } = AuthContext;
 const config = getConfig();
 export function AuthProvider<P>(props: PropsWithChildren<P>) {
-  const { pathname, push } = useRouter();
+  const { pathname, query, push } = useRouter();
   const [session, setSession] = useState<LocalSession>({
     isAuthorized: false,
   } as LocalSession);
@@ -31,6 +32,7 @@ export function AuthProvider<P>(props: PropsWithChildren<P>) {
    * Path to push back to once user has successfully signed-in
    */
   const [postSignInPath, setPostSignInPath] = useState<string | null>(null);
+  const [postSignInQuery, setPostSignInQuery] = useState<ParsedUrlQuery | null>(null)
   /**
    * Gatekeeps content from loading until route permissions have been resolved.
    * Shows the loader instead.
@@ -74,6 +76,9 @@ export function AuthProvider<P>(props: PropsWithChildren<P>) {
     // sets current path as post sign-in path unless it's auth
     if( !pathname.match('auth') ){
       setPostSignInPath(pathname);
+      if(query) {
+        setPostSignInQuery(query);
+      }
     }
     // Do not proceed unless checks for persisted sessions are done.
     if( checkingPersistedSession ) return;
@@ -112,6 +117,7 @@ export function AuthProvider<P>(props: PropsWithChildren<P>) {
       if (session.isAuthorized && postSignInPath) {
         push({
           pathname: postSignInPath,
+          query: postSignInQuery
         });
       } else if ( session.isAuthorized && session.user ) {
         if( session.user.role === UserRole.REGULAR ){
@@ -125,7 +131,7 @@ export function AuthProvider<P>(props: PropsWithChildren<P>) {
         }
       }
     }
-  }, [postSignInPath, session]);
+  }, [postSignInPath, postSignInQuery, session]);
 
   return (
     <Provider
