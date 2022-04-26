@@ -11,8 +11,8 @@ interface RichTextEditorProps {
 
 export function RichTextEditor(props: RichTextEditorProps) {
     const editorRef = useRef<HTMLDivElement>(null);
-    const activeBlockRef = useRef<HTMLElement>(null);
-    const {current:tree} = useRef<EditorTree>(new EditorTree(editorRef));
+    const menuRef = useRef<HTMLDivElement>(null);
+    const {current:tree} = useRef<EditorTree>(new EditorTree(editorRef,menuRef));
 
     /**
      * handle back slash options
@@ -51,6 +51,12 @@ export function RichTextEditor(props: RichTextEditorProps) {
         >      
 
         </div>
+        <BlockTypeSel 
+          menuRef={menuRef}
+          isOpen={true}
+          callback={(tag)=>tree.append(tag)}
+          onClose={console.log}
+        />
       </>
     )
 }
@@ -62,6 +68,7 @@ class EditorBlock {
   next: null | EditorBlock;
   prev: null | EditorBlock;
   rawValue: string;
+  popupOpen = false;
   _nextType: BlockType;
 
   constructor(type: any, next: null | EditorBlock, prev: null | EditorBlock, tree: EditorTree){
@@ -77,6 +84,9 @@ class EditorBlock {
       setTimeout(()=>{
         if(this.elem){
           this.elem.focus();
+          if (this.tree.menu.current){
+            this.tree.menu.current.style.marginTop = `${this.elem.offsetTop + this.elem.offsetHeight}px`;
+          }
         }
       },0)
       this.elem.setAttribute('contentEditable','true');
@@ -99,8 +109,13 @@ class EditorBlock {
         this.onEnter();
         break;
       case '/':
+        e.preventDefault();
         this.onSlash();
         break;
+      default:
+        if(this.popupOpen) {
+          this.onSlash();
+        }
     }
   }
 
@@ -109,15 +124,14 @@ class EditorBlock {
     if(this.next){
       this.next.focus();
     } else {
-      this.tree.append(this._nextType);
+      this.tree.append(this._nextType,this, this.next || undefined);
     }
   }
 
   onSlash(){
-    this._nextType = BlockType.h1;
-    if(this.elem && this.elem.parentElement){
-      this.elem.style.color ='red'
-      ReactDom.createPortal(<div>Hello</div> ,this.elem)
+    this.popupOpen = !this.popupOpen;
+    if(this.tree.menu && this.tree.menu.current){
+      this.tree.menu.current.style.visibility = this.popupOpen?'visible':'hidden'
     }
   }
 
@@ -134,13 +148,15 @@ class EditorTree {
   root: null | EditorBlock;
   last: null | EditorBlock;
   ref: RefObject<HTMLDivElement>;
-  constructor(editorRef: RefObject<HTMLDivElement>){
+  menu: RefObject<HTMLDivElement>;
+  constructor(editorRef: RefObject<HTMLDivElement>,menuRef: RefObject<HTMLDivElement>){
     this.root = null;
     this.last = this.root;
     this.ref = editorRef;
+    this.menu = menuRef;
   }
 
-  append(type: BlockType ){
+  append(type: BlockType, prev?: EditorBlock, next?: EditorBlock ){
     let _elem: HTMLElement;
     const block = new EditorBlock(type, null, this.last,this)
     switch(block.type){
@@ -157,11 +173,21 @@ class EditorTree {
         _elem = document.createElement('h2');
         _elem.classList.add('heditor-h2')
         break;
+      case 'img':
+        _elem = document.createElement('img')
+        const url = prompt('Image URL');
+        (_elem as HTMLImageElement).src = url || '';
+        break
     }
+    _elem.setAttribute('draggable','true');
     this.ref.current?.append(_elem);
     block.bindDOMElement(_elem);
     if(this.isEmpty()){
       this.root = block;
+    } else if(prev){
+      block.prev = prev
+    } else if (next) {
+      block.next = next;
     } else {
       block.prev = this.last;
       this.last = block
@@ -179,8 +205,5 @@ export enum BlockType {
   h1='h1',
   h2='h2',
   h3='h3',
-  i='i',
-  b='b',
-  u='u',
   img='img'
 } 

@@ -21,9 +21,22 @@
 
 .wysiwyg-editor-container{
     padding: 10px;
+    -webkit-box-shadow: 10px 10px 55px -30px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 55px -30px rgba(0,0,0,0.75);
+    box-shadow: 10px 10px 55px -30px rgba(0,0,0,0.75);
+}
+.editor-popover {
+    position: absolute;
+    visibility: hidden;
+    padding: 10px 0 0 0;
+    backdrop-filter: blur(2px);
+}
+.editor-popover:hover{
+    backdrop-filter: none;
+    pointer-events: visible;
 }
 
-.editor-h1, .editor-h2, .editor-h3, .editor-p {
-    padding: 10px 20px 10px 20px;
+.editor-h1, .editor-h2, .editor-h3{
+    padding: 10px 0px 10px 0px;
     border: none !important;
 }

@@ -1,4 +1,6 @@
-import { Button, Popover, PopoverContent } from "@chakra-ui/react";
+import { Button, IconButton, Popover, PopoverContent, Stack } from "@chakra-ui/react";
+import { RefObject } from "react";
+import { FaCameraRetro, FaPlusCircle } from "react-icons/fa";
 import { BlockType } from ".";
 
 
@@ -6,22 +8,24 @@ interface BlockTypeSelProps {
     isOpen: boolean;
     onClose: ()=>any;
     callback: (tag:BlockType)=>void;
+    menuRef: RefObject<HTMLDivElement>
+
 }
 export function BlockTypeSel(props:BlockTypeSelProps){
     return (
-        <Popover
-            returnFocusOnClose={false}
-            isOpen={props.isOpen}
-            onClose={props.onClose}
-            placement='right'
-            closeOnBlur={false}
-        >
-            <PopoverContent>
-                <Button>h1</Button>
-                <Button>h2</Button>
-                <Button>h3</Button>
-            </PopoverContent>
-
-        </Popover>
+        <div ref={props.menuRef} className="editor-popover">
+                <Stack direction={'row'} align='center' justify={"center"} width="100vw">
+                <FaPlusCircle/>
+                <Button onClick={()=>props.callback(BlockType.p)}>p</Button>
+                <Button onClick={()=>props.callback(BlockType.h1)}>h1</Button>
+                <Button onClick={()=>props.callback(BlockType.h2)}>h2</Button>
+                <Button onClick={()=>props.callback(BlockType.h3)}>h3</Button>
+                <IconButton 
+                    onClick={()=>props.callback(BlockType.img)}
+                    aria-label="Add Image"
+                    icon={<FaCameraRetro/>}
+                />
+                </Stack>
+        </div>
     )
 }
