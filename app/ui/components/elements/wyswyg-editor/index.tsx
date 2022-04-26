@@ -177,10 +177,17 @@ class EditorTree {
         _elem = document.createElement('img')
         const url = prompt('Image URL');
         (_elem as HTMLImageElement).src = url || '';
+        break;
+      case 'a':
+        _elem = document.createElement('a')
+        const href = prompt('URL');
+        (_elem as HTMLAnchorElement).href = href || '';
+        (_elem as HTMLAnchorElement).target = '_blank'
         break
     }
     _elem.setAttribute('draggable','true');
     this.ref.current?.append(_elem);
+    console.log(this);
     block.bindDOMElement(_elem);
     if(this.isEmpty()){
       this.root = block;
@@ -205,5 +212,6 @@ export enum BlockType {
   h1='h1',
   h2='h2',
   h3='h3',
-  img='img'
+  a='a',
+  img='img',
 } 

@@ -1,6 +1,6 @@
 import { Button, IconButton, Popover, PopoverContent, Stack } from "@chakra-ui/react";
 import { RefObject } from "react";
-import { FaCameraRetro, FaPlusCircle } from "react-icons/fa";
+import { FaCameraRetro, FaCross, FaLink, FaPlusCircle, FaTrash } from "react-icons/fa";
 import { BlockType } from ".";
 
 
@@ -21,9 +21,19 @@ export function BlockTypeSel(props:BlockTypeSelProps){
                 <Button onClick={()=>props.callback(BlockType.h2)}>h2</Button>
                 <Button onClick={()=>props.callback(BlockType.h3)}>h3</Button>
                 <IconButton 
+                    onClick={()=>props.callback(BlockType.a)}
+                    aria-label="Add Link"
+                    icon={<FaLink/>}
+                />
+                <IconButton 
                     onClick={()=>props.callback(BlockType.img)}
                     aria-label="Add Image"
                     icon={<FaCameraRetro/>}
+                />
+                   <IconButton 
+                    onClick={()=>props.callback(BlockType.img)}
+                    aria-label="Remove"
+                    icon={<FaTrash/>}
                 />
                 </Stack>
         </div>
