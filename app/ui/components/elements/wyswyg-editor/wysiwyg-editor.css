@@ -1,3 +1,8 @@
+.block {
+    -webkit-box-shadow: 10px 10px 55px -30px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 55px -30px rgba(0,0,0,0.75);
+    box-shadow: 10px 10px 55px -30px rgba(0,0,0,0.75);
+}
 .editor-h1 {
     font-size: x-large;
     font-weight: 900;
@@ -21,13 +26,9 @@
 
 .wysiwyg-editor-container{
     padding: 10px;
-    -webkit-box-shadow: 10px 10px 55px -30px rgba(0,0,0,0.75);
-    -moz-box-shadow: 10px 10px 55px -30px rgba(0,0,0,0.75);
-    box-shadow: 10px 10px 55px -30px rgba(0,0,0,0.75);
 }
 .editor-popover {
     position: absolute;
-    visibility: hidden;
     padding: 10px 0 0 0;
     backdrop-filter: blur(2px);
 }
