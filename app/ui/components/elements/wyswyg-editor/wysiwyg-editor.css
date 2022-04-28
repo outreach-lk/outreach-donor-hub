@@ -1,16 +1,4 @@
-.block {
-    -webkit-box-shadow: 10px 10px 55px -30px rgba(0,0,0,0.75);
-    -moz-box-shadow: 10px 10px 55px -30px rgba(0,0,0,0.75);
-    box-shadow: 10px 10px 55px -30px rgba(0,0,0,0.75);
-}
-/* .block::before{
-    content: '::';
-    font-size: medium;
-    font-weight: 700;
-    color: grey;
-    padding-right: 10px;
-    cursor: pointer;
-} */
+
 .editor-h1 {
     font-size: x-large;
     font-weight: 900;
@@ -42,8 +30,20 @@
     padding: 10px;
 }
 .editor-popover {
+    position: absolute;
+    top:0;
+    float: right;
     padding: 10px 0 0 0;
-    background-color: white;
+}
+.editor-popover-toolbar {
+    backdrop-filter: blur(100px);
+    border-style: groove;
+    padding: 8px;
+    border-radius: 8px;
+	border: solid #BDBDBD 1px; 
+	box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.3)  ; 
+	-webkit-box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.3)  ; 
+	-moz-box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.3)  ; 
 }
 .editor-popover:hover{
     background-color: none;

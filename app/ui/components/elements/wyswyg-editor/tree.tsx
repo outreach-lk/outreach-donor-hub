@@ -32,6 +32,9 @@ export class EditorTree {
           curr.rawValue = sBlock.rawValue;
           curr.blockAlignment = sBlock.blockAlignment || BlockAlignment.left;
           curr.media = sBlock.media;
+          curr.preventAlignmentChange = sBlock.preventAlignmentChange || false;
+          curr.preventDeletion = sBlock.preventDeletion || false;
+          curr.hideMenu = sBlock.hideMenu || false;
           if (sBlock.nextBlockId) {
             curr.next = _blocks.get(sBlock.nextBlockId) || null;
           }
@@ -46,6 +49,13 @@ export class EditorTree {
       });
       return _tree;
     }
+    /**
+     * fixme: remove everything except locked from constructor
+     * @param editorRef 
+     * @param menuRef 
+     * @param setCurrBlock 
+     * @param locked 
+     */
     constructor(
       editorRef: RefObject<HTMLDivElement>,
       menuRef: RefObject<HTMLDivElement>,
@@ -71,7 +81,7 @@ export class EditorTree {
      */
     append(type: BlockType, block?: EditorBlock, next?: EditorBlock, prev?: EditorBlock) {
       let _elem: HTMLElement;
-      const _block = new EditorBlock(type, null, this);
+      const _block = block || new EditorBlock(type, null, this);
       switch (_block.type) {
         default:
         case "p":
@@ -188,6 +198,7 @@ export class EditorTree {
      * @param block to remove.
      */
     removeBlock(block: EditorBlock){
+        if(block.preventDeletion) throw new Error('protected block')
         let _prevBlock: EditorBlock | null = this.root;
         let _block: EditorBlock = this.root as EditorBlock;
         while(_block.id !== block.id && _block.next) {
@@ -204,11 +215,13 @@ export class EditorTree {
       if (this.root) {
         return {
           id: this.id,
-          tree: this,
           blocks: this.serializeBlocks(this.root),
         };
       } else {
-        return this.serializableBlocks;
+        return {
+            id: this.id,
+            blocks: []
+          };
       }
     }
     clearTree() {

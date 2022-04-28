@@ -1,0 +1,44 @@
+{
+    "id": "02a21efd-7bf3-4893-ba23-9a2bdaf80cc6",
+    "blocks": [
+      {
+        "id": "new.cause.title",
+        "type": "h1",
+        "rawValue": "👋 Title of the Cause",
+        "blockAlignment": "left",
+        "nextBlockId": "new.cause.target",
+        "hideMenu": true
+      },
+      {
+        "id": "new.cause.target",
+        "type": "h2",
+        "rawValue": "💰 How much money do you expect to raise? <i>(optional)</i>",
+        "blockAlignment": "left",
+        "nextBlockId": "new.cause.desc.block.1",
+        "hideMenu": true
+      },
+      {
+        "id": "new.cause.desc.block.1",
+        "type": "h2",
+        "rawValue": "Write a description of what you are raising money for.",
+        "blockAlignment": "left",
+        "nextBlockId": "new.cause.desc.block.2"
+      },
+      {
+        "id": "new.cause.desc.block.2",
+        "type": "p",
+        "rawValue": "Lorem ipsum dolor sit amet consectetur adipiscing elit, urna consequat felis vehicula class ultricies mollis dictumst, aenean non a in donec nulla. Phasellus ante pellentesque erat cum risus consequat imperdiet aliquam, integer placerat et turpis mi eros nec lobortis taciti, vehicula nisl litora tellus ligula porttitor metus.",
+        "blockAlignment": "left",
+        "nextBlockId": "new.cause.desc.block.3"
+      },
+      {
+        "id": "new.cause.desc.block.3",
+        "type": "img",
+        "rawValue": "",
+        "blockAlignment": "left",
+        "media": {
+          "src": "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg?crop=1.00xw:0.669xh;0,0.190xh&resize=1200:*"
+        }
+      }
+    ]
+  }

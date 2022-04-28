@@ -7,7 +7,6 @@ import { EditorBlock } from "./editor-block";
 
 interface BlockTypeSelProps {
     isOpen: boolean;
-    onClose: ()=>any;
     addCallback: (tag:BlockType)=>void;
     removeCallback: (block:EditorBlock)=>void;
     alignmentCallback: (block: EditorBlock, alignment: BlockAlignment) => void;
@@ -15,7 +14,9 @@ interface BlockTypeSelProps {
     currentBlock?: EditorBlock
 
 }
+
 export function BlockTypeSel(props:BlockTypeSelProps){
+    if(!props.currentBlock || props.currentBlock.hideMenu) return null;
     return (
         <div ref={props.menuRef} className="editor-popover">
                 <Stack className="editor-popover-toolbar" direction={'row'} align='center' justify={"center"} >

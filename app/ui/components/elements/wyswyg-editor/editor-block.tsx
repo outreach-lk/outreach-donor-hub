@@ -18,6 +18,13 @@ export class EditorBlock {
     popupOpen = false;
     _nextType: BlockType;
     id: string;
+    /**
+     * special block properties
+     */
+    preventDeletion: boolean;
+    preventAlignmentChange: boolean;
+    hideMenu: boolean;
+
     private mutObserver: MutationObserver;
     private static mutObserverConfig: MutationObserverInit = {
       characterData: true, attributes: false, childList: false, subtree: true
@@ -37,17 +44,23 @@ export class EditorBlock {
       this._nextType = BlockType.p;
       this.mutObserver = new MutationObserver(this.onMutation.bind(this));
       this.blockAlignment = BlockAlignment.left;
+      /**
+       * block protection properties
+       */
+      this.preventDeletion = false
+      this.preventAlignmentChange = false;
+      this.hideMenu = false;
     }
     focus() {
+      this.tree.dispatchSetCurrBlock(this);
       if (this.elem) {
         this.mutObserver.observe(this.elem, EditorBlock.mutObserverConfig);
-        this.tree.dispatchSetCurrBlock(this);
         setTimeout(() => {
           if (this.elem) {
             const resizeObserver = new ResizeObserver(() => {
               if (this.tree.menu.current && this.elem) {
                 this.tree.menu.current.style.marginTop = `${
-                  this.elem.offsetTop + this.elem.offsetHeight
+                  this.elem.offsetTop + this.tree.menu.current.offsetHeight
                 }px`;
               }
             });
@@ -61,6 +74,9 @@ export class EditorBlock {
   
     blur() {
       this.elem?.setAttribute("contentEditable", "false");
+      setTimeout(()=>{
+          this.tree.dispatchSetCurrBlock(null);
+      },100)
     }
   
     setText() {
@@ -102,6 +118,7 @@ export class EditorBlock {
     }
 
     changeAlignment(alignment: BlockAlignment){
+        if(this.preventAlignmentChange) throw new Error('Block Frozen');
         this.blockAlignment = alignment;
         if(this.elem){
             this.elem.style.textAlign = this.blockAlignment.valueOf()
