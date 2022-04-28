@@ -3,14 +3,14 @@
     -moz-box-shadow: 10px 10px 55px -30px rgba(0,0,0,0.75);
     box-shadow: 10px 10px 55px -30px rgba(0,0,0,0.75);
 }
-.block::before{
+/* .block::before{
     content: '::';
     font-size: medium;
     font-weight: 700;
     color: grey;
     padding-right: 10px;
     cursor: pointer;
-}
+} */
 .editor-h1 {
     font-size: x-large;
     font-weight: 900;

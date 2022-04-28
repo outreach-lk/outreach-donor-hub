@@ -82,7 +82,7 @@ export class EditorBlock {
       if (this.next) {
         this.next.focus();
       } else {
-        this.next = this.tree.append(this._nextType);
+        this.next = this.tree.append(this._nextType,this.next || undefined);
       }
     }
   

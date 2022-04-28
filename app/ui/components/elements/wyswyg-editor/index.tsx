@@ -54,6 +54,7 @@ export function RichTextEditor(props: RichTextEditorProps) {
       id: "f8559c87-d4b1-4449-8ac2-7ee8eccef8e3",
       type: "p" as BlockType,
       rawValue: "Bula bula",
+      blockAlignment: 'center' as BlockAlignment,
       nextBlockId: "504ac521-9259-452c-bdec-985d3e2f6499",
     },
     {
@@ -100,7 +101,7 @@ export function RichTextEditor(props: RichTextEditorProps) {
       <BlockTypeSel
         menuRef={menuRef}
         isOpen={true}
-        addCallback={(tag) => tree.append(tag)}
+        addCallback={(tag) => tree.append(tag,undefined, (currBlock?.next || undefined), currBlock || undefined)}
         removeCallback={tree.removeBlock.bind(tree)}
         alignmentCallback={tree.setBlockAlignment.bind(tree)}
         onClose={console.log}

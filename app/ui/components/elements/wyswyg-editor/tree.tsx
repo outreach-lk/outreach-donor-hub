@@ -10,6 +10,7 @@ export class EditorTree {
     menu: RefObject<HTMLDivElement>;
     serializableBlocks: SerializableBlock[] = [];
     id: string;
+    locked: boolean;
     dispatchSetCurrBlock: Dispatch<SetStateAction<EditorBlock|null>>;
     static createFromMap(
       sBlocks: SerializableBlock[],
@@ -29,6 +30,7 @@ export class EditorTree {
         const curr = _blocks.get(sBlock.id);
         if (curr) {
           curr.rawValue = sBlock.rawValue;
+          curr.blockAlignment = sBlock.blockAlignment || BlockAlignment.left;
           curr.media = sBlock.media;
           if (sBlock.nextBlockId) {
             curr.next = _blocks.get(sBlock.nextBlockId) || null;
@@ -40,14 +42,15 @@ export class EditorTree {
         const _next = sBlock.nextBlockId
           ? _blocks.get(sBlock.nextBlockId)
           : undefined;
-        _tree.append(sBlock.type, _next, curr);
+        _tree.append(sBlock.type, curr, _next);
       });
       return _tree;
     }
     constructor(
       editorRef: RefObject<HTMLDivElement>,
       menuRef: RefObject<HTMLDivElement>,
-      setCurrBlock: Dispatch<SetStateAction<EditorBlock |null>>
+      setCurrBlock: Dispatch<SetStateAction<EditorBlock |null>>,
+      locked?: boolean
     ) {
       this.id = uuidv4();
       this.root = null;
@@ -55,11 +58,20 @@ export class EditorTree {
       this.ref = editorRef;
       this.menu = menuRef;
       this.dispatchSetCurrBlock = setCurrBlock;
+      this.locked = (locked===undefined)?false:locked
     }
   
-    append(type: BlockType, next?: EditorBlock, block?: EditorBlock) {
+    /**
+     * appends a block to the tree of blocks
+     * @param type type of block
+     * @param block if cloning an existing block, that block
+     * @param next if linking to the middle, next block FIXME: is prev.next is the same at all times?
+     * @param prev if linking to the middle, prev. block
+     * @returns 
+     */
+    append(type: BlockType, block?: EditorBlock, next?: EditorBlock, prev?: EditorBlock) {
       let _elem: HTMLElement;
-      const _block = block || new EditorBlock(type, null, this);
+      const _block = new EditorBlock(type, null, this);
       switch (_block.type) {
         default:
         case "p":
@@ -99,7 +111,17 @@ export class EditorTree {
       _elem.setAttribute("draggable", "true");
       _block.bindDOMElement(_elem);
       _elem.innerHTML = block?.rawValue || "";
-      this.ref.current?.append(_elem);
+      /**
+       * if appended in the middle.
+       */
+      if(next && next.elem){
+        this.ref.current?.insertBefore(_elem,next.elem);
+        if(prev){
+            prev.next = _block;
+        }
+      }else{
+          this.ref.current?.append(_elem);
+      }
   
       if (this.isEmpty()) {
         this.root = _block;
