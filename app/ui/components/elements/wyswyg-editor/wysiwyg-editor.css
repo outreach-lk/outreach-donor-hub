@@ -3,34 +3,54 @@
     -moz-box-shadow: 10px 10px 55px -30px rgba(0,0,0,0.75);
     box-shadow: 10px 10px 55px -30px rgba(0,0,0,0.75);
 }
+.block::before{
+    content: '::';
+    font-size: medium;
+    font-weight: 700;
+    color: grey;
+    padding-right: 10px;
+    cursor: pointer;
+}
 .editor-h1 {
     font-size: x-large;
     font-weight: 900;
+    padding: 20px 0 10px 0
 }
 
 .editor-h2 {
+    font-size: large;
+    font-weight: 700;
+    padding: 10px 0 5px 0
 
 }
 
 .editor-h3 {
-
+    font-size: medium;
+    font-weight: 500;
 }
 
 .editor-p {
 
 }
 
-.img {
-
+.editor-img{
+    margin-left: auto;
+    transform: translateX(-50%);
 }
 
 .wysiwyg-editor-container{
     padding: 10px;
 }
 .editor-popover {
-    position: absolute;
     padding: 10px 0 0 0;
-    backdrop-filter: blur(2px);
+    background-color: white;
+}
+.editor-popover:hover{
+    background-color: none;
+    pointer-events: none;
+}
+.editor-popover-toolbar:hover{
+    pointer-events: all;
 }
 
 .editor-h1, .editor-h2, .editor-h3{

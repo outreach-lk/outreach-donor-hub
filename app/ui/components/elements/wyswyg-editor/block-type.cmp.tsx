@@ -1,40 +1,69 @@
 import { Button, IconButton, Popover, PopoverContent, Stack } from "@chakra-ui/react";
 import { RefObject } from "react";
-import { FaCameraRetro, FaCross, FaLink, FaPlusCircle, FaTrash } from "react-icons/fa";
-import { BlockType } from ".";
+import { FaCameraRetro, FaLink, FaPlusCircle, FaTrash, FaDotCircle, FaAlignCenter, FaAlignLeft, FaAlignRight } from "react-icons/fa";
+import { BlockAlignment, BlockType } from ".";
+import { EditorBlock } from "./editor-block";
 
 
 interface BlockTypeSelProps {
     isOpen: boolean;
     onClose: ()=>any;
-    callback: (tag:BlockType)=>void;
-    menuRef: RefObject<HTMLDivElement>
+    addCallback: (tag:BlockType)=>void;
+    removeCallback: (block:EditorBlock)=>void;
+    alignmentCallback: (block: EditorBlock, alignment: BlockAlignment) => void;
+    menuRef: RefObject<HTMLDivElement>;
+    currentBlock?: EditorBlock
 
 }
 export function BlockTypeSel(props:BlockTypeSelProps){
     return (
         <div ref={props.menuRef} className="editor-popover">
-                <Stack direction={'row'} align='center' justify={"center"} width="100vw">
+                <Stack className="editor-popover-toolbar" direction={'row'} align='center' justify={"center"} >
                 <FaPlusCircle/>
-                <Button onClick={()=>props.callback(BlockType.p)}>p</Button>
-                <Button onClick={()=>props.callback(BlockType.h1)}>h1</Button>
-                <Button onClick={()=>props.callback(BlockType.h2)}>h2</Button>
-                <Button onClick={()=>props.callback(BlockType.h3)}>h3</Button>
+                <Button onClick={()=>props.addCallback(BlockType.p)}>p</Button>
+                <Button onClick={()=>props.addCallback(BlockType.h1)}>h1</Button>
+                <Button onClick={()=>props.addCallback(BlockType.h2)}>h2</Button>
+                <Button onClick={()=>props.addCallback(BlockType.h3)}>h3</Button>
                 <IconButton 
-                    onClick={()=>props.callback(BlockType.a)}
+                    onClick={()=>props.addCallback(BlockType.a)}
                     aria-label="Add Link"
                     icon={<FaLink/>}
                 />
                 <IconButton 
-                    onClick={()=>props.callback(BlockType.img)}
+                    onClick={()=>props.addCallback(BlockType.img)}
                     aria-label="Add Image"
                     icon={<FaCameraRetro/>}
                 />
-                   <IconButton 
-                    onClick={()=>props.callback(BlockType.img)}
-                    aria-label="Remove"
-                    icon={<FaTrash/>}
-                />
+                   {props.currentBlock && 
+                   <>
+                    <FaDotCircle/>
+                    <IconButton
+                       icon={<FaAlignLeft/>}
+                       aria-label="align-left"
+                       onClick={()=>props.alignmentCallback(props.currentBlock as EditorBlock, BlockAlignment.left)}
+                   />
+                    <IconButton
+                        icon={<FaAlignCenter/>}
+                        aria-label="align-center"
+                       onClick={()=>props.alignmentCallback(props.currentBlock as EditorBlock, BlockAlignment.center)}
+
+                    />
+                     <IconButton
+                        icon={<FaAlignRight/>}
+                        aria-label="align-right"
+                       onClick={()=>props.alignmentCallback(props.currentBlock as EditorBlock, BlockAlignment.right)}
+
+                    />
+                    <IconButton 
+                        onClick={()=>{
+                            props.removeCallback(props.currentBlock as EditorBlock)
+                        }}
+                        colorScheme="red"
+                        aria-label="Remove"
+                        icon={<FaTrash/>}
+                        />
+                   </>
+                }
                 </Stack>
         </div>
     )
