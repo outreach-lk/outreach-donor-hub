@@ -21,12 +21,15 @@ export default function NewCausePage() {
   return (
     <>
       <Nav />
-      <Container maxW={"full"} p="12">
+      <Container maxW={"full"} py="12" >
         <Box minH={"xl"}>
+         <Stack>
           <Heading size={"md"}>Create a new Cause</Heading>
           <Heading size={"sm"}>And let the donors know!</Heading>
-          <Box>
+         </Stack>
+          <Box p="12">
           <RichTextEditor 
+            debug={true}
             blocklist={newCauseEditor.blocks as SerializableBlock[]}
             treeGrabber={(tree:EditorTree)=>{
                 editorRef.current = tree;
@@ -36,7 +39,6 @@ export default function NewCausePage() {
             <Stack>
                 <Button
                     onClick={()=>{
-                        
                         console.log(editorRef.current?.serializeTree.bind(editorRef.current)());
                     }}
                     colorScheme="blue"

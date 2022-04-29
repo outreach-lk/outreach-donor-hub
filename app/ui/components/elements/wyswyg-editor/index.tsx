@@ -33,6 +33,7 @@ export function RichTextEditor(props: RichTextEditorProps) {
   const [tree, setTree] = useState<EditorTree>(
     new EditorTree(editorRef, menuRef, setCurrBlock)
   );
+  const [showMenu,setShowMenu] = useState(false);
   const handleInitClick: MouseEventHandler<HTMLDivElement> = (e) => {
     if (tree.isEmpty()) {
       tree.append(BlockType.p);
@@ -104,13 +105,15 @@ export function RichTextEditor(props: RichTextEditorProps) {
       <div
         ref={editorRef}
         onClick={handleInitClick}
+        onMouseOver={()=>setShowMenu(true)}
+        onMouseLeave={()=>setShowMenu(false)}
         style={{ width: "100%", position: "relative" }}
         className="wysiwyg-editor-container"
       ></div>
 
       <BlockTypeSel
         menuRef={menuRef}
-        isOpen={true}
+        isOpen={showMenu}
         addCallback={(tag) =>
           tree.append(
             tag,
@@ -140,6 +143,7 @@ export type SerializableBlock = {
   id: string;
   type: BlockType;
   rawValue: string;
+  placeholder?: string;
   blockAlignment?: BlockAlignment;
   media?: {
     src: string;
@@ -150,6 +154,8 @@ export type SerializableBlock = {
   preventDeletion?: boolean;
   preventAlignmentChange?: boolean;
   hideMenu?: boolean;
+  isLocked?: boolean;
+  nonZeroRawValueRequired?: boolean;
 };
 
 export enum BlockAlignment {

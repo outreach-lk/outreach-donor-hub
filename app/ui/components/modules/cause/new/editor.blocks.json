@@ -4,15 +4,16 @@
       {
         "id": "new.cause.title",
         "type": "h1",
-        "rawValue": "👋 Title of the Cause",
+        "placeholder": "👋 Title of the Cause <small>[edit]</small>",
         "blockAlignment": "left",
         "nextBlockId": "new.cause.target",
-        "hideMenu": true
+        "hideMenu": true,
+        "nonZeroRawValueRequired": true
       },
       {
         "id": "new.cause.target",
         "type": "h2",
-        "rawValue": "💰 How much money do you expect to raise? <i>(optional)</i>",
+        "placeholder": "💰 How much money do you expect to raise? <i>(optional)</i> <small>[edit]</small>",
         "blockAlignment": "left",
         "nextBlockId": "new.cause.desc.block.1",
         "hideMenu": true
@@ -20,24 +21,34 @@
       {
         "id": "new.cause.desc.block.1",
         "type": "h2",
-        "rawValue": "Write a description of what you are raising money for.",
+        "placeholder": "✏️ Write a description of what you are raising money for. <small>[edit]</small>",
         "blockAlignment": "left",
-        "nextBlockId": "new.cause.desc.block.2"
+        "nextBlockId": "new.cause.desc.block.2",
+        "preventDeletion": true
       },
       {
         "id": "new.cause.desc.block.2",
         "type": "p",
-        "rawValue": "Lorem ipsum dolor sit amet consectetur adipiscing elit, urna consequat felis vehicula class ultricies mollis dictumst, aenean non a in donec nulla. Phasellus ante pellentesque erat cum risus consequat imperdiet aliquam, integer placerat et turpis mi eros nec lobortis taciti, vehicula nisl litora tellus ligula porttitor metus.",
-        "blockAlignment": "left",
-        "nextBlockId": "new.cause.desc.block.3"
+        "placeholder": "Lorem ipsum dolor sit amet consectetur adipiscing elit, urna consequat felis vehicula class ultricies mollis dictumst, aenean non a in donec nulla. Phasellus ante pellentesque erat cum risus consequat imperdiet aliquam, integer placerat et turpis mi eros nec lobortis taciti, vehicula nisl litora tellus ligula porttitor metus.",
+        "blockAlignment": "center",
+        "nextBlockId": "new.cause.desc.block.3",
+        "preventDeletion": true
       },
       {
         "id": "new.cause.desc.block.3",
-        "type": "img",
-        "rawValue": "",
+        "type": "h2",
+        "placeholder": "📸 Add images & tell a visual story about your cause.",
         "blockAlignment": "left",
+        "nextBlockId": "new.cause.desc.block.4"
+
+      },
+      {
+        "id": "new.cause.desc.block.4",
+        "type": "img",
+        "blockAlignment": "left",
+        "placeholder":"",
         "media": {
-          "src": "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg?crop=1.00xw:0.669xh;0,0.190xh&resize=1200:*"
+            "src": "/assets/images/cause/cause-default-image.jpg"
         }
       }
     ]

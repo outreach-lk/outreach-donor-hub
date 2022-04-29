@@ -1,7 +1,7 @@
 import { BlockAlignment, BlockType } from ".";
 import { v4 as uuidv4 } from "uuid";
 import { EditorTree } from "./tree";
-
+import sanitizeHtml from 'sanitize-html';
 
 export class EditorBlock {
     type: BlockType;
@@ -9,6 +9,7 @@ export class EditorBlock {
     elem?: HTMLElement;
     next: null | EditorBlock;
     rawValue: string;
+    placeholder?: string;
     blockAlignment: BlockAlignment;
     media?: {
       src: string;
@@ -24,7 +25,8 @@ export class EditorBlock {
     preventDeletion: boolean;
     preventAlignmentChange: boolean;
     hideMenu: boolean;
-
+    isLocked: boolean;
+    nonZeroRawValueRequired: boolean;
     private mutObserver: MutationObserver;
     private static mutObserverConfig: MutationObserverInit = {
       characterData: true, attributes: false, childList: false, subtree: true
@@ -50,6 +52,8 @@ export class EditorBlock {
       this.preventDeletion = false
       this.preventAlignmentChange = false;
       this.hideMenu = false;
+      this.isLocked = false;
+      this.nonZeroRawValueRequired = false;
     }
     focus() {
       this.tree.dispatchSetCurrBlock(this);
@@ -59,8 +63,8 @@ export class EditorBlock {
           if (this.elem) {
             const resizeObserver = new ResizeObserver(() => {
               if (this.tree.menu.current && this.elem) {
-                this.tree.menu.current.style.marginTop = `${
-                  this.elem.offsetTop + this.tree.menu.current.offsetHeight
+                this.tree.menu.current.style.top = `${
+                  this.elem.offsetTop + this.tree.menu.current.offsetHeight*2
                 }px`;
               }
             });
@@ -68,14 +72,19 @@ export class EditorBlock {
             resizeObserver.observe(this.elem);
           }
         }, 0);
-        this.elem.setAttribute("contentEditable", "true");
+        this.elem.setAttribute("contentEditable", String(!this.isLocked));
       }
     }
   
     blur() {
       this.elem?.setAttribute("contentEditable", "false");
       setTimeout(()=>{
-          this.tree.dispatchSetCurrBlock(null);
+        this.handlePlaceholder();
+        if(this.elem &&this.nonZeroRawValueRequired && !this.rawValue?.length){
+            this.elem.style.borderColor = 'red';
+        }else if(this.elem){
+            this.elem.style.borderColor ='none';
+        }
       },100)
     }
   
@@ -86,6 +95,7 @@ export class EditorBlock {
     }
   
     onKeyDown(e: KeyboardEvent) {
+      this.handlePlaceholder(false);  
       switch (e.key) {
         case "Enter":
           this.onEnter();
@@ -111,7 +121,8 @@ export class EditorBlock {
      */
     onMutation(mutationList: MutationRecord[], observer: MutationObserver) {
       if (this.type !== BlockType.img && this.elem) {
-        this.rawValue = this.elem?.innerHTML;
+        this.rawValue = this.sanitizeValue(this.elem?.innerHTML);
+        this.handlePlaceholder();
       } else {
         // handle image mutation.
       }
@@ -131,7 +142,25 @@ export class EditorBlock {
       this.elem.onblur = () => this.blur();
       this.elem.onkeydown = (e) => this.onKeyDown(e);
       this.elem.style.textAlign = this.blockAlignment.valueOf()
+      this.handlePlaceholder();
       this.focus();
+    }
+
+    sanitizeValue(html:string):string{
+        return sanitizeHtml(html);
+    }
+
+    private handlePlaceholder(showPlaceholder:boolean=true){
+        if(this.placeholder && !this.rawValue?.length && this.elem){
+            this.elem.style.color = 'grey'
+            if(showPlaceholder){
+                this.elem.innerHTML = this.placeholder;
+            }else{
+                this.elem.innerHTML = ''
+            }
+        } else if(this.elem) {
+            this.elem.style.color = 'inherit';
+        }
     }
   }
   

@@ -16,7 +16,7 @@ interface BlockTypeSelProps {
 }
 
 export function BlockTypeSel(props:BlockTypeSelProps){
-    if(!props.currentBlock || props.currentBlock.hideMenu) return null;
+    if(props.currentBlock?.hideMenu) return null;
     return (
         <div ref={props.menuRef} className="editor-popover">
                 <Stack className="editor-popover-toolbar" direction={'row'} align='center' justify={"center"} >
@@ -55,14 +55,14 @@ export function BlockTypeSel(props:BlockTypeSelProps){
                        onClick={()=>props.alignmentCallback(props.currentBlock as EditorBlock, BlockAlignment.right)}
 
                     />
-                    <IconButton 
+                    {!props.currentBlock.preventDeletion &&<IconButton 
                         onClick={()=>{
                             props.removeCallback(props.currentBlock as EditorBlock)
                         }}
                         colorScheme="red"
                         aria-label="Remove"
                         icon={<FaTrash/>}
-                        />
+                        />}
                    </>
                 }
                 </Stack>

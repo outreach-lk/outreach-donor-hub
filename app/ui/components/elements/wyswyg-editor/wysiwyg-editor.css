@@ -17,13 +17,8 @@
     font-weight: 500;
 }
 
-.editor-p {
-
-}
-
 .editor-img{
-    margin-left: auto;
-    transform: translateX(-50%);
+    padding: 8px 0 18px 0;
 }
 
 .wysiwyg-editor-container{
@@ -31,9 +26,9 @@
 }
 .editor-popover {
     position: absolute;
-    top:0;
-    float: right;
+    top: auto;
     padding: 10px 0 0 0;
+    margin-left: 50%;
 }
 .editor-popover-toolbar {
     backdrop-filter: blur(100px);
