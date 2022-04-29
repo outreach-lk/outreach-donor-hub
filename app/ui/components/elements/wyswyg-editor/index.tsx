@@ -23,7 +23,7 @@ import sample from "./sample.json";
 interface RichTextEditorProps {
   debug?: boolean;
   blocklist?: SerializableBlock[];
-  treeGrabber: (tree:EditorTree)=>void;
+  treeGrabber: (tree: EditorTree) => void;
 }
 
 export function RichTextEditor(props: RichTextEditorProps) {
@@ -33,7 +33,7 @@ export function RichTextEditor(props: RichTextEditorProps) {
   const [tree, setTree] = useState<EditorTree>(
     new EditorTree(editorRef, menuRef, setCurrBlock)
   );
-  const [showMenu,setShowMenu] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
   const handleInitClick: MouseEventHandler<HTMLDivElement> = (e) => {
     if (tree.isEmpty()) {
       tree.append(BlockType.p);
@@ -56,9 +56,9 @@ export function RichTextEditor(props: RichTextEditorProps) {
     }
   }, [props]);
 
-  useEffect(()=>{
+  useEffect(() => {
     props.treeGrabber(tree);
-  },[tree])
+  }, [tree]);
 
   return (
     <>
@@ -105,8 +105,8 @@ export function RichTextEditor(props: RichTextEditorProps) {
       <div
         ref={editorRef}
         onClick={handleInitClick}
-        onMouseOver={()=>setShowMenu(true)}
-        onMouseLeave={()=>setShowMenu(false)}
+        onMouseOver={() => setShowMenu(true)}
+        onMouseLeave={() => setShowMenu(false)}
         style={{ width: "100%", position: "relative" }}
         className="wysiwyg-editor-container"
       ></div>

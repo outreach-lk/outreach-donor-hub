@@ -47,6 +47,13 @@ export const devConfig: AppConfig = {
             isEntity: true,
             isProtected: false,
         },
+        {
+            id: 'cause-create',
+            path: '/cause/new',
+            isEntity: false,
+            isProtected: true,
+            allowedRoles: [ UserRole.ADMIN, UserRole.MODERATOR, UserRole.REGULAR ],
+        },
         /**
          * API Routes
          */

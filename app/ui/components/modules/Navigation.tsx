@@ -42,10 +42,15 @@ export function Nav() {
 
           <Flex alignItems={"center"}>
             <Stack direction={"row"} spacing={7}>
+              <NxtLink href={"/cause/new"} passHref>
+                <Button as="a" colorScheme={"blue"}>
+                  Create Campaign
+                </Button>
+              </NxtLink>
               <Button onClick={toggleColorMode}>
                 {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
               </Button>
-
+              
               {isAuthorized?<Menu>
                 <MenuButton
                   as={Button}
@@ -56,7 +61,7 @@ export function Nav() {
                 >
                   <Avatar
                     size={"sm"}
-                    src={"https://avatars.dicebear.com/api/male/username.svg"}
+                    src={"https://avatars.dicebear.com/api/croodles-neutral/outreach.svg"}
                   />
                 </MenuButton>
                 <MenuList alignItems={"center"}>
@@ -64,7 +69,7 @@ export function Nav() {
                   <Center>
                     <Avatar
                       size={"2xl"}
-                      src={"https://avatars.dicebear.com/api/male/username.svg"}
+                      src={"https://avatars.dicebear.com/api/croodles-neutral/outreach.svg"}
                     />
                   </Center>
                   <br />

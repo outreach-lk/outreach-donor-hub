@@ -6,17 +6,9 @@
         "type": "h1",
         "placeholder": "👋 Title of the Cause <small>[edit]</small>",
         "blockAlignment": "left",
-        "nextBlockId": "new.cause.target",
+        "nextBlockId": "new.cause.desc.block.1",
         "hideMenu": true,
         "nonZeroRawValueRequired": true
-      },
-      {
-        "id": "new.cause.target",
-        "type": "h2",
-        "placeholder": "💰 How much money do you expect to raise? <i>(optional)</i> <small>[edit]</small>",
-        "blockAlignment": "left",
-        "nextBlockId": "new.cause.desc.block.1",
-        "hideMenu": true
       },
       {
         "id": "new.cause.desc.block.1",
