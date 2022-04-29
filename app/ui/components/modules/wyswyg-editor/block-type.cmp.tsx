@@ -3,6 +3,7 @@ import {
   IconButton,
   Popover,
   PopoverContent,
+  useBreakpoint,
   Stack,
 } from "@chakra-ui/react";
 import { RefObject } from "react";
@@ -34,10 +35,13 @@ export function BlockTypeSel(props: BlockTypeSelProps) {
     <div ref={props.menuRef} className="editor-popover">
       <Stack
         className="editor-popover-toolbar"
-        direction={"row"}
-        align="center"
-        justify={"center"}
+    
       >
+        <Stack
+            direction={"row"}
+            align="center"
+            justify={"center"}
+        >
         <FaPlusCircle />
         <Button onClick={() => props.addCallback(BlockType.p)}>p</Button>
         <Button onClick={() => props.addCallback(BlockType.h1)}>h1</Button>
@@ -53,8 +57,11 @@ export function BlockTypeSel(props: BlockTypeSelProps) {
           aria-label="Add Image"
           icon={<FaCameraRetro />}
         />
+        </Stack>
         {props.currentBlock && (
-          <>
+          <Stack
+            direction={"row"}
+          >
             <FaDotCircle />
             <IconButton
               icon={<FaAlignLeft />}
@@ -96,7 +103,7 @@ export function BlockTypeSel(props: BlockTypeSelProps) {
                 icon={<FaTrash />}
               />
             )}
-          </>
+          </Stack>
         )}
       </Stack>
     </div>

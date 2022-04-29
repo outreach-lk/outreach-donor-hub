@@ -52,3 +52,10 @@
   padding: 10px 0px 10px 0px;
   border: none !important;
 }
+
+@media screen and (max-width: 480px) {
+  .editor-popover {
+    margin-left: -10%;
+    margin-top: -30%
+  }
+}

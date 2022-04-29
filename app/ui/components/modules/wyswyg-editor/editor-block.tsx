@@ -59,11 +59,11 @@ export class EditorBlock {
     this.nonZeroRawValueRequired = false;
   }
   focus() {
-    this.tree.dispatchSetCurrBlock(this);
     if (this.elem) {
       this.mutObserver.observe(this.elem, EditorBlock.mutObserverConfig);
       setTimeout(() => {
         if (this.elem) {
+          this.tree.dispatchSetCurrBlock(this);
           const resizeObserver = new ResizeObserver(() => {
             if (this.tree.menu.current && this.elem) {
               this.tree.menu.current.style.top = `${
@@ -74,7 +74,7 @@ export class EditorBlock {
           this.elem.focus();
           resizeObserver.observe(this.elem);
         }
-      }, 0);
+      }, );
       this.elem.setAttribute("contentEditable", String(!this.isLocked));
     }
   }
@@ -88,6 +88,7 @@ export class EditorBlock {
       } else if (this.elem) {
         this.elem.style.borderColor = "none";
       }
+      // this.tree.dispatchSetCurrBlock(null);
     }, 100);
   }
 
@@ -99,6 +100,7 @@ export class EditorBlock {
 
   onKeyDown(e: KeyboardEvent) {
     this.handlePlaceholder(false);
+    this.tree.dispatchSetCurrBlock(this)
     switch (e.key) {
       case "Enter":
         this.onEnter();
