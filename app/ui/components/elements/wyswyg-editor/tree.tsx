@@ -2,6 +2,7 @@ import { Dispatch, RefObject, SetStateAction } from "react";
 import { BlockAlignment, BlockType, SerializableBlock } from ".";
 import { EditorBlock } from "./editor-block";
 import { v4 as uuidv4 } from "uuid";
+import sanitize from "sanitize-html";
 
 export class EditorTree {
   root: null | EditorBlock;
@@ -127,7 +128,7 @@ export class EditorTree {
         break;
     }
     _block.bindDOMElement(_elem);
-    _elem.innerHTML = block?.rawValue || block?.placeholder || "";
+    _elem.innerHTML = sanitize(block?.rawValue || block?.placeholder || "");
     /**
      * if appended in the middle.
      */
