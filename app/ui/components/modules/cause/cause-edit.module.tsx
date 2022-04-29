@@ -18,12 +18,17 @@ import { wrap } from "module";
 import { useState } from "react";
 import { FaCheckCircle } from "react-icons/fa";
 import { useFeedback } from "../../../../hooks/feedback.hook";
+import { BankAccountDetails } from "../../../../types/dtos/bank-details.dto";
 import { CauseDto } from "../../../../types/dtos/cause.dtos";
 import { FileDto } from "../../../../types/dtos/remote-file.dtos";
 import { Currency } from "../../../../types/enums/currency";
+import { BankAccountDetailForm } from "../../elements/bank-account-detail-form";
 import { CauseGeneralForm } from "../../elements/cause/cause-general-form";
 import { CauseGoalsForm } from "../../elements/cause/cause-goals-form";
+import { CauseLegalForm } from "../../elements/cause/cause-legal-form";
+import { Consent } from "../../../../types/dtos/consent";
 import { BlockAlignment, BlockType, SerializableBlock } from "../wyswyg-editor";
+import { CauseVerificationForm } from "../../elements/cause/cause-verification-form";
 
 export function CauseEditModule() {
   const { show } = useFeedback();
@@ -98,8 +103,36 @@ export function CauseEditModule() {
     });
     setStepStatus();
   };
-  const onCauseBankContinue = () => {};
-  const onCauseLegalContinue = () => {};
+  /**
+   * cause bank detail form callback
+   * @param bankAccount 
+   */
+  const onCauseBankContinue = (bankAccount: BankAccountDetails) => {
+    setData({
+      ...data,
+      bankAccount
+    })
+    setStepStatus();
+  };
+  /**
+   * cause consent form callback
+   * @param consent 
+   */
+  const onCauseLegalContinue = (consent:Consent) => {
+    setData({
+      ...data,
+      ownersConsent: consent
+    })
+    if(consent.iConsent){      
+      setStepStatus();
+    }else{
+      show('You have not consented to continue. You cannot proceed unless you do.',{
+        type:'info',
+        title: 'Legal Consent'
+      })
+    }
+  };
+
   const onCauseUserVeriContinue = () => {};
 
   /**
@@ -170,12 +203,24 @@ export function CauseEditModule() {
     }
   }
 
+  /**
+   * gets the initial values for cause goals
+   * @returns 
+   */
   const getGoalInitValues = ():{target?:number, currency?:Currency, expiry?: Date} => {
     return {
       target: data.target,
       currency: data.currency,
       expiry: data.expiry
     }
+  }
+
+  const getBankInitValues = ():BankAccountDetails => {
+    return data.bankAccount || {} as BankAccountDetails
+  }
+
+  const getLegalInitValue = ():Consent | null => {
+    return data.ownersConsent || null;
   }
 
   return (
@@ -219,6 +264,21 @@ export function CauseEditModule() {
             init={getGoalInitValues()}
             />
           )}
+          {step === CauseEditStep.BANKDETAILS && (
+            <BankAccountDetailForm 
+              onSave={onCauseBankContinue}
+              init={getBankInitValues()}
+            />
+          )}
+          {step === CauseEditStep.LEGAL && (
+            <CauseLegalForm 
+              onSave={onCauseLegalContinue}
+              init={getLegalInitValue()}
+            />
+          )}
+          {step===CauseEditStep.VERIFICATION && (
+            <CauseVerificationForm />
+          )}
         </Box>
       </Flex>
     </Box>
@@ -229,7 +289,7 @@ enum CauseEditStep {
   GENERAL = "GENERAL",
   BANKDETAILS = "BANKDETAILS",
   GOALDETAILS = "GOALDETAILS",
-  USERVERIFICATION = "USERVERIFICATION",
+  VERIFICATION = "USERVERIFICATION",
   LEGAL = "LEGAL",
 }
 const StepMap = {
@@ -258,10 +318,10 @@ const StepMap = {
     index: 4,
     label: "Legal",
     prev: CauseEditStep.BANKDETAILS,
-    next: CauseEditStep.USERVERIFICATION,
+    next: CauseEditStep.VERIFICATION,
     isComplete: false,
   },
-  [CauseEditStep.USERVERIFICATION]: {
+  [CauseEditStep.VERIFICATION]: {
     index: 5,
     label: "Verification",
     prev: CauseEditStep.LEGAL,

@@ -11,3 +11,11 @@ export enum ClaimStatus {
     APPROVED,
     REJECTED
 }
+
+export enum VerificationStatus {
+    QUEUED,
+    LOCKED_BY_MOD,
+    INPROGRESS,
+    VERIFIED,
+    REJECTED
+}

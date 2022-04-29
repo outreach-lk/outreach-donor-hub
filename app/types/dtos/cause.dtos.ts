@@ -14,16 +14,21 @@ import { DonationDto } from "./donation.dtos";
 import { BankAccountDetails } from "./bank-details.dto";
 import { Currency } from "../enums/currency";
 import { SerializableBlock } from "../../ui/components/modules/wyswyg-editor";
+import { Consent } from "./consent";
+import { VerificationStatus } from "../enums/status";
 
 export type CauseDto = Ownable & {
     title: string,
     description: SerializableBlock[],
     attachments: FileDto[],
-    donations: DonationDto[],
+    donations?: DonationDto[],
     bankAccount: BankAccountDetails;
     target?: number;
     currency?: Currency;
     expiry?: Date
+    ownersConsent?: Consent,
+    isVerified?: boolean;
+    verificationStatus?: VerificationStatus
 }
 
 export type CausePage = Pagable<CauseDto>
