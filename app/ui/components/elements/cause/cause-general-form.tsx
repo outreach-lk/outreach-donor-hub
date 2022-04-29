@@ -25,7 +25,8 @@ import {
   import { CauseDto } from "../../../../types/dtos/cause.dtos";
 import { FileDto } from "../../../../types/dtos/remote-file.dtos";
   interface CauseGeneralFormProps {
-    onContinue: (title:string, description: string, attachments: FileDto[])=> void
+    onContinue: (title:string, description: SerializableBlock[], attachments: FileDto[])=> void;
+    blockList: SerializableBlock[] | null
   }
 export function CauseGeneralForm(props:CauseGeneralFormProps){
     let editorRef = useRef<EditorTree | null>(null);
@@ -35,7 +36,7 @@ export function CauseGeneralForm(props:CauseGeneralFormProps){
         <Box >
           {/* Step 1: Cause Title, Description & Attachments */}
           <RichTextEditor
-            blocklist={newCauseEditor.blocks as SerializableBlock[]}
+            blocklist={props.blockList || newCauseEditor.blocks as SerializableBlock[]}
             treeGrabber={(tree: EditorTree) => {
               editorRef.current = tree;
             }}
@@ -44,10 +45,12 @@ export function CauseGeneralForm(props:CauseGeneralFormProps){
         <Stack >
           <Button
             onClick={() => {
-              console.log(
-                editorRef.current?.serializeTree.bind(editorRef.current)()
-              );
-              props.onContinue('hello','samal',[]);
+              const treeData = editorRef.current?.serializeTree.bind(editorRef.current)();
+              if(treeData){
+                const {rawValue: title} = treeData.blocks[0];
+                const description = treeData.blocks.slice(1);
+                props.onContinue(title,description,[]);
+              }
             }}
             colorScheme="blue"
           >

@@ -16,17 +16,22 @@ import CauseRepo from "../repos/cause.repo";
 import BaseEntity from "./base.entity";
 import { ICauseActions } from "../../types/interfaces/cause.entity.interface";
 import Donation from "./donation.entity";
+import { BankAccountDetails } from "../../types/dtos/bank-details.dto";
+import { Currency } from "../../types/enums/currency";
+import { SerializableBlock } from "../../ui/components/modules/wyswyg-editor";
 
 export default class Cause
   extends BaseEntity<Cause, CauseDto>
   implements ICauseActions
 {
   title: string;
-  description: string;
+  description: SerializableBlock[];
   attachments: FileDto[]; // TODO: Convert to File Objects
   donations: Donation[]; //TODO: 1.Create Donations 2. Should this rather be a Pagable of type Donation?
   target?: number;
+  currency?: Currency;
   expiryDate?: Date;
+  bankAccount: BankAccountDetails
   constructor(causeDto: AuditableCauseDto) {
     super(CauseRepo.getRepo(), Cause.map2Dto);
     this._id = causeDto.id;
@@ -35,12 +40,16 @@ export default class Cause
     this.description = causeDto.description;
     this.attachments = causeDto?.attachments;
     this.donations = causeDto.donations?.map((dto) => new Donation(dto));
+    this.target = causeDto.target;
+    this.currency = causeDto.currency;
+    this.expiryDate = causeDto.expiry;
     this.createdOn = causeDto.createdOn ? causeDto.createdOn : null;
     this.createdBy = causeDto.createdBy;
     this.updatedOn = causeDto.updatedOn;
     this.updatedBy = causeDto.updatedBy;
     this.permissions = causeDto.permissions;
     this.sharedWith = causeDto.sharedWith;
+    this.bankAccount = causeDto.bankAccount
   }
 
   $browser_UploadCauseAttachments(
@@ -104,6 +113,10 @@ export default class Cause
       donations: cause.donations
         ? cause.donations.map((don) => Donation.map2Dto(don))
         : [],
+      target: cause.target,
+      currency: cause.currency,
+      expiry: cause.expiryDate,
+      bankAccount: cause.bankAccount,
       owner: cause.owner, // TODO: Map User to UserDTO
       permissions: cause.permissions,
       sharedWith: cause.sharedWith, // Map Cause to CauseDTO
@@ -118,6 +131,10 @@ export default class Cause
     cause.donations = dto.donations
       ? dto.donations.map((d) => new Donation(d))
       : cause.donations;
+    cause.target = dto.target || cause.target;
+    cause.currency = dto.currency || cause.currency;
+    cause.expiryDate = dto.expiry || cause.expiryDate;
+    cause.bankAccount = dto.bankAccount || cause.bankAccount;
     cause.owner = dto.owner || cause.owner;
     cause.createdOn = dto.createdOn || cause.createdOn;
     cause.createdBy = dto.createdBy || cause.createdBy;

@@ -11,12 +11,19 @@ import { EntityCreatedDto } from "./server-message.dtos";
 import { EntityUpdatedDto } from "./server-message.dtos";
 import Donation from "../../data/entities/donation.entity";
 import { DonationDto } from "./donation.dtos";
+import { BankAccountDetails } from "./bank-details.dto";
+import { Currency } from "../enums/currency";
+import { SerializableBlock } from "../../ui/components/modules/wyswyg-editor";
 
 export type CauseDto = Ownable & {
     title: string,
-    description: string,
+    description: SerializableBlock[],
     attachments: FileDto[],
-    donations: DonationDto[]
+    donations: DonationDto[],
+    bankAccount: BankAccountDetails;
+    target?: number;
+    currency?: Currency;
+    expiry?: Date
 }
 
 export type CausePage = Pagable<CauseDto>

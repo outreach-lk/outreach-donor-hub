@@ -18,11 +18,14 @@ import { wrap } from "module";
 import { useState } from "react";
 import { FaCheckCircle } from "react-icons/fa";
 import { useFeedback } from "../../../../hooks/feedback.hook";
+import { CauseDto } from "../../../../types/dtos/cause.dtos";
 import { FileDto } from "../../../../types/dtos/remote-file.dtos";
+import { Currency } from "../../../../types/enums/currency";
 import { CauseGeneralForm } from "../../elements/cause/cause-general-form";
+import { BlockAlignment, BlockType, SerializableBlock } from "../wyswyg-editor";
 
 export function CauseEditModule() {
-    const {show} = useFeedback();
+  const { show } = useFeedback();
 
   /**
    * set to true if an existing cause is being edited.
@@ -33,11 +36,21 @@ export function CauseEditModule() {
    */
   const [step, setStep] = useState<CauseEditStep>(CauseEditStep.GENERAL);
   /**
-   *
+   * step progress map
    */
   const [stepMap, setStepMap] = useState(StepMap);
+  /**
+   * is form ready for final submission?
+   */
   const [isFinish, setIsFinish] = useState<boolean>(false);
+  /**
+   * Total number of steps in thre process
+   */
   const TOTALSTEPS = Object.keys(StepMap).length;
+  /**
+   * a holder to keep the details which will finally be used to create the cause
+   */
+  const [data, setData] = useState<CauseDto>({} as CauseDto);
   /**
    * callback for general details form.
    * @param title
@@ -46,18 +59,56 @@ export function CauseEditModule() {
    */
   const onCauseGeneralContinue = (
     title: string,
-    description: string,
+    description: SerializableBlock[],
     attachments: FileDto[]
   ) => {
+    // check if title is valid and description has atleast some blocks with non zero raw values
+    if (title?.length && description?.some((block) => block.rawValue?.length)) {
+      setData({
+        ...data,
+        title,
+        description,
+        attachments,
+      });
+      setStepStatus();
+    } else {
+      show("Title & Description are required", {
+        type: "error",
+      });
+    }
+  };
+
+  /**
+   * Optional Cause goal details.
+   * @param target target amount expected to collect
+   * @param currency currency of target
+   * @param expiry date by which the donation will cease collecting funds
+   */
+  const onCauseGoalContinue = (
+    target?: number,
+    currency?: Currency,
+    expiry?: Date
+  ) => {
+    setData({
+      ...data,
+      target,
+      currency,
+      expiry,
+    });
+    setStepStatus();
+  };
+  const onCauseBankContinue = () => {};
+  const onCauseLegalContinue = () => {};
+  const onCauseUserVeriContinue = () => {};
+
+  /**
+   * updates the stepMap and progresses to next step
+   */
+  const setStepStatus = () => {
     StepMap[step].isComplete = true;
     setStepMap(StepMap);
     stepNext();
   };
-
-  const onCauseGoalContinue = () => {};
-  const onCauseBankContinue = () => {};
-  const onCauseLegalContinue = () => {};
-  const onCauseUserVeriContinue = () => {};
 
   const stepNext = () => {
     if (stepMap[step].next) {
@@ -74,9 +125,9 @@ export function CauseEditModule() {
   };
 
   const goToStep = (nextStep: CauseEditStep) => {
-    if(nextStep === step) {
-        return;
-    }  
+    if (nextStep === step) {
+      return;
+    }
     if (
       (stepMap[step].isComplete &&
         (!stepMap[nextStep].prev ||
@@ -86,11 +137,32 @@ export function CauseEditModule() {
       setStep(nextStep);
     } else {
       //   show toast
-        show(`Please complete step: ${stepMap[step].label}`,{
-            type: 'warning'
-        })
+      show(`Please complete step: ${stepMap[step].label}`, {
+        type: "warning",
+      });
     }
   };
+
+  // Helpers
+  const getBlockListFromDto = ():SerializableBlock[] | null =>{
+    if(data?.title && data?.description){
+      return [
+        {
+          "id": "new.cause.title",
+          "type": "h1" as BlockType,
+          "placeholder": "👋 Title of the Cause <small>[edit]</small>",
+          "blockAlignment": "left" as BlockAlignment,
+          "rawValue": data.title,
+          "nextBlockId": "new.cause.desc.block.1",
+          "hideMenu": true,
+          "nonZeroRawValueRequired": true
+        },
+        ...data.description
+      ]
+    } else {
+      return null
+    }
+  }
 
   return (
     <Box>
@@ -104,13 +176,16 @@ export function CauseEditModule() {
               {stepMap &&
                 Object.entries(stepMap)
                   .sort((s1, s2) => (s1[1].index > s2[1].index ? 1 : -1))
-                  .map(([key, step], i) => (
-                    <ListItem key={i} onClick={() => goToStep(key as CauseEditStep)}>
+                  .map(([key, _step], i) => (
+                    <ListItem
+                      key={i}
+                      onClick={() => goToStep(key as CauseEditStep)}
+                    >
                       <ListIcon
                         as={FaCheckCircle}
-                        color={step.isComplete ? "green.400" : "gray.300"}
+                        color={_step.isComplete ? "green.400" : key===step? "orange.300" :"gray.300"}
                       ></ListIcon>
-                      <Link>{step.label}</Link>
+                      <Link>{_step.label}</Link>
                     </ListItem>
                   ))}
             </List>
@@ -119,7 +194,10 @@ export function CauseEditModule() {
         <Spacer />
         <Box w={"80%"}>
           {step === CauseEditStep.GENERAL && (
-            <CauseGeneralForm onContinue={onCauseGeneralContinue} />
+            <CauseGeneralForm 
+              onContinue={onCauseGeneralContinue} 
+              blockList={getBlockListFromDto()}
+              />
           )}
         </Box>
       </Flex>
