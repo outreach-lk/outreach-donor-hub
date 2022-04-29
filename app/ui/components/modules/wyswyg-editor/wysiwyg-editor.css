@@ -27,6 +27,7 @@
   top: auto;
   padding: 10px 0 0 0;
   margin-left: 50%;
+  z-index: 99;
 }
 .editor-popover-toolbar {
   backdrop-filter: blur(100px);

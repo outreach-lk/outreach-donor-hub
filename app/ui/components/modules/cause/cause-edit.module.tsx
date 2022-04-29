@@ -22,6 +22,7 @@ import { CauseDto } from "../../../../types/dtos/cause.dtos";
 import { FileDto } from "../../../../types/dtos/remote-file.dtos";
 import { Currency } from "../../../../types/enums/currency";
 import { CauseGeneralForm } from "../../elements/cause/cause-general-form";
+import { CauseGoalsForm } from "../../elements/cause/cause-goals-form";
 import { BlockAlignment, BlockType, SerializableBlock } from "../wyswyg-editor";
 
 export function CauseEditModule() {
@@ -144,6 +145,11 @@ export function CauseEditModule() {
   };
 
   // Helpers
+  /**
+   * prepares and returns the block list for the general info editor
+   * from stored data
+   * @returns 
+   */
   const getBlockListFromDto = ():SerializableBlock[] | null =>{
     if(data?.title && data?.description){
       return [
@@ -161,6 +167,14 @@ export function CauseEditModule() {
       ]
     } else {
       return null
+    }
+  }
+
+  const getGoalInitValues = ():{target?:number, currency?:Currency, expiry?: Date} => {
+    return {
+      target: data.target,
+      currency: data.currency,
+      expiry: data.expiry
     }
   }
 
@@ -198,6 +212,12 @@ export function CauseEditModule() {
               onContinue={onCauseGeneralContinue} 
               blockList={getBlockListFromDto()}
               />
+          )}
+          {step === CauseEditStep.GOALDETAILS && (
+          <CauseGoalsForm  
+            onContinue={onCauseGoalContinue}
+            init={getGoalInitValues()}
+            />
           )}
         </Box>
       </Flex>
@@ -243,7 +263,7 @@ const StepMap = {
   },
   [CauseEditStep.USERVERIFICATION]: {
     index: 5,
-    label: "User Verification",
+    label: "Verification",
     prev: CauseEditStep.LEGAL,
     next: null,
     isComplete: false,
