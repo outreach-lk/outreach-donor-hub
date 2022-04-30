@@ -10,14 +10,15 @@ import axios from "axios";
 import { Auditable } from "../../types/auditable";
 import { CauseDto } from "../../types/dtos/cause.dtos";
 import { EntityFetchedDto, EntityFetchedPageDto, EntityCreatedDto, EntityUpdatedDto, EntityDeletedDto } from "../../types/dtos/server-message.dtos";
-import { DatabaseProvider } from "../../types/enums/providers";
+import { AuthProvider, DatabaseProvider } from "../../types/enums/providers";
 import ICRUDREPO from "../../types/interfaces/crud.repo.interface";
-import { IDatabaseClient } from "../../types/interfaces/db.client.interface";
 import { IDatabaseService } from "../../types/interfaces/db.service.interface";
 import { Ownable } from "../../types/ownable";
 import { Page } from "../../types/pagable";
 import BaseRepo from "./base.repo";
 import apiMap from '../../api/api-map.json';
+import { authClientFactory } from "../../api/clients";
+import { VerificationStatus } from "../../types/enums/status";
 
 /**
  * Cause Data Access Repository
@@ -26,7 +27,6 @@ import apiMap from '../../api/api-map.json';
 export default class CauseRepo extends BaseRepo implements ICRUDREPO<CauseDto>{
     private static _instance:CauseRepo | null;
     private entity = 'cause'
-    
     constructor(){
         super( DatabaseProvider.FIREBASE );
     }
@@ -50,17 +50,28 @@ export default class CauseRepo extends BaseRepo implements ICRUDREPO<CauseDto>{
             return (this.db as IDatabaseService).findPage(page,this.entity);
         }
     }
-    create(data: CauseDto): Promise<EntityCreatedDto<Auditable & Ownable & CauseDto>> {
+    async create(data: CauseDto): Promise<EntityCreatedDto<Auditable & Ownable & CauseDto>> {
         if (this.isBrowser) {
-            // FIXME: Call the API instead
-            return (this.db as IDatabaseClient).create<CauseDto>(
-              {
-                ...data,
-              },
-              this.entity,
-            );
+            const path = apiMap.v1["[entity]"].root
+                .replace("[entity]",this.entity);
+            //FIXME move this to BaseRepo
+            const token = authClientFactory.getClient(AuthProvider.FIREBASE).accessToken;
+            return (await axios({
+                url: path,
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json',
+                    'authorization': `Bearer ${token}` 
+                },
+                data
+            })).data as EntityCreatedDto<Auditable & Ownable & CauseDto>
           } else {
-            return (this.db as IDatabaseService).save(data, this.entity);
+              const _data: CauseDto = {
+                  ...data,
+                  isVerified: false,
+                  verificationStatus: VerificationStatus.QUEUED
+              }
+            return (this.db as IDatabaseService).save(_data, this.entity);
           }
     }
     update(identifier: string, data: CauseDto): Promise<EntityUpdatedDto<Auditable & Ownable & CauseDto>> {

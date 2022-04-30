@@ -19,6 +19,7 @@ import Donation from "./donation.entity";
 import { BankAccountDetails } from "../../types/dtos/bank-details.dto";
 import { Currency } from "../../types/enums/currency";
 import { SerializableBlock } from "../../ui/components/modules/wyswyg-editor";
+import { VerificationStatus } from "../../types/enums/status";
 
 export default class Cause
   extends BaseEntity<Cause, CauseDto>
@@ -27,11 +28,13 @@ export default class Cause
   title: string;
   description: SerializableBlock[];
   attachments: FileDto[]; // TODO: Convert to File Objects
-  donations: Donation[]; //TODO: 1.Create Donations 2. Should this rather be a Pagable of type Donation?
+  donations?: Donation[]; //TODO: 1.Create Donations 2. Should this rather be a Pagable of type Donation?
   target?: number;
   currency?: Currency;
   expiryDate?: Date;
   bankAccount: BankAccountDetails
+  status?: VerificationStatus;
+  isVerified?: boolean;
   constructor(causeDto: AuditableCauseDto) {
     super(CauseRepo.getRepo(), Cause.map2Dto);
     this._id = causeDto.id;
@@ -50,6 +53,8 @@ export default class Cause
     this.permissions = causeDto.permissions;
     this.sharedWith = causeDto.sharedWith;
     this.bankAccount = causeDto.bankAccount
+    this.status = causeDto.verificationStatus || VerificationStatus.UNKNOWN
+    this.isVerified = causeDto.isVerified || false
   }
 
   $browser_UploadCauseAttachments(
@@ -68,7 +73,7 @@ export default class Cause
     try {
       return CauseRepo.getRepo().create(causeDto);
     } catch (error) {
-      throw Error();
+      throw error;
     }
   }
 
@@ -120,6 +125,8 @@ export default class Cause
       owner: cause.owner, // TODO: Map User to UserDTO
       permissions: cause.permissions,
       sharedWith: cause.sharedWith, // Map Cause to CauseDTO
+      verificationStatus: cause.status,
+      isVerified: cause.isVerified,
     } as CauseDto;
   }
 
@@ -145,5 +152,7 @@ export default class Cause
     cause.deletedBy = dto.deletedBy || cause.deletedBy;
     cause.permissions = dto.permissions || cause.permissions;
     cause.sharedWith = dto.sharedWith || cause.sharedWith;
+    cause.status = dto.verificationStatus || cause.status;
+    cause.isVerified = dto.isVerified || cause.isVerified
   }
 }

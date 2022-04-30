@@ -17,5 +17,6 @@ export enum VerificationStatus {
     LOCKED_BY_MOD,
     INPROGRESS,
     VERIFIED,
-    REJECTED
+    REJECTED,
+    UNKNOWN
 }

@@ -19,7 +19,7 @@ export async function tokenInterceptor(req:NextApiRequest): Promise<User | null>
     if( req.headers.authorization ){
         const token = req.headers.authorization;
         try {
-            return await auth.findUserByToken( token )
+            return await auth.findUserByToken( token.split(' ')[1] )
         } catch (error) {
             if(process.env.NEXT_PUBLIC_STAGE === 'dev'){
                 switch(token){

@@ -24,6 +24,12 @@ interface RichTextEditorProps {
   debug?: boolean;
   blocklist?: SerializableBlock[];
   treeGrabber: (tree: EditorTree) => void;
+  init?: RichTextEditorInit
+}
+
+interface RichTextEditorInit {
+  hideMenu?: boolean;
+  readonly?: boolean;
 }
 
 export function RichTextEditor(props: RichTextEditorProps) {
@@ -111,7 +117,7 @@ export function RichTextEditor(props: RichTextEditorProps) {
         className="wysiwyg-editor-container"
       ></div>
 
-      <BlockTypeSel
+      {!props.init?.hideMenu&&<BlockTypeSel
         menuRef={menuRef}
         isOpen={showMenu}
         addCallback={(tag) =>
@@ -125,7 +131,7 @@ export function RichTextEditor(props: RichTextEditorProps) {
         removeCallback={tree.removeBlock.bind(tree)}
         alignmentCallback={tree.setBlockAlignment.bind(tree)}
         currentBlock={currBlock || undefined}
-      />
+      />}
     </>
   );
 }

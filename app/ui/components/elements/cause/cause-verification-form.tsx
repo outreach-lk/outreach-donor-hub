@@ -1,6 +1,8 @@
 import { Box, Button, Heading, Stack, Text } from "@chakra-ui/react";
-
-export function CauseVerificationForm(){
+interface CauseVerificationFormProps{
+    onSubmitToVerify: ()=>void
+}
+export function CauseVerificationForm(props: CauseVerificationFormProps){
     return (
         <Box maxW="96">
             <Heading>🎊 Congratulations!</Heading>
@@ -15,7 +17,7 @@ export function CauseVerificationForm(){
                 We may contact you from time to time.
             </Text>
             <Box py="12">
-                <Button colorScheme={"blue"}>Submit for Verification</Button>
+                <Button onClick={props.onSubmitToVerify} colorScheme={"blue"}>Submit for Verification</Button>
             </Box>
         </Box>
     )

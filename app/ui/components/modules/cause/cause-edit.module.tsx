@@ -15,7 +15,7 @@ import {
   useBreakpoint,
 } from "@chakra-ui/react";
 import { wrap } from "module";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaCheckCircle } from "react-icons/fa";
 import { useFeedback } from "../../../../hooks/feedback.hook";
 import { BankAccountDetails } from "../../../../types/dtos/bank-details.dto";
@@ -29,10 +29,13 @@ import { CauseLegalForm } from "../../elements/cause/cause-legal-form";
 import { Consent } from "../../../../types/dtos/consent";
 import { BlockAlignment, BlockType, SerializableBlock } from "../wyswyg-editor";
 import { CauseVerificationForm } from "../../elements/cause/cause-verification-form";
+import Cause from "../../../../data/entities/cause.entity";
+import { useEntity } from "../../../../hooks/entity";
+import { FileStorageProvider } from "../../../../types/enums/providers";
 
 export function CauseEditModule() {
   const { show } = useFeedback();
-
+  const { createEntity } = useEntity('cause');
   /**
    * set to true if an existing cause is being edited.
    */
@@ -70,11 +73,19 @@ export function CauseEditModule() {
   ) => {
     // check if title is valid and description has atleast some blocks with non zero raw values
     if (title?.length && description?.some((block) => block.rawValue?.length)) {
+      const _attachments = [...attachments, ...description.map((block)=>{
+        if(block.media?.src){
+          return {
+            provider: FileStorageProvider.FIRESTORAGE,
+            path: block.media?.src
+          } as FileDto
+        }
+      })]
       setData({
         ...data,
         title,
         description,
-        attachments,
+        attachments: _attachments as FileDto[],
       });
       setStepStatus();
     } else {
@@ -133,7 +144,27 @@ export function CauseEditModule() {
     }
   };
 
-  const onCauseUserVeriContinue = () => {};
+  /**
+   * callback for when the user submits 
+   * the cause for verification
+   */
+  const onSubmitToVerify = () => {
+    if(isEditing){
+    }else{
+      createEntity(data)
+      .then(res => {
+        show('Campaign Created',{
+          type: 'success'
+        })
+      })
+      .catch(error => {
+        console.log(error);
+        show((error as Error).message || error, {
+          type: 'error'
+        })
+      })
+    }
+  };
 
   /**
    * updates the stepMap and progresses to next step
@@ -144,11 +175,12 @@ export function CauseEditModule() {
     stepNext();
   };
 
+  /**
+   * moves the editor state to next step
+   */
   const stepNext = () => {
     if (stepMap[step].next) {
       setStep(stepMap[step].next || step);
-    } else {
-      setIsFinish(true);
     }
   };
 
@@ -176,6 +208,17 @@ export function CauseEditModule() {
       });
     }
   };
+
+  // effects
+  /**
+   * sets isFinish to true if all steps have 
+   * been completed
+   */
+   useEffect(()=>{
+    if(stepMap){
+        setIsFinish(Object.values(stepMap).every(step=>step.isComplete))
+    }
+  },[stepMap])
 
   // Helpers
   /**
@@ -277,7 +320,7 @@ export function CauseEditModule() {
             />
           )}
           {step===CauseEditStep.VERIFICATION && (
-            <CauseVerificationForm />
+            <CauseVerificationForm  onSubmitToVerify={onSubmitToVerify}/>
           )}
         </Box>
       </Flex>
