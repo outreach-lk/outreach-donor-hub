@@ -4,6 +4,7 @@ import { NextApiResponse } from "next";
 import { Readable } from "stream";
 
 export class MockNextRes implements NextApiResponse{
+    unstable_revalidate: (urlPath: string) => Promise<void> = (path:string)=>{return Promise.resolve()};
     statusCode!: number;
     statusMessage!: string;
     assignSocket(socket: Socket): void {

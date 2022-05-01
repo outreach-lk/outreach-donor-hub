@@ -53,7 +53,7 @@ export function RichTextEditor(props: RichTextEditorProps) {
       tree.clearTree();
       setTree(
         EditorTree.createFromMap(
-          props.blocklist as SerializableBlock[],
+          props.blocklist ,
           editorRef,
           menuRef,
           setCurrBlock
@@ -78,7 +78,7 @@ export function RichTextEditor(props: RichTextEditorProps) {
               const blob = new Blob([bytes], {
                 type: "application/json;charset=utf-8",
               });
-              var fileURL = window.URL.createObjectURL(blob);
+              const fileURL = window.URL.createObjectURL(blob);
               window.open(fileURL);
             }}
           >

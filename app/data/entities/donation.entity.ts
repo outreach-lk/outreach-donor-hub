@@ -73,7 +73,7 @@ export default class Donation extends BaseEntity<Donation,DonationDto> implement
      * @param page 
      * @returns 
      */
-    static async getPage(page: Page<DonationDto>): Promise<EntityFetchedPageDto<DonationDto>> {
+    static async getPage(page: Page): Promise<EntityFetchedPageDto<DonationDto>> {
         try {
             return DonationRepo.getRepo().getPage(page);
         } catch (error) {

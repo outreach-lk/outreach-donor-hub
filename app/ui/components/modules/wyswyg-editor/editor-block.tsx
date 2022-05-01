@@ -36,7 +36,7 @@ export class EditorBlock {
   };
 
   constructor(
-    type: any,
+    type: BlockType,
     next: null | EditorBlock,
     tree: EditorTree,
     id?: string
@@ -154,7 +154,7 @@ export class EditorBlock {
     return sanitizeHtml(html);
   }
 
-  private handlePlaceholder(showPlaceholder: boolean = true) {
+  private handlePlaceholder(showPlaceholder = true) {
     if (this.placeholder && !this.rawValue?.length && this.elem) {
       this.elem.style.color = "grey";
       if (showPlaceholder) {

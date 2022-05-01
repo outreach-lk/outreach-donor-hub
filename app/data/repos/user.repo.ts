@@ -42,7 +42,7 @@ export default class UserRepo extends BaseRepo implements ICRUDREPO<UserDto> {
     throw new Error("Method not implemented.");
   }
   getPage(
-    page: Page<UserDto>
+    page: Page
   ): Promise<EntityFetchedPageDto<Auditable & UserDto>> {
     throw new Error("Method not implemented.");
   }

@@ -29,7 +29,7 @@ import { FileDto } from "../../../../types/dtos/remote-file.dtos";
     blockList: SerializableBlock[] | null
   }
 export function CauseGeneralForm(props:CauseGeneralFormProps){
-    let editorRef = useRef<EditorTree | null>(null);
+    const editorRef = useRef<EditorTree | null>(null);
 
     return (
         <Box minH={"xl"}>

@@ -90,6 +90,8 @@ export class EditorTree {
     prev?: EditorBlock
   ) {
     let _elem: HTMLElement;
+    let media: any;
+    let href: string | null;
     const _block = block || new EditorBlock(type, null, this);
     switch (_block.type) {
       default:
@@ -108,8 +110,6 @@ export class EditorTree {
       case "img":
         _elem = document.createElement("img");
         _elem.classList.add("block", "editor-img");
-
-        let media = _block.media;
         if (!media) {
           const url = prompt("Image URL");
           media = {
@@ -122,7 +122,7 @@ export class EditorTree {
         break;
       case "a":
         _elem = document.createElement("a");
-        const href = prompt("URL");
+        href = prompt("URL");
         (_elem as HTMLAnchorElement).href = href || "";
         (_elem as HTMLAnchorElement).target = "_blank";
         break;

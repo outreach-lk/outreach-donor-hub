@@ -65,7 +65,7 @@ export default class ClaimEvidence extends BaseEntity<ClaimEvidence,ClaimEvidenc
      * @param page 
      * @returns 
      */
-    static async getPage(page: Page<ClaimEvidenceDto>): Promise<EntityFetchedPageDto<ClaimEvidenceDto>> {
+    static async getPage(page: Page): Promise<EntityFetchedPageDto<ClaimEvidenceDto>> {
         try {
             return ClaimEvidenceRepo.getRepo().getPage(page);
         } catch (error) {

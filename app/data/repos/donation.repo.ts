@@ -10,6 +10,7 @@ import { Auditable } from "../../types/auditable";
 import { DonationDto } from "../../types/dtos/donation.dtos";
 import { FileDto } from "../../types/dtos/remote-file.dtos";
 import { EntityFetchedDto, EntityFetchedPageDto, EntityCreatedDto, EntityUpdatedDto, EntityDeletedDto } from "../../types/dtos/server-message.dtos";
+import { DatabaseProvider } from "../../types/enums/providers";
 import ICRUDREPO from "../../types/interfaces/crud.repo.interface";
 import { Ownable } from "../../types/ownable";
 import { Page } from "../../types/pagable";
@@ -19,7 +20,7 @@ export default class DonationRepo extends BaseRepo implements ICRUDREPO<Donation
     private static _instance:DonationRepo | null;
     
     constructor(){
-        super();
+        super(DatabaseProvider.FIREBASE);
     }
     get(identifier: string): Promise<EntityFetchedDto<Auditable & Ownable & DonationDto>> {
         throw new Error("Method not implemented.");
@@ -27,7 +28,7 @@ export default class DonationRepo extends BaseRepo implements ICRUDREPO<Donation
     getAll(): Promise<EntityFetchedPageDto<Auditable & DonationDto[]>> {
         throw new Error("Method not implemented.");
     }
-    getPage(page: Page<DonationDto>): Promise<EntityFetchedPageDto<Auditable & Ownable & DonationDto>> {
+    getPage(page: Page): Promise<EntityFetchedPageDto<Auditable & Ownable & DonationDto>> {
         throw new Error("Method not implemented.");
     }
     create(data: DonationDto): Promise<EntityCreatedDto<Auditable & Ownable & DonationDto>> {
