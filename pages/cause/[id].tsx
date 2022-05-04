@@ -76,8 +76,7 @@ export default function CausePage() {
                 justifyContent="space-between"
                 flexWrap={"wrap"}
               >
-                <Heading size={"md"}>Cause Activity</Heading>
-                <Timeline />
+                <Timeline title="Campaign Activity"/>
               </Box>
               {/* Similar Causes */}
             </Container>

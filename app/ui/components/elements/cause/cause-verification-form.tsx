@@ -1,6 +1,7 @@
 import { Box, Button, Heading, Stack, Text } from "@chakra-ui/react";
 interface CauseVerificationFormProps{
-    onSubmitToVerify: ()=>void
+    submissionInProgress: boolean;
+    onSubmitToVerify: ()=>void;
 }
 export function CauseVerificationForm(props: CauseVerificationFormProps){
     return (
@@ -17,7 +18,11 @@ export function CauseVerificationForm(props: CauseVerificationFormProps){
                 We may contact you from time to time.
             </Text>
             <Box py="12">
-                <Button onClick={props.onSubmitToVerify} colorScheme={"blue"}>Submit for Verification</Button>
+                <Button 
+                    onClick={props.onSubmitToVerify} 
+                    colorScheme={"blue"}
+                    isLoading={props.submissionInProgress}
+                    >Submit for Verification</Button>
             </Box>
         </Box>
     )

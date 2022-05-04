@@ -32,6 +32,7 @@ import { CauseVerificationForm } from "../../elements/cause/cause-verification-f
 import Cause from "../../../../data/entities/cause.entity";
 import { useEntity } from "../../../../hooks/entity";
 import { FileStorageProvider } from "../../../../types/enums/providers";
+import { Timeline } from "../activity-timeline/timeline.module";
 
 export function CauseEditModule() {
   const { show } = useFeedback();
@@ -60,6 +61,10 @@ export function CauseEditModule() {
    * a holder to keep the details which will finally be used to create the cause
    */
   const [data, setData] = useState<CauseDto>({} as CauseDto);
+  /**
+   * intermediate state for submission in progress
+   */
+  const [isSubmitting,setIsSubmitting] = useState<boolean>(false);
   /**
    * callback for general details form.
    * @param title
@@ -149,6 +154,7 @@ export function CauseEditModule() {
    * the cause for verification
    */
   const onSubmitToVerify = () => {
+    setIsSubmitting(true);
     if(isEditing){
     }else{
       createEntity(data)
@@ -156,12 +162,17 @@ export function CauseEditModule() {
         show('Campaign Created',{
           type: 'success'
         })
+        setStepStatus();
+        setIsFinish(true);
       })
       .catch(error => {
         console.log(error);
         show((error as Error).message || error, {
           type: 'error'
         })
+      })
+      .finally(()=>{
+        setIsSubmitting(false);
       })
     }
   };
@@ -209,16 +220,6 @@ export function CauseEditModule() {
     }
   };
 
-  // effects
-  /**
-   * sets isFinish to true if all steps have 
-   * been completed
-   */
-   useEffect(()=>{
-    if(stepMap){
-        setIsFinish(Object.values(stepMap).every(step=>step.isComplete))
-    }
-  },[stepMap])
 
   // Helpers
   /**
@@ -294,7 +295,9 @@ export function CauseEditModule() {
           </Flex>
         </Box>
         <Spacer />
-        <Box w={"80%"}>
+        {isFinish?
+        <Timeline title="Campaign Timeline"/>
+        :<Box w={"80%"}>
           {step === CauseEditStep.GENERAL && (
             <CauseGeneralForm 
               onContinue={onCauseGeneralContinue} 
@@ -320,9 +323,11 @@ export function CauseEditModule() {
             />
           )}
           {step===CauseEditStep.VERIFICATION && (
-            <CauseVerificationForm  onSubmitToVerify={onSubmitToVerify}/>
+            <CauseVerificationForm  
+              submissionInProgress={isSubmitting}
+              onSubmitToVerify={onSubmitToVerify}/>
           )}
-        </Box>
+        </Box>}
       </Flex>
     </Box>
   );
