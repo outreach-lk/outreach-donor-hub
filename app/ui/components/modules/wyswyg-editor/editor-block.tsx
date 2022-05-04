@@ -60,6 +60,7 @@ export class EditorBlock {
   }
   focus() {
     if (this.elem) {
+      this.elem.setAttribute("contentEditable", String(!this.isLocked));
       this.mutObserver.observe(this.elem, EditorBlock.mutObserverConfig);
       setTimeout(() => {
         if (this.elem) {
@@ -75,7 +76,7 @@ export class EditorBlock {
           resizeObserver.observe(this.elem);
         }
       }, );
-      this.elem.setAttribute("contentEditable", String(!this.isLocked));
+      
     }
   }
 

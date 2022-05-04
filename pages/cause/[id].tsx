@@ -47,7 +47,8 @@ export default function CausePage() {
                       treeGrabber={(tree)=>{console.log(tree)}}
                       blocklist={data.description}
                       init={{
-                        hideMenu: true
+                        hideMenu: true,
+                        readonly: true
                       }}
                     />
                     </Box>

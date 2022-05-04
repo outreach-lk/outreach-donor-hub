@@ -13,7 +13,7 @@ export function Timeline(props: TimelineProps) {
       <TimelineEvent></TimelineEvent>
       <TimelineEvent></TimelineEvent>
       <TimelineEvent></TimelineEvent>
-      <Button colorScheme={"blue"}>Load More</Button>
+      <Button variant={"link"} colorScheme={"blue"}>Load More</Button>
       {/* Creation Event will always show */}
       <TimelineEvent></TimelineEvent>
       </VStack>

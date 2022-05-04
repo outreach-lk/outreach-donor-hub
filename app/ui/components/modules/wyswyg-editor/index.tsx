@@ -37,7 +37,7 @@ export function RichTextEditor(props: RichTextEditorProps) {
   const menuRef = useRef<HTMLDivElement>(null);
   const [currBlock, setCurrBlock] = useState<EditorBlock | null>(null);
   const [tree, setTree] = useState<EditorTree>(
-    new EditorTree(editorRef, menuRef, setCurrBlock)
+    new EditorTree(editorRef, menuRef, setCurrBlock,props.init?.readonly)
   );
   const [showMenu, setShowMenu] = useState(false);
   const handleInitClick: MouseEventHandler<HTMLDivElement> = (e) => {
@@ -56,7 +56,8 @@ export function RichTextEditor(props: RichTextEditorProps) {
           props.blocklist ,
           editorRef,
           menuRef,
-          setCurrBlock
+          setCurrBlock,
+          props.init?.readonly
         )
       );
     }

@@ -11,15 +11,16 @@ export class EditorTree {
   menu: RefObject<HTMLDivElement>;
   serializableBlocks: SerializableBlock[] = [];
   id: string;
-  locked: boolean;
+  readOnly: boolean;
   dispatchSetCurrBlock: Dispatch<SetStateAction<EditorBlock | null>>;
   static createFromMap(
     sBlocks: SerializableBlock[],
     editorRef: RefObject<HTMLDivElement>,
     menuRef: RefObject<HTMLDivElement>,
-    setCurrBlock: Dispatch<SetStateAction<EditorBlock | null>>
+    setCurrBlock: Dispatch<SetStateAction<EditorBlock | null>>,
+    readOnly: boolean = false
   ): EditorTree {
-    const _tree = new EditorTree(editorRef, menuRef, setCurrBlock);
+    const _tree = new EditorTree(editorRef, menuRef, setCurrBlock,readOnly);
     const _blocks: Map<string, EditorBlock> = new Map<string, EditorBlock>();
     sBlocks.forEach((sBlock) => {
       _blocks.set(
@@ -64,7 +65,7 @@ export class EditorTree {
     editorRef: RefObject<HTMLDivElement>,
     menuRef: RefObject<HTMLDivElement>,
     setCurrBlock: Dispatch<SetStateAction<EditorBlock | null>>,
-    locked?: boolean
+    readOnly: boolean = false
   ) {
     this.id = uuidv4();
     this.root = null;
@@ -72,7 +73,7 @@ export class EditorTree {
     this.ref = editorRef;
     this.menu = menuRef;
     this.dispatchSetCurrBlock = setCurrBlock;
-    this.locked = locked === undefined ? false : locked;
+    this.readOnly = readOnly;
   }
 
   /**
@@ -93,6 +94,7 @@ export class EditorTree {
     let media: any;
     let href: string | null;
     const _block = block || new EditorBlock(type, null, this);
+    _block.isLocked = this.readOnly
     switch (_block.type) {
       default:
       case "p":
