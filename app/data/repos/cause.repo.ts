@@ -43,9 +43,19 @@ export default class CauseRepo extends BaseRepo implements ICRUDREPO<CauseDto>{
     getAll(): Promise<EntityFetchedPageDto<Auditable & CauseDto[]>> {
         throw new Error("Method not implemented.");
     }
-    getPage(page: Page): Promise<EntityFetchedPageDto<Auditable & Ownable & CauseDto>> {
+    async getPage(page: Page): Promise<EntityFetchedPageDto<Auditable & Ownable & CauseDto>> {
         if(this.isBrowser){
-            throw new Error("Method not Implemented.");
+            let path = apiMap.v1["[entity]"].root
+            .replace("[entity]",this.entity)
+            .concat('?','limit=',page.limit.toString())
+            if(page.start){
+                path = path.concat("&from=",String(page.start));   
+            }
+            try{
+                return (await axios.get(path,{})).data.data
+            } catch(error){
+                throw error;
+            }
         }else {
             return (this.db as IDatabaseService).findPage(page,this.entity);
         }

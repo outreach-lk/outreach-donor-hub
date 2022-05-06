@@ -8,6 +8,7 @@ import { getDocPath } from "../../../../utils/firebase-utils";
 import { generateEntityId } from "../../../../utils/generate-ids";
 import { AccessPerms, Ownable } from "../../../../types/ownable";
 import userEntity from "../../../../data/entities/user.entity";
+import { start } from "repl";
 export default class FirebaseDatabaseService implements IDatabaseService{
     private serverPrivateKey: string;
     private firestore: Firestore;
@@ -41,30 +42,29 @@ export default class FirebaseDatabaseService implements IDatabaseService{
     findAll<T>(entity: string): Promise<EntityFetchedPageDto<Auditable & T[]>> {
         throw new Error("Method not implemented.");
     }
-    findPage<T>(page: Page, entity: string): Promise<EntityFetchedPageDto<Auditable & T>> {
+    async findPage<T>(page: Page, entity: string): Promise<EntityFetchedPageDto<Auditable & T>> {
         let query = this.firestore.collection(entity).limit(page.limit)
+        query = query.where('isDeleted','!=',true).orderBy('isDeleted').orderBy('createdOn','desc')
         if(page.start){
             /**
              * Try splitting the start value with = to check
              * if a custom field is being queried.
              * if not, default to _id
              */
-            const [k,v] = (page.start as string).split(':')
+            const [k,v] = (page.start as string).split(':');
             if(v){
                 /**
                  * FIXME: This may be faulty
                  */
                 query = query
-                .orderBy(k)
-                .startAt(v)
+                .startAfter(v)
             }else{
+                const startSnap  = await this.firestore.doc(`${entity}/${page.start}`).get()
                 query = query
-                .orderBy('_id')
-                .startAt(page.start)
+                .startAfter(startSnap)
             }
-        }
+            query = query        }
         return query
-            .where('isDeleted','!=',true)
             .get()
             .then(data => {
                 return {

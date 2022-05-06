@@ -2,13 +2,18 @@
  * Cause Page
  */
 
+import { CheckCircleIcon } from "@chakra-ui/icons";
 import {
   Box,
   Container,
   Heading,
+  HStack,
   Text,
+  Tooltip,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
+import { FaCheckCircle } from "react-icons/fa";
+import { IconBase } from "react-icons/lib";
 import { CauseDto } from "../../app/types/dtos/cause.dtos";
 import { AttachmentCarousel } from "../../app/ui/components/elements/carousel";
 import { CauseActions } from "../../app/ui/components/elements/cause/cause.actions";
@@ -25,7 +30,19 @@ export default function CausePage() {
         return (
           <>
             <Container maxW={"7xl"} p="12">
-              <Heading marginTop="1">{data.title}</Heading>
+              <HStack align={"baseline"}>
+                <Heading marginTop="1">{data.title}</Heading>
+                {/* TODO: make own element */}
+                <Tooltip
+                  label={
+                    data.isVerified
+                      ? "This campaign has been verified by DonorHub mods"
+                      : "This campaign is not verified"
+                  }
+                >
+                  <CheckCircleIcon color={data.isVerified?'linkedin.600':'grey'}/>
+                </Tooltip>
+              </HStack>
               <Box
                 marginTop={{ base: "1", sm: "5" }}
                 display="flex"
@@ -41,20 +58,22 @@ export default function CausePage() {
                   justifyContent="center"
                   marginTop={{ base: "3", sm: "0" }}
                 >
-                    {/* {data.description} */}
-                    <Box> 
-                    <RichTextEditor 
-                      treeGrabber={(tree)=>{console.log(tree)}}
+                  {/* {data.description} */}
+                  <Box>
+                    <RichTextEditor
+                      treeGrabber={(tree) => {
+                        console.log(tree);
+                      }}
                       blocklist={data.description}
                       init={{
                         hideMenu: true,
-                        readonly: true
+                        readonly: true,
                       }}
                     />
-                    </Box>
-                  {data.attachments&&
-                    <AttachmentCarousel files={data.attachments}/>
-                  }
+                  </Box>
+                  {/* {data.attachments&&
+                    // <AttachmentCarousel files={data.attachments}/>
+                  } */}
                 </Box>
                 {/* Cause Stats  */}
                 <Box
@@ -77,7 +96,7 @@ export default function CausePage() {
                 justifyContent="space-between"
                 flexWrap={"wrap"}
               >
-                <Timeline title="Campaign Activity"/>
+                <Timeline title="Campaign Activity" />
               </Box>
               {/* Similar Causes */}
             </Container>

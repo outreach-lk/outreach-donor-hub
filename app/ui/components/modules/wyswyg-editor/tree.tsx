@@ -191,7 +191,6 @@ export class EditorTree {
    * @returns
    */
   private clear(block: EditorBlock | null) {
-    console.log(block);
     if (block) {
       if (block.elem) {
         block.elem.parentElement?.removeChild(block.elem);

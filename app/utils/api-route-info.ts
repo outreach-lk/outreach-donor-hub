@@ -9,8 +9,14 @@ import { AccessPerms } from '../types/ownable';
  * @returns 
  */
 export function getRouteInfo(req: NextApiRequest): ApiRouteInfo{
-    const _isEntity = req.query.entity && req.query.id;
-    const pathToMatch = _isEntity? `/api/v1/${req.query.entity as string}/:id`:req.url
+    let pathToMatch: string;
+    if( req.query.entity && req.query.id){
+        pathToMatch = `/api/v1/${req.query.entity as string}/:id`
+    } else if( req.query.entity ) {
+        pathToMatch = `/api/v1/${req.query.entity as string}`
+    } else {
+        pathToMatch = req.url as string
+    }
     const route = getConfig().routes.find(r => 
         r.path.match(pathToMatch as string) &&
         r.isApi === true &&

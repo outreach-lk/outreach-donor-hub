@@ -2,13 +2,20 @@
  * Page layout & common methods for paginated entity lists.
  */
 
+import { Button, Center, Container, Flex, Heading, Wrap } from "@chakra-ui/react";
 import { PropsWithChildren, useEffect, useState } from "react";
 import { useEntity } from "../../../../../hooks/entity";
 import { Pagable, Page } from "../../../../../types/pagable";
 import { EntityListPageProps } from "../../../../../types/props/entity.props";
+import { Footer } from "../../../modules/Footer";
+import { Nav } from "../../../modules/Navigation";
 
 export function EntityListPage<T>(props: EntityListPageProps){
-    const [page,setPage] = useState<Page>(props.page);
+    const initPage: Page = {
+        limit: 3,
+        start: 0,
+    }
+    const [page,setPage] = useState<Page>(props.page || initPage);
     const [next,setNext] = useState<Page|null>(null);
     const [prev,setPrev] = useState<Page|null>(null)
     const [pageData,setPageData] = useState<T[]>([]);
@@ -35,25 +42,50 @@ export function EntityListPage<T>(props: EntityListPageProps){
         setIsLoading(true);
         fetchEntityPage(page)
         .then(data=>{
-            if(data.data){
-                setPageData(data.data?.data as T[])
+            console.log(data);
+            if(data.data?.data.length){
+                setPageData([...pageData,...data.data?.data as T[]])
             }else{
-                setPageData([]);
+                setPageData([...pageData]);
             }
         })
         .catch((error:Error) => {
             setError(error)
         })
         .finally(()=>setIsLoading(false))
-    },[page])
+    },[page]);
+
+    /**
+     * sets page to load next page
+     */
+    const loadNextPage = ()=>{
+        const _nxtPg: Page = {
+            limit: page.limit,
+            start: ((pageData[pageData.length-1] as any)._id as string)
+        }
+        console.log(_nxtPg);
+        setPage(_nxtPg);
+    }
     return (
         <>
             {/* Create Entity Control goes here */}
             {/* Child components are responsible for showing the entity items */}
-            {pageData.map(item => {
-                return props.children(item);
-            })}
-            {/* Pagination Controls Go here */}
+            <Nav/>
+            
+            <Container  paddingTop={"12"} alignItems="flex-start">
+                <Heading>Current Campaigns</Heading>
+                <Flex direction={'column'}>
+                {pageData.map((item,i) => {
+                    return <div key={i}>{props.children(item)}</div>;
+                })}
+                </Flex>
+                
+                <Center p="12">
+                {/* Pagination Controls Go here */}
+                <Button onClick={loadNextPage}>Load More</Button>
+                </Center>
+            </Container>
+            <Footer/>
         </>
     )
 }
