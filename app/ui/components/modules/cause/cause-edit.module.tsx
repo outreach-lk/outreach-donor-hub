@@ -37,7 +37,7 @@ import Router from "next/router";
 
 export function CauseEditModule() {
   const { show } = useFeedback();
-  const { createEntity } = useEntity('cause');
+  const { createEntity } = useEntity("cause");
   /**
    * set to true if an existing cause is being edited.
    */
@@ -65,7 +65,7 @@ export function CauseEditModule() {
   /**
    * intermediate state for submission in progress
    */
-  const [isSubmitting,setIsSubmitting] = useState<boolean>(false);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   /**
    * callback for general details form.
    * @param title
@@ -79,14 +79,17 @@ export function CauseEditModule() {
   ) => {
     // check if title is valid and description has atleast some blocks with non zero raw values
     if (title?.length && description?.some((block) => block.rawValue?.length)) {
-      const _attachments = [...attachments, ...description.map((block)=>{
-        if(block.media?.src){
-          return {
-            provider: FileStorageProvider.FIRESTORAGE,
-            path: block.media?.src
-          } as FileDto
-        }
-      })]
+      const _attachments = [
+        ...attachments,
+        ...description.map((block) => {
+          if (block.media?.src) {
+            return {
+              provider: FileStorageProvider.FIRESTORAGE,
+              path: block.media?.src,
+            } as FileDto;
+          }
+        }),
+      ];
       setData({
         ...data,
         title,
@@ -122,70 +125,73 @@ export function CauseEditModule() {
   };
   /**
    * cause bank detail form callback
-   * @param bankAccount 
+   * @param bankAccount
    */
   const onCauseBankContinue = (bankAccount: BankAccountDetails) => {
     setData({
       ...data,
-      bankAccount
-    })
+      bankAccount,
+    });
     setStepStatus();
   };
   /**
    * cause consent form callback
-   * @param consent 
+   * @param consent
    */
-  const onCauseLegalContinue = (consent:Consent) => {
+  const onCauseLegalContinue = (consent: Consent) => {
     setData({
       ...data,
-      ownersConsent: consent
-    })
-    if(consent.iConsent){      
+      ownersConsent: consent,
+    });
+    if (consent.iConsent) {
       setStepStatus();
-    }else{
-      show('You have not consented to continue. You cannot proceed unless you do.',{
-        type:'info',
-        title: 'Legal Consent'
-      })
+    } else {
+      show(
+        "You have not consented to continue. You cannot proceed unless you do.",
+        {
+          type: "info",
+          title: "Legal Consent",
+        }
+      );
     }
   };
 
   /**
-   * callback for when the user submits 
+   * callback for when the user submits
    * the cause for verification
    */
   const onSubmitToVerify = () => {
     setIsSubmitting(true);
-    if(isEditing){
-    }else{
+    if (isEditing) {
+    } else {
       createEntity(data)
-      .then(res => {
-        show('Campaign Created',{
-          type: 'success'
+        .then((res) => {
+          show("Campaign Created", {
+            type: "success",
+          });
+          setStepStatus();
+          setIsFinish(true);
+          if (res.data?.data?._id) {
+            // gets the uuid from original cause id
+            const prefix = "cause-";
+            const id = (res.data.data._id as string).substring(prefix.length);
+            Router.push({
+              pathname: "/cause/[id]",
+              query: {
+                id,
+              },
+            });
+          }
         })
-        setStepStatus();
-        setIsFinish(true);
-        if(res.data?.data?._id){
-          // gets the uuid from original cause id
-          const prefix = 'cause-'
-          const id = (res.data.data._id as string).substring(prefix.length);
-          Router.push({
-            pathname:'/cause/[id]',
-            query: {
-              id
-            }
-          })
-        }
-      })
-      .catch(error => {
-        console.log(error);
-        show((error as Error).message || error, {
-          type: 'error'
+        .catch((error) => {
+          console.log(error);
+          show((error as Error).message || error, {
+            type: "error",
+          });
         })
-      })
-      .finally(()=>{
-        setIsSubmitting(false);
-      })
+        .finally(() => {
+          setIsSubmitting(false);
+        });
     }
   };
 
@@ -232,52 +238,55 @@ export function CauseEditModule() {
     }
   };
 
-
   // Helpers
   /**
    * prepares and returns the block list for the general info editor
    * from stored data
-   * @returns 
+   * @returns
    */
-  const getBlockListFromDto = ():SerializableBlock[] | null =>{
-    if(data?.title && data?.description){
+  const getBlockListFromDto = (): SerializableBlock[] | null => {
+    if (data?.title && data?.description) {
       return [
         {
-          "id": "new.cause.title",
-          "type": "h1" as BlockType,
-          "placeholder": "👋 Title of the Cause <small>[edit]</small>",
-          "blockAlignment": "left" as BlockAlignment,
-          "rawValue": data.title,
-          "nextBlockId": "new.cause.desc.block.1",
-          "hideMenu": true,
-          "nonZeroRawValueRequired": true
+          id: "new.cause.title",
+          type: "h1" as BlockType,
+          placeholder: "👋 Title of the Cause <small>[edit]</small>",
+          blockAlignment: "left" as BlockAlignment,
+          rawValue: data.title,
+          nextBlockId: "new.cause.desc.block.1",
+          hideMenu: true,
+          nonZeroRawValueRequired: true,
         },
-        ...data.description
-      ]
+        ...data.description,
+      ];
     } else {
-      return null
+      return null;
     }
-  }
+  };
 
   /**
    * gets the initial values for cause goals
-   * @returns 
+   * @returns
    */
-  const getGoalInitValues = ():{target?:number, currency?:Currency, expiry?: Date} => {
+  const getGoalInitValues = (): {
+    target?: number;
+    currency?: Currency;
+    expiry?: Date;
+  } => {
     return {
       target: data.target,
       currency: data.currency,
-      expiry: data.expiry
-    }
-  }
+      expiry: data.expiry,
+    };
+  };
 
-  const getBankInitValues = ():BankAccountDetails => {
-    return data.bankAccount || {} as BankAccountDetails
-  }
+  const getBankInitValues = (): BankAccountDetails => {
+    return data.bankAccount || ({} as BankAccountDetails);
+  };
 
-  const getLegalInitValue = ():Consent | null => {
+  const getLegalInitValue = (): Consent | null => {
     return data.ownersConsent || null;
-  }
+  };
 
   return (
     <Box>
@@ -298,7 +307,13 @@ export function CauseEditModule() {
                     >
                       <ListIcon
                         as={FaCheckCircle}
-                        color={_step.isComplete ? "green.400" : key===step? "orange.300" :"gray.300"}
+                        color={
+                          _step.isComplete
+                            ? "green.400"
+                            : key === step
+                            ? "orange.300"
+                            : "gray.300"
+                        }
                       ></ListIcon>
                       <Link>{_step.label}</Link>
                     </ListItem>
@@ -307,35 +322,36 @@ export function CauseEditModule() {
           </Flex>
         </Box>
         <Spacer />
-          <Box w={"80%"}>
+        <Box w={"80%"}>
           {step === CauseEditStep.GENERAL && (
-            <CauseGeneralForm 
-              onContinue={onCauseGeneralContinue} 
+            <CauseGeneralForm
+              onContinue={onCauseGeneralContinue}
               blockList={getBlockListFromDto()}
-              />
+            />
           )}
           {step === CauseEditStep.GOALDETAILS && (
-          <CauseGoalsForm  
-            onContinue={onCauseGoalContinue}
-            init={getGoalInitValues()}
+            <CauseGoalsForm
+              onContinue={onCauseGoalContinue}
+              init={getGoalInitValues()}
             />
           )}
           {step === CauseEditStep.BANKDETAILS && (
-            <BankAccountDetailForm 
+            <BankAccountDetailForm
               onSave={onCauseBankContinue}
               init={getBankInitValues()}
             />
           )}
           {step === CauseEditStep.LEGAL && (
-            <CauseLegalForm 
+            <CauseLegalForm
               onSave={onCauseLegalContinue}
               init={getLegalInitValue()}
             />
           )}
-          {step===CauseEditStep.VERIFICATION && (
-            <CauseVerificationForm  
+          {step === CauseEditStep.VERIFICATION && (
+            <CauseVerificationForm
               submissionInProgress={isSubmitting}
-              onSubmitToVerify={onSubmitToVerify}/>
+              onSubmitToVerify={onSubmitToVerify}
+            />
           )}
         </Box>
       </Flex>

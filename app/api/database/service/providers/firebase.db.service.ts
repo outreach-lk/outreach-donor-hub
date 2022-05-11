@@ -62,15 +62,15 @@ export default class FirebaseDatabaseService implements IDatabaseService {
       /** FIXME: Also support inequalities */
       queryMap.forEach((value, key) => {
         let _value: any = value;
-        if(value === 'true') {
-          _value = true
-        } else if (value === 'false') {
-          _value == false
+        if (value === "true") {
+          _value = true;
+        } else if (value === "false") {
+          _value == false;
         }
         query = query.where(key, "==", _value);
       });
     }
-    console.log(queryMap)
+    console.log(queryMap);
     query = query.orderBy("isDeleted").orderBy("createdOn", "desc");
     if (page.start) {
       /**
