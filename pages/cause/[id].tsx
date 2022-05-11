@@ -19,7 +19,7 @@ import { AttachmentCarousel } from "../../app/ui/components/elements/carousel";
 import { CauseActions } from "../../app/ui/components/elements/cause/cause.actions";
 import { CauseStats } from "../../app/ui/components/elements/cause/cause.stats";
 import { EntityPage } from "../../app/ui/components/layouts/pages/entity/entity.layout";
-import { Timeline } from "../../app/ui/components/modules/activity-timeline/timeline.module";
+import { EventTimeline } from "../../app/ui/components/modules/activity-timeline/timeline.module";
 import { RichTextEditor } from "../../app/ui/components/modules/wyswyg-editor";
 
 export default function CausePage() {
@@ -96,7 +96,7 @@ export default function CausePage() {
                 justifyContent="space-between"
                 flexWrap={"wrap"}
               >
-                <Timeline title="Campaign Activity" />
+                <EventTimeline title="Campaign Activity" topic={data.id as string} />
               </Box>
               {/* Similar Causes */}
             </Container>

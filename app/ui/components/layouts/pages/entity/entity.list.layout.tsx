@@ -40,7 +40,7 @@ export function EntityListPage<T>(props: EntityListPageProps){
      */
     useEffect(()=>{
         setIsLoading(true);
-        fetchEntityPage(page)
+        fetchEntityPage(page, props.query)
         .then(data=>{
             console.log(data);
             if(data.data?.data.length){
@@ -70,10 +70,9 @@ export function EntityListPage<T>(props: EntityListPageProps){
         <>
             {/* Create Entity Control goes here */}
             {/* Child components are responsible for showing the entity items */}
-            <Nav/>
+            {!props.isEmbedded&&<Nav/>}
             
             <Container  paddingTop={"12"} alignItems="flex-start">
-                <Heading>Current Campaigns</Heading>
                 <Flex direction={'column'}>
                 {pageData.map((item,i) => {
                     return <div key={i}>{props.children(item)}</div>;
@@ -85,7 +84,7 @@ export function EntityListPage<T>(props: EntityListPageProps){
                 <Button onClick={loadNextPage}>Load More</Button>
                 </Center>
             </Container>
-            <Footer/>
+            {!props.isEmbedded&&<Footer/>}
         </>
     )
 }

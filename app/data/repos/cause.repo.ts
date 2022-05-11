@@ -19,6 +19,9 @@ import BaseRepo from "./base.repo";
 import apiMap from '../../api/api-map.json';
 import { authClientFactory } from "../../api/clients";
 import { VerificationStatus } from "../../types/enums/status";
+import AppEvent from "../entities/event.entity";
+import { EventType } from "../../types/enums/events";
+import { queryMap2string } from "../../utils/parse-querystring";
 
 /**
  * Cause Data Access Repository
@@ -43,7 +46,9 @@ export default class CauseRepo extends BaseRepo implements ICRUDREPO<CauseDto>{
     getAll(): Promise<EntityFetchedPageDto<Auditable & CauseDto[]>> {
         throw new Error("Method not implemented.");
     }
-    async getPage(page: Page): Promise<EntityFetchedPageDto<Auditable & Ownable & CauseDto>> {
+    async getPage(page: Page,
+        queryMap?: Map<string, string | number>,
+        ): Promise<EntityFetchedPageDto<Auditable & Ownable & CauseDto>> {
         if(this.isBrowser){
             let path = apiMap.v1["[entity]"].root
             .replace("[entity]",this.entity)
@@ -51,13 +56,16 @@ export default class CauseRepo extends BaseRepo implements ICRUDREPO<CauseDto>{
             if(page.start){
                 path = path.concat("&from=",String(page.start));   
             }
+            if(queryMap){
+                path = path.concat("&query=",queryMap2string(queryMap))
+              }
             try{
                 return (await axios.get(path,{})).data.data
             } catch(error){
                 throw error;
             }
         }else {
-            return (this.db as IDatabaseService).findPage(page,this.entity);
+            return (this.db as IDatabaseService).findPage(page,this.entity,queryMap);
         }
     }
     async create(data: CauseDto): Promise<EntityCreatedDto<Auditable & Ownable & CauseDto>> {
@@ -66,7 +74,7 @@ export default class CauseRepo extends BaseRepo implements ICRUDREPO<CauseDto>{
                 .replace("[entity]",this.entity);
             //FIXME move this to BaseRepo
             const token = authClientFactory.getClient(AuthProvider.FIREBASE).accessToken;
-            return (await axios({
+            const causeData = (await axios({
                 url: path,
                 method: 'POST',
                 headers: {
@@ -75,13 +83,25 @@ export default class CauseRepo extends BaseRepo implements ICRUDREPO<CauseDto>{
                 },
                 data
             })).data as EntityCreatedDto<Auditable & Ownable & CauseDto>
+            return causeData;
           } else {
               const _data: CauseDto = {
                   ...data,
                   isVerified: false,
                   verificationStatus: VerificationStatus.QUEUED
               }
-            return (this.db as IDatabaseService).save(_data, this.entity);
+            return (this.db as IDatabaseService).save(_data, this.entity)
+            .then(res=>{
+                if(res.data){
+                    /** create a Cause Created event */
+                    AppEvent.create({
+                        eventType: EventType.CAUSE_CREATED,
+                        topic: (res.data as any)._id,
+                        message: 'campaign created',
+                    })
+                }
+                return res;
+            })
           }
     }
     update(identifier: string, data: CauseDto): Promise<EntityUpdatedDto<Auditable & Ownable & CauseDto>> {

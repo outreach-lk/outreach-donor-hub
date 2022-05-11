@@ -32,7 +32,8 @@ import { CauseVerificationForm } from "../../elements/cause/cause-verification-f
 import Cause from "../../../../data/entities/cause.entity";
 import { useEntity } from "../../../../hooks/entity";
 import { FileStorageProvider } from "../../../../types/enums/providers";
-import { Timeline } from "../activity-timeline/timeline.module";
+import { EventTimeline } from "../activity-timeline/timeline.module";
+import Router from "next/router";
 
 export function CauseEditModule() {
   const { show } = useFeedback();
@@ -164,6 +165,17 @@ export function CauseEditModule() {
         })
         setStepStatus();
         setIsFinish(true);
+        if(res.data?.data?._id){
+          // gets the uuid from original cause id
+          const prefix = 'cause-'
+          const id = (res.data.data._id as string).substring(prefix.length);
+          Router.push({
+            pathname:'/cause/[id]',
+            query: {
+              id
+            }
+          })
+        }
       })
       .catch(error => {
         console.log(error);
@@ -295,9 +307,7 @@ export function CauseEditModule() {
           </Flex>
         </Box>
         <Spacer />
-        {isFinish?
-        <Timeline title="Campaign Timeline"/>
-        :<Box w={"80%"}>
+          <Box w={"80%"}>
           {step === CauseEditStep.GENERAL && (
             <CauseGeneralForm 
               onContinue={onCauseGeneralContinue} 
@@ -327,7 +337,7 @@ export function CauseEditModule() {
               submissionInProgress={isSubmitting}
               onSubmitToVerify={onSubmitToVerify}/>
           )}
-        </Box>}
+        </Box>
       </Flex>
     </Box>
   );

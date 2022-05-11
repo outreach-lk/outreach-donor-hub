@@ -32,8 +32,8 @@ export function useEntity(entity: string) {
                 throw error;
             })
         },
-        fetchEntityPage: (page: Page)=>{
-            return repo.getPage(page)
+        fetchEntityPage: (page: Page,queryMap?:Map<string,string|number>)=>{
+            return repo.getPage(page,queryMap)
             .catch(error => {
                 logger.log(error);
                 show(error.message as string,{

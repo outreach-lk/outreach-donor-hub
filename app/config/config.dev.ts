@@ -101,5 +101,13 @@ export const devConfig: AppConfig = {
             apiMethod: HTTPMethod.DELETE,
             allowedRoles: [ UserRole.REGULAR, UserRole.ADMIN, UserRole.MODERATOR ]
         },
+        {
+            id: 'api-cause-events',
+            path: '/api/v1/event',
+            isApi: true,
+            isEntity: true,
+            isProtected: false,
+            apiMethod: HTTPMethod.GET,
+        }
     ]
 }

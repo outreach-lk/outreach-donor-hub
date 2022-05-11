@@ -6,8 +6,10 @@ import { EntityListPage } from "../../app/ui/components/layouts/pages/entity/ent
 import { RichTextEditor } from "../../app/ui/components/modules/wyswyg-editor";
 
 export default function CauseListPage(){
+    const query = new Map<string,string>();
+    query.set('isVerified', 'true');
     return (
-    <EntityListPage entity="cause" >
+    <EntityListPage entity="cause" query={query}>
         {(data: CauseDto)=>(
             // Should be in own component element file.
             <>

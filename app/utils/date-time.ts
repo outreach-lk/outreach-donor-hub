@@ -11,3 +11,11 @@ export function formatDate(date: string | Date) {
 
     return [year, month, day].join('-');
 }
+
+/**
+ * fixme: loses precision
+ * @param object 
+ */
+export function getDateFromFirebaseDateTimeObject(object: {_seconds:number, _nanoseconds: number}):Date {
+   return new Date(object._seconds*1000);
+}   

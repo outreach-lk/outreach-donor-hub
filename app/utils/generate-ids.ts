@@ -16,3 +16,7 @@ export function generateFeedbackId(): string {
 export function generateEntityId(entity:string): string {
     return entity + '-' + uuidv4();
 }
+
+export function generateEventId(): string {
+    return 'event-' + uuidv4();
+}
