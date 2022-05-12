@@ -12,7 +12,7 @@ export function createServerMessage<T>(
     message,
     method: req.method,
     path: req.url,
-    wasRequestAuthorized: !!req.headers['authorization'],
+    authorizationPresent: !!req.headers['authorization'],
     serverTime: new Date(),
     data,
     
@@ -31,9 +31,9 @@ export function createServerError(
       message,
       method: req.method,
       path: req.url,
-      wasRequestAuthorized: !!req.headers['authorization'],
+      authorizationPresent: !!req.headers['authorization'],
       serverTime: new Date(),
-      error,
+      error: error.message,
       
     } as ServerMessageDto<Error>;
   }

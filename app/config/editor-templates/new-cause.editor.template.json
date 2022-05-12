@@ -1,0 +1,47 @@
+{
+    "id": "02a21efd-7bf3-4893-ba23-9a2bdaf80cc6",
+    "blocks": [
+      {
+        "id": "new.cause.title",
+        "type": "h1",
+        "placeholder": "👋 Title of the Cause <small>[edit]</small>",
+        "blockAlignment": "left",
+        "nextBlockId": "new.cause.desc.block.1",
+        "hideMenu": true,
+        "nonZeroRawValueRequired": true
+      },
+      {
+        "id": "new.cause.desc.block.1",
+        "type": "h2",
+        "placeholder": "✏️ Write a description of what you are raising money for. <small>[edit]</small>",
+        "blockAlignment": "left",
+        "nextBlockId": "new.cause.desc.block.2",
+        "preventDeletion": true
+      },
+      {
+        "id": "new.cause.desc.block.2",
+        "type": "p",
+        "placeholder": "Lorem ipsum dolor sit amet consectetur adipiscing elit, urna consequat felis vehicula class ultricies mollis dictumst, aenean non a in donec nulla. Phasellus ante pellentesque erat cum risus consequat imperdiet aliquam, integer placerat et turpis mi eros nec lobortis taciti, vehicula nisl litora tellus ligula porttitor metus.",
+        "blockAlignment": "center",
+        "nextBlockId": "new.cause.desc.block.3",
+        "preventDeletion": true
+      },
+      {
+        "id": "new.cause.desc.block.3",
+        "type": "h2",
+        "placeholder": "📸 Add images & tell a visual story about your cause.",
+        "blockAlignment": "left",
+        "nextBlockId": "new.cause.desc.block.4"
+
+      },
+      {
+        "id": "new.cause.desc.block.4",
+        "type": "img",
+        "blockAlignment": "left",
+        "placeholder":"",
+        "media": {
+            "src": "/assets/images/cause/cause-default-image.jpg"
+        }
+      }
+    ]
+  }

@@ -1,3 +1,4 @@
+import User from "../../data/entities/user.entity";
 import { Auditable } from "../auditable";
 import { EntityCreatedDto, EntityDeletedDto, EntityFetchedDto, EntityFetchedPageDto, EntityUpdatedDto } from "../dtos/server-message.dtos";
 import { Page } from "../pagable";
@@ -6,6 +7,7 @@ import { Page } from "../pagable";
  * Database Access Service for Node runtime.
  */
 export interface IDatabaseService {
+    authenticatedUser: User | null
     /** Get Methods */
     /**
      * Fetch an item of given entity type from the database.
@@ -26,7 +28,7 @@ export interface IDatabaseService {
      * @param entity name of the entity in the database
      * TODO: Infer entity type from the data being passed.
      */
-    findPage<T>(page: Page<T>, entity:string): Promise<EntityFetchedPageDto<Auditable & T>>;
+    findPage<T>(page: Page, entity:string, querymap?: Map<string,string|number>): Promise<EntityFetchedPageDto<Auditable & T>>;
     
     /** Query Methods */
 

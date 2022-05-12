@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-import { authServiceFactory } from "../../../../../../app/adapters/services";
-import FirebaseAuthService from "../../../../../../app/adapters/auth/service/providers/firebase.auth.service";
+import { authServiceFactory } from "../../../../../../app/api/services";
+import FirebaseAuthService from "../../../../../../app/api/auth/service/providers/firebase.auth.service";
 import { SessionDto } from "../../../../../../app/types/dtos/auth.dtos";
 import { ServerMessageDto } from "../../../../../../app/types/dtos/server-message.dtos";
 import { AuthProvider } from "../../../../../../app/types/enums/providers";
@@ -20,7 +20,7 @@ export default function handler(
   res: NextApiResponse<ServerMessageDto<SessionDto | Error>>
 ) {
   if (req.method === "POST") {
-    (auth as FirebaseAuthService)
+    ( auth )
       .createSessionWithToken(req.headers.authorization as string)
       .then((session) =>
         res.send(createServerMessage<SessionDto>(session, req))

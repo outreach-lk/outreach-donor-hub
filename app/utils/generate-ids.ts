@@ -12,3 +12,11 @@ export function generateSessionId():string{
 export function generateFeedbackId(): string {
     return 'feedback-'+uuidv4();
 }
+
+export function generateEntityId(entity:string): string {
+    return entity + '-' + uuidv4();
+}
+
+export function generateEventId(): string {
+    return 'event-' + uuidv4();
+}

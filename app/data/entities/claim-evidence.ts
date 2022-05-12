@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/unbound-method */
 /**
  * Cross Environment Data Access Object for ClaimEvidences
 **/
@@ -10,25 +11,26 @@ import { Page } from "../../types/pagable";
 import ClaimEvidenceRepo from "../repos/claim-evidence.repo";
 import BaseEntity from "./base.entity";
 import { IClaimEvidenceActions } from "../../types/interfaces/claimEvidence.entity.interface";
-import User from "./user.entity";
 import { ClaimStatus } from "../../types/enums/status";
+import { Ownable } from "../../types/ownable";
 
 export default class ClaimEvidence extends BaseEntity<ClaimEvidence,ClaimEvidenceDto> implements IClaimEvidenceActions{
+
     // Define properties;
-     attachments: FileDto
+    attachments: FileDto
     status: ClaimStatus
     constructor(ClaimEvidenceDto:AuditableClaimEvidenceDto){
-        super(ClaimEvidenceRepo.getRepo(),ClaimEvidence.map2Dto,ClaimEvidence.mapFromDto);
+        super(ClaimEvidenceRepo.getRepo(),ClaimEvidence.map2Dto);
         this._id = ClaimEvidenceDto.id;
         this.attachments = ClaimEvidenceDto.attachments;
         this.status = ClaimEvidenceDto.status;
-        this.owner = ClaimEvidenceDto.owner?new User(ClaimEvidenceDto.owner):undefined;
-        this.createdOn = ClaimEvidenceDto.createdOn?ClaimEvidenceDto.createdOn:null;
-        this.createdBy = ClaimEvidenceDto.createdBy?new User(ClaimEvidenceDto.createdBy):undefined;
+        this.owner = ClaimEvidenceDto.owner
+        this.createdOn = ClaimEvidenceDto.createdOn
+        this.createdBy = ClaimEvidenceDto.createdBy
         this.updatedOn = ClaimEvidenceDto.updatedOn;
-        this.updatedBy = ClaimEvidenceDto.updatedBy? new User(ClaimEvidenceDto.updatedBy):undefined;
+        this.updatedBy = ClaimEvidenceDto.updatedBy
         this.permissions = ClaimEvidenceDto.permissions;
-        this.sharedWith = ClaimEvidenceDto.sharedWith?.map(dto=>new User(dto));
+        this.sharedWith = ClaimEvidenceDto.sharedWith
     }
 
     /** Static CRUD Methods for GET and POST */
@@ -63,7 +65,7 @@ export default class ClaimEvidence extends BaseEntity<ClaimEvidence,ClaimEvidenc
      * @param page 
      * @returns 
      */
-    static async getPage(page: Page<ClaimEvidenceDto>): Promise<EntityFetchedPageDto<ClaimEvidenceDto>> {
+    static async getPage(page: Page): Promise<EntityFetchedPageDto<ClaimEvidenceDto>> {
         try {
             return ClaimEvidenceRepo.getRepo().getPage(page);
         } catch (error) {
@@ -78,19 +80,19 @@ export default class ClaimEvidence extends BaseEntity<ClaimEvidence,ClaimEvidenc
      * @param ClaimEvidence 
      * @returns 
      */
-    static map2Dto(ClaimEvidence:ClaimEvidence):ClaimEvidenceDto {
+    static map2Dto(entity:ClaimEvidence):ClaimEvidenceDto {
         return {
-           
+           id: entity.id,
+           attachments: entity.attachments,
+           status: entity.status,
+           owner: entity.owner,
+           permissions: entity.permissions,
+           sharedWith: entity.sharedWith
         } as ClaimEvidenceDto
     }
 
-    /**
-     * Maps a dto to an instance 
-     * @param dto 
-     * @param ClaimEvidence 
-     */
-    static mapFromDto(dto: Auditable & ClaimEvidenceDto,ClaimEvidence: ClaimEvidence):void{
-        throw new Error("Not Implemented")
+    mapInstanceToDto(d: Auditable & Ownable & { attachments: FileDto; status: ClaimStatus; }, e: ClaimEvidence): void {
+        throw new Error("Method not implemented.");
     }
 
 } 

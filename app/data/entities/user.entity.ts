@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/unbound-method */
 /**
  * Cross Environment Data Access Object for Users
  **/
@@ -13,6 +14,7 @@ import UserRepo from "../repos/user.repo";
 import BaseEntity from "./base.entity";
 
 export default class User extends BaseEntity<User, UserDto> {
+
   uid: string;
   email: string;
   firstName: string;
@@ -26,7 +28,7 @@ export default class User extends BaseEntity<User, UserDto> {
   customPermissions: Permissions[];
 
   constructor(user: AuditableUserDto) {
-    super(UserRepo.getRepo(), User.map2Dto, User.mapFromDto);
+    super(UserRepo.getRepo(), User.map2Dto);
     this._id = user.uid; // is equal to uid but protected.
     this.uid = user.uid; // is public
     this.email = user.email;
@@ -67,7 +69,7 @@ export default class User extends BaseEntity<User, UserDto> {
    * @param dto
    * @param user
    */
-  static mapFromDto(dto: Auditable & UserDto, user: User): void {
+   mapInstanceToDto(dto: Auditable & UserDto, user: User): void {
     user.email = dto.email || user.email;
     user.firstName = dto.firstName || user.firstName;
     user.lastName = dto.lastName || user.lastName;
@@ -77,12 +79,12 @@ export default class User extends BaseEntity<User, UserDto> {
     user.verification = dto.verification || user.verification;
     user.role = dto.role || user.role;
     user.createdOn = dto.createdOn || user.createdOn;
-    user.createdBy = dto.createdBy ? new User(dto.createdBy) : user.createdBy;
+    user.createdBy = dto.createdBy || user.createdBy;
     user.updatedOn = dto.updatedOn || user.updatedOn;
-    user.updatedBy = dto.updatedBy ? new User(dto.updatedBy) : user.updatedBy;
+    user.updatedBy = dto.updatedBy || user.updatedBy;
     user.isDeleted = dto.isDeleted || user.isDeleted;
     user.deletedOn = dto.deletedOn || user.deletedOn;
-    user.deletedBy = dto.deletedBy ? new User(dto.deletedBy) : user.deletedBy;
+    user.deletedBy = dto.deletedBy || user.deletedBy;
   }
 
   static async getUserByUid(uid:string): Promise<User>{

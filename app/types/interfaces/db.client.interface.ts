@@ -1,7 +1,6 @@
 import { Auditable } from "../auditable";
 import { EntityCreatedDto, EntityDeletedDto, EntityFetchedDto, EntityFetchedPageDto, EntityUpdatedDto } from "../dtos/server-message.dtos";
 import { Page } from "../pagable";
-import ICRUDREPO from "./crud.repo.interface";
 
 /**
  * Direct database access client for browsers where such access is allowed. (eg: Firestore)
@@ -10,19 +9,19 @@ import ICRUDREPO from "./crud.repo.interface";
  */
 export interface IDatabaseClient {
     /** Get Methods */
-    get<T>(identifier: string): Promise<EntityFetchedDto<Auditable&T>>;
+    get<T>(identifier: string, entity: string): Promise<EntityFetchedDto<Auditable&T>>;
     getAll<T>(): Promise<EntityFetchedPageDto<Auditable & T[]>>;
-    getPage<T>(page: Page<T>): Promise<EntityFetchedPageDto<Auditable & T>>;
+    getPage<T>(page: Page, entity: string): Promise<EntityFetchedPageDto<Auditable & T>>;
     
     /** Query Methods */
 
     /** Create Methods */
-    create<T>(data: T, entity: string, id: string): Promise<EntityCreatedDto<Auditable & T>>;
+    create<T>(data: T, entity: string, id?: string): Promise<EntityCreatedDto<Auditable & T>>;
 
     /** Update Methods */
-    update<T>(identifier: string, sdata: T): Promise<EntityUpdatedDto<Auditable & T>>;
+    update<T>(identifier: string, sdata: T, entity: string): Promise<EntityUpdatedDto<Auditable & T>>;
 
     /** Delete Methods */
-    delete<T>(identifier: string): Promise<EntityDeletedDto<Auditable & T>>;
+    delete<T>(identifier: string, entity: string): Promise<EntityDeletedDto<Auditable & T>>;
     
 }

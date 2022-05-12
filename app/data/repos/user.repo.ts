@@ -1,4 +1,3 @@
-import { databaseClientFactory } from "../../adapters/clients";
 import { Auditable } from "../../types/auditable";
 import {
   EntityFetchedDto,
@@ -21,7 +20,7 @@ import BaseRepo from "./base.repo";
  */
 export default class UserRepo extends BaseRepo implements ICRUDREPO<UserDto> {
   private static _instance: UserRepo | null;
-  private entity: string = "user";
+  private entity = "user";
 
   constructor() {
     super(DatabaseProvider.FIREBASE);
@@ -33,21 +32,17 @@ export default class UserRepo extends BaseRepo implements ICRUDREPO<UserDto> {
    * @param {string} userid 
    */
   get(identifier: string): Promise<EntityFetchedDto<Auditable & UserDto>> {
-    try {
-        if(this.isBrowser) {
-          throw new Error('Method not implemented');
-        } else {
-          return (this.db as IDatabaseService).find(identifier,this.entity);
-        }
-    } catch (error) {
-        throw error;
-    }
+      if(this.isBrowser) {
+        throw new Error('Method not implemented');
+      } else {
+        return (this.db as IDatabaseService).find(identifier,this.entity);
+      }
   }
   getAll(): Promise<EntityFetchedPageDto<Auditable & UserDto[]>> {
     throw new Error("Method not implemented.");
   }
   getPage(
-    page: Page<UserDto>
+    page: Page
   ): Promise<EntityFetchedPageDto<Auditable & UserDto>> {
     throw new Error("Method not implemented.");
   }
@@ -57,7 +52,6 @@ export default class UserRepo extends BaseRepo implements ICRUDREPO<UserDto> {
    * @param data {UserDto}
    */
   create(data: UserDto): Promise<EntityCreatedDto<Auditable & UserDto>> {
-    try {
       if (this.isBrowser) {
         // Cannot create elevated users from browser.
         if(data.role === UserRole.ADMIN || data.role === UserRole.MODERATOR){
@@ -73,9 +67,6 @@ export default class UserRepo extends BaseRepo implements ICRUDREPO<UserDto> {
       } else {
         return (this.db as IDatabaseService).save(data, this.entity, data.uid);
       }
-    } catch (error) {
-      throw error;
-    }
   }
   update(
     identifier: string,

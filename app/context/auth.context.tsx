@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-floating-promises */
 /**
  * Provides Authentication & Authorization Context for the Client App
  * Router Guard & Auth/Permission based redirection happen here.
@@ -5,13 +7,14 @@
  */
 import { useRouter } from "next/router";
 import { createContext, PropsWithChildren, useEffect, useState } from "react";
-import { authClientFactory } from "../adapters/clients";
+import { authClientFactory } from "../api/clients";
 import { getConfig } from "../config";
 import { useFeedback } from "../hooks/feedback.hook";
 import { LocalSession, LocalSessionContext } from "../types/dtos/auth.dtos";
 import { UserRole } from "../types/dtos/user.dtos";
 import { FullScreenLoader } from "../ui/components/modules/loader";
 import { AuthProvider as AProvider } from "../types/enums/providers"
+import { ParsedUrlQuery } from "querystring";
 
 
 const AuthContext = createContext<LocalSessionContext>({
@@ -20,7 +23,7 @@ const AuthContext = createContext<LocalSessionContext>({
 const { Consumer, Provider } = AuthContext;
 const config = getConfig();
 export function AuthProvider<P>(props: PropsWithChildren<P>) {
-  const { pathname, push } = useRouter();
+  const { pathname, query, push } = useRouter();
   const [session, setSession] = useState<LocalSession>({
     isAuthorized: false,
   } as LocalSession);
@@ -30,6 +33,7 @@ export function AuthProvider<P>(props: PropsWithChildren<P>) {
    * Path to push back to once user has successfully signed-in
    */
   const [postSignInPath, setPostSignInPath] = useState<string | null>(null);
+  const [postSignInQuery, setPostSignInQuery] = useState<ParsedUrlQuery | null>(null);
   /**
    * Gatekeeps content from loading until route permissions have been resolved.
    * Shows the loader instead.
@@ -62,7 +66,6 @@ export function AuthProvider<P>(props: PropsWithChildren<P>) {
     return () => {
       listenerSub.unsubscribe();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
 
   /**
@@ -74,6 +77,10 @@ export function AuthProvider<P>(props: PropsWithChildren<P>) {
     // sets current path as post sign-in path unless it's auth
     if( !pathname.match('auth') ){
       setPostSignInPath(pathname);
+      // Set Post SignIn Query if there is at least one query param.
+      if(query && Object.keys(query).length){
+        setPostSignInQuery(query);
+      }
     }
     // Do not proceed unless checks for persisted sessions are done.
     if( checkingPersistedSession ) return;
@@ -97,8 +104,7 @@ export function AuthProvider<P>(props: PropsWithChildren<P>) {
         setShowContent(true);
     }
     //TODO: also check route related permissions here.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname, session.isAuthorized, checkingPersistedSession]);
+  }, [pathname, query, session.isAuthorized, checkingPersistedSession]);
 
   /**
    * Once the user Signs-in redirect back to
@@ -113,9 +119,10 @@ export function AuthProvider<P>(props: PropsWithChildren<P>) {
       if (session.isAuthorized && postSignInPath) {
         push({
           pathname: postSignInPath,
+          query: postSignInQuery
         });
       } else if ( session.isAuthorized && session.user ) {
-        if( session.user.role = UserRole.REGULAR ){
+        if( session.user.role === UserRole.REGULAR ){
           push({
             pathname: '/'
           })
@@ -126,7 +133,6 @@ export function AuthProvider<P>(props: PropsWithChildren<P>) {
         }
       }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [postSignInPath, session]);
 
   return (
@@ -136,7 +142,6 @@ export function AuthProvider<P>(props: PropsWithChildren<P>) {
         setSession,
       }}
     >
-      <button onClick={client.logout.bind(client)}>logout</button>
       {showContent ? props.children : <FullScreenLoader />}
     </Provider>
   );

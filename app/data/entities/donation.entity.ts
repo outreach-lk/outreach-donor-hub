@@ -1,42 +1,44 @@
+/* eslint-disable @typescript-eslint/unbound-method */
 /**
  * Cross Environment Data Access Object for Donations
 **/
 
 import { Auditable } from "../../types/auditable";
 import { AuditableDonationDto, DonationDto } from "../../types/dtos/donation.dtos";
-import { FileDto } from "../../types/dtos/remote-file.dtos";
 import { EntityCreatedDto, EntityFetchedDto, EntityFetchedPageDto } from "../../types/dtos/server-message.dtos";
 import { Page } from "../../types/pagable";
 import DonationRepo from "../repos/donation.repo";
 import BaseEntity from "./base.entity";
 import { IDonationActions } from "../../types/interfaces/donation.entity.interface";
-import User from "./user.entity";
 import Cause from "./cause.entity";
 import { DonationStatus } from "../../types/enums/status";
 import ClaimEvidence from "./claim-evidence";
+import { Ownable } from "../../types/ownable";
+import { CauseDto } from "../../types/dtos/cause.dtos";
+import { ClaimEvidenceDto } from "../../types/dtos/claim-evidence";
 
 export default class Donation extends BaseEntity<Donation,DonationDto> implements IDonationActions{
+
     // Define properties;
-    cause: Cause;
+    cause?: Cause;
     amount: number
     note: string
     evidence: ClaimEvidence[]
     status: DonationStatus
     constructor(DonationDto:AuditableDonationDto){
-        super(DonationRepo.getRepo(),Donation.map2Dto,Donation.mapFromDto);
+        super(DonationRepo.getRepo(),Donation.map2Dto);
         this._id = DonationDto.id;
-        this.cause = DonationDto.cause;
         this.amount = DonationDto.amount;
         this.note = DonationDto.note;
-        this.evidence = DonationDto.evidence;
+        this.evidence = DonationDto.evidence?.map(e=>new ClaimEvidence(e));
         this.status = DonationDto.status;
-        this.owner = DonationDto.owner?new User(DonationDto.owner):undefined;
+        this.owner = DonationDto.owner
         this.createdOn = DonationDto.createdOn?DonationDto.createdOn:null;
-        this.createdBy = DonationDto.createdBy?new User(DonationDto.createdBy):undefined;
+        this.createdBy = DonationDto.createdBy;
         this.updatedOn = DonationDto.updatedOn;
-        this.updatedBy = DonationDto.updatedBy? new User(DonationDto.updatedBy):undefined;
+        this.updatedBy = DonationDto.updatedBy;
         this.permissions = DonationDto.permissions;
-        this.sharedWith = DonationDto.sharedWith?.map(dto=>new User(dto));
+        this.sharedWith = DonationDto.sharedWith;
     }
 
     /** Static CRUD Methods for GET and POST */
@@ -71,7 +73,7 @@ export default class Donation extends BaseEntity<Donation,DonationDto> implement
      * @param page 
      * @returns 
      */
-    static async getPage(page: Page<DonationDto>): Promise<EntityFetchedPageDto<DonationDto>> {
+    static async getPage(page: Page): Promise<EntityFetchedPageDto<DonationDto>> {
         try {
             return DonationRepo.getRepo().getPage(page);
         } catch (error) {
@@ -92,13 +94,10 @@ export default class Donation extends BaseEntity<Donation,DonationDto> implement
         } as DonationDto
     }
 
-    /**
-     * Maps a dto to an instance 
-     * @param dto 
-     * @param Donation 
-     */
-    static mapFromDto(dto: Auditable & DonationDto,Donation: Donation):void{
-        throw new Error("Not Implemented");
+    mapInstanceToDto(dto: Auditable & Ownable & { cause: CauseDto; amount: number; note: string; evidence: ClaimEvidenceDto[]; status: DonationStatus; }, entity: Donation): void {
+        throw new Error("Method not implemented.");
     }
+
+    
 
 } 

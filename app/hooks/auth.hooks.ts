@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import {authClientFactory} from "../adapters/clients";
+import {authClientFactory} from "../api/clients";
 import { AuthContext } from "../context/auth.context";
 import { UserRole } from "../types/dtos/user.dtos";
 import { AuthProvider } from "../types/enums/providers";
@@ -19,7 +19,6 @@ export function useAuth(){
     const client = authClientFactory.getClient(AuthProvider.FIREBASE);
     const authCtx = useContext(AuthContext);
     const feedback = useFeedback();
-    const logger = useLogger();
     const setSession = authCtx.setSession;
     return {
         isAuthorized: authCtx.isAuthorized,
@@ -34,7 +33,7 @@ export function useAuth(){
                         isAuthorized: true
                     })
                 })
-                .catch((error) => feedback.show( error, {
+                .catch((error: Error) => feedback.show( error, {
                     type: 'error',
                     title: 'Sign In Error'
                 }));
@@ -47,7 +46,7 @@ export function useAuth(){
                         isAuthorized: true
                     })
                 })
-                .catch((error) => feedback.show( error, {
+                .catch((error: Error) => feedback.show( error, {
                     type: 'error',
                     title: 'Sign In Error'
                 }));
@@ -61,7 +60,7 @@ export function useAuth(){
                         isAuthorized: true
                     })
                 })
-                .catch((error) => feedback.show( error, {
+                .catch((error: Error) => feedback.show( error, {
                     type: 'error',
                     title: 'Sign In Error'
                 }));
@@ -74,7 +73,7 @@ export function useAuth(){
                         isAuthorized: true
                     })
                 })
-                .catch((error) => feedback.show( error, {
+                .catch((error: Error) => feedback.show( error, {
                     type: 'error',
                     title: 'Sign Up Error'
                 }));
@@ -88,11 +87,18 @@ export function useAuth(){
                         title: 'Password Reset'
                     })
                 })
-                .catch((error) => feedback.show( error, {
+                .catch((error: Error) => feedback.show( error, {
                     type: 'error',
                     title: 'Password Reset Error'
                 }));
-            }
+            },
+            logout: () => {
+                client.logout()
+                .catch((error: Error) => feedback.show( error, {
+                    type: 'error',
+                    title: 'Logout Error'
+                }));
+            },
             
         }
     }
