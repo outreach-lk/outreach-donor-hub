@@ -116,6 +116,16 @@ export const devConfig: AppConfig = {
             isEntity: false,
             isProtected: true,
             apiMethod: HTTPMethod.POST,
-        }
+        },
+        {
+            id: 'api-donation-create-entity',
+            path: '/api/v1/donation',
+            isApi: true,
+            isEntity: true,
+            isProtected: true,
+            apiMethod: HTTPMethod.POST,
+            allowedRoles: [ UserRole.REGULAR, UserRole.ADMIN, UserRole.MODERATOR ]
+        },
+
     ]
 }

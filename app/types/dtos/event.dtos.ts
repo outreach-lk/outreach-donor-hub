@@ -15,6 +15,7 @@ export type EventDto = Ownable & {
     topic: string
     message: string
     expiry?: Date
+    payload?: any,
 }
 
 export type EventPage = Pagable<EventDto>

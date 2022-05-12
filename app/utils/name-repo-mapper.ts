@@ -7,6 +7,7 @@ import ICRUDREPO from "../types/interfaces/crud.repo.interface";
 import CauseRepo from "../data/repos/cause.repo";
 import UserRepo from "../data/repos/user.repo";
 import EventRepo from "../data/repos/event.repo";
+import DonationRepo from "../data/repos/donation.repo";
 
 export function getRepoFromEntityName(name: string): ICRUDREPO<any> {
     switch(name){
@@ -18,5 +19,7 @@ export function getRepoFromEntityName(name: string): ICRUDREPO<any> {
             return UserRepo.getRepo();
         case "event":
             return EventRepo.getRepo();
+        case "donation":
+            return DonationRepo.getRepo();
     }
 }
