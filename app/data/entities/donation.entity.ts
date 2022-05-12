@@ -18,16 +18,22 @@ import { CauseDto } from "../../types/dtos/cause.dtos";
 import { ClaimEvidenceDto } from "../../types/dtos/claim-evidence";
 
 export default class Donation extends BaseEntity<Donation,DonationDto> implements IDonationActions{
+    mapInstanceToDto(dto: Auditable & Ownable & { ref: string; causeId: string; amount: number; note?: string | undefined; evidence?: ClaimEvidenceDto[] | undefined; status?: DonationStatus | undefined; }, entity: Donation): void {
+        throw new Error("Method not implemented.");
+    }
 
     // Define properties;
-    cause?: Cause;
+    ref: string;
+    causeId: string;
     amount: number
-    note: string
-    evidence: ClaimEvidence[]
-    status: DonationStatus
+    note?: string
+    evidence?: ClaimEvidence[]
+    status?: DonationStatus
     constructor(DonationDto:AuditableDonationDto){
         super(DonationRepo.getRepo(),Donation.map2Dto);
         this._id = DonationDto.id;
+        this.ref = DonationDto.ref;
+        this.causeId = DonationDto.causeId;
         this.amount = DonationDto.amount;
         this.note = DonationDto.note;
         this.evidence = DonationDto.evidence?.map(e=>new ClaimEvidence(e));
@@ -92,10 +98,6 @@ export default class Donation extends BaseEntity<Donation,DonationDto> implement
         return {
            
         } as DonationDto
-    }
-
-    mapInstanceToDto(dto: Auditable & Ownable & { cause: CauseDto; amount: number; note: string; evidence: ClaimEvidenceDto[]; status: DonationStatus; }, entity: Donation): void {
-        throw new Error("Method not implemented.");
     }
 
     

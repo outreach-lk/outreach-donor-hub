@@ -1,11 +1,12 @@
 import { Box, Button, Heading, Spinner, Text } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { MutableRefObject, RefObject, useEffect, useState } from "react";
 import { useAuth } from "../../../../hooks/auth.hooks";
 import apiMap from "../../../../api/api-map.json";
 import axios from "axios";
 
 interface UniqueDonorIdProps{
-    causeId: string
+    causeId: string,
+    refRef: MutableRefObject<string>
 }
 export function UniqueDonorId(props:UniqueDonorIdProps) {
   const { isAuthorized, user,client } = useAuth();
@@ -27,6 +28,7 @@ export function UniqueDonorId(props:UniqueDonorIdProps) {
   useEffect(()=>{
     fetchUniqueDonorId()
     .then((res)=>{
+        props.refRef.current = res.data
         setRef(res.data)
     })
   },[])

@@ -1,6 +1,6 @@
 import { Button, Box, Wrap, useDisclosure } from "@chakra-ui/react";
 import Cause from "../../../../data/entities/cause.entity";
-import NewDonationClaim from "../../modules/donation/new-donation.module";
+import NewDonationClaim from "../../modules/donation/pre-donation.module";
 
 interface CauseActionProps {
   cause: Cause;
