@@ -45,7 +45,7 @@ export default class EventRepo extends BaseRepo implements ICRUDREPO<EventDto> {
     queryMap?: Map<string, string | number>,
   ): Promise<EntityFetchedPageDto<Auditable & Ownable & EventDto>> {
     if (this.isBrowser) {
-      let path = apiMap.v1.event.path + "?"
+      let path = apiMap.v1["[entity]"].root.replace("[entity]", this.entity) + '?';
       if(page.start){
           path = path.concat("&from=",String(page.start));
       }

@@ -14,6 +14,7 @@ import {
 import { useRouter } from "next/router";
 import { FaCheckCircle } from "react-icons/fa";
 import { IconBase } from "react-icons/lib";
+import Cause from "../../app/data/entities/cause.entity";
 import { CauseDto } from "../../app/types/dtos/cause.dtos";
 import { AttachmentCarousel } from "../../app/ui/components/elements/carousel";
 import { CauseActions } from "../../app/ui/components/elements/cause/cause.actions";
@@ -27,6 +28,7 @@ export default function CausePage() {
   return (
     <EntityPage entity="cause" id={query.id as string}>
       {(data: CauseDto) => {
+        const cause = new Cause(data);
         return (
           <>
             <Container maxW={"7xl"} p="12">
@@ -40,7 +42,9 @@ export default function CausePage() {
                       : "This campaign is not verified"
                   }
                 >
-                  <CheckCircleIcon color={data.isVerified?'linkedin.600':'grey'}/>
+                  <CheckCircleIcon
+                    color={data.isVerified ? "linkedin.600" : "grey"}
+                  />
                 </Tooltip>
               </HStack>
               <Box
@@ -85,7 +89,7 @@ export default function CausePage() {
                   marginTop={{ base: "3", sm: "0" }}
                 >
                   <CauseStats amount={100} currency="LKR" target={10000} />
-                  <CauseActions />
+                  <CauseActions cause={cause} />
                 </Box>
               </Box>
               {/* Cause Activity */}
@@ -96,7 +100,10 @@ export default function CausePage() {
                 justifyContent="space-between"
                 flexWrap={"wrap"}
               >
-                <EventTimeline title="Campaign Activity" topic={data.id as string} />
+                <EventTimeline
+                  title="Campaign Activity"
+                  topic={data.id as string}
+                />
               </Box>
               {/* Similar Causes */}
             </Container>

@@ -19,11 +19,11 @@ import {
 import BANKS from "../../../../Sri-Lanka-Bank-and-Branch-List/banks.json";
 import BRANCHES from "../../../../Sri-Lanka-Bank-and-Branch-List/branches.json";
 import { BankAccountDetails } from "../../../types/dtos/bank-details.dto";
-type Bank = {
+export type Bank = {
   ID: number;
   name: string;
 };
-type BankBranch = {
+export type BankBranch = {
   bankID: number;
   ID: number;
   name: string;
@@ -38,12 +38,14 @@ export function BankAccountDetailForm(props: BankAccountDetailFormProps) {
   const [bank, setBank] = useState<Bank | null>(null);
   const [branches, setBranches] = useState<BankBranch[] | null>(null);
 
-  useEffect(()=>{
-    if(props.init?.bank){
-        const _branches = (BRANCHES as { [key: string]: BankBranch[] })[props.init.bank];
-        setBranches(_branches);
+  useEffect(() => {
+    if (props.init?.bank) {
+      const _branches = (BRANCHES as { [key: string]: BankBranch[] })[
+        props.init.bank
+      ];
+      setBranches(_branches);
     }
-  },[props.init])
+  }, [props.init]);
 
   const handleSelectBank: ChangeEventHandler<HTMLSelectElement> = (e) => {
     const id = e.target.value;
@@ -84,29 +86,45 @@ export function BankAccountDetailForm(props: BankAccountDetailFormProps) {
         </FormControl>
         <FormControl isRequired>
           <FormLabel htmlFor="branch">Branch</FormLabel>
-          {branches&&<Select id="branch" placeholder="Select Branch" defaultValue={props.init.branch || ''}>
-            {branches?.map((b, i) => (
-              <option key={`bank-${b.bankID}-${b.ID}`} value={b.ID}>
-                {b.name}
-              </option>
-            ))}
-          </Select>}
+          {branches && (
+            <Select
+              id="branch"
+              placeholder="Select Branch"
+              defaultValue={props.init.branch || ""}
+            >
+              {branches?.map((b, i) => (
+                <option key={`bank-${b.bankID}-${b.ID}`} value={b.ID}>
+                  {b.name}
+                </option>
+              ))}
+            </Select>
+          )}
         </FormControl>
         <FormControl isRequired>
           <FormLabel htmlFor="accountNumber">Account Number</FormLabel>
-          <Input id="accountNumber" type="number" defaultValue={props.init.accountNumber} />
+          <Input
+            id="accountNumber"
+            type="number"
+            defaultValue={props.init.accountNumber}
+          />
         </FormControl>
         <FormControl isRequired>
           <FormLabel htmlFor="accountHolderName">
             Account Holder's Name
           </FormLabel>
-          <Input id="accountHolderName"  defaultValue={props.init.accountHolderName}/>
+          <Input
+            id="accountHolderName"
+            defaultValue={props.init.accountHolderName}
+          />
         </FormControl>
         <FormControl isRequired>
           <FormLabel htmlFor="isHolderTheOwner">
             Are you the owner of this account?
           </FormLabel>
-          <Switch id="isHolderTheOwner" defaultChecked={props.init.isHolderTheOwner}/>
+          <Switch
+            id="isHolderTheOwner"
+            defaultChecked={props.init.isHolderTheOwner}
+          />
           <FormHelperText>Toggle the switch on if Yes</FormHelperText>
         </FormControl>
       </Box>

@@ -25,6 +25,7 @@ export function useAuth(){
         sessionId: authCtx.sessionId,
         user: authCtx.user,
         client: {
+            accessToken: client.accessToken,
             signInWithEmail: (email: string, password: string, persist?: boolean) => {
                 client.signInWithEmail(email, password, persist)
                 .then( session => {

@@ -38,7 +38,7 @@ export async function permissionCheck(req: NextApiRequest, res: NextApiResponse,
              * that is in the allowed roles list
              */
             if (user && user.role) {
-                isAllowed = (allowedRoles.indexOf(user.role) > -1);
+                isAllowed = (allowedRoles?.indexOf(user.role) > -1) || true;
             } else {
                 isAllowed = false
             }

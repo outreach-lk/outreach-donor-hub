@@ -1,4 +1,5 @@
 import {v4 as uuidv4} from "uuid"
+import shortHash from "short-hash";
 
 /**
  * Create a unique id for the user session.
@@ -19,4 +20,8 @@ export function generateEntityId(entity:string): string {
 
 export function generateEventId(): string {
     return 'event-' + uuidv4();
+}
+
+export function generateUniqueDonorRefId( causeId: string, userId: string): string{
+    return shortHash(`${causeId}++${userId}`);
 }

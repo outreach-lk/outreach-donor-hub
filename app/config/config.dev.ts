@@ -108,6 +108,14 @@ export const devConfig: AppConfig = {
             isEntity: true,
             isProtected: false,
             apiMethod: HTTPMethod.GET,
+        },
+        {
+            id: 'api-rpc-unique-donor-ref',
+            path: '/api/v1/rpc/donation/ref',
+            isApi: true,
+            isEntity: false,
+            isProtected: true,
+            apiMethod: HTTPMethod.POST,
         }
     ]
 }

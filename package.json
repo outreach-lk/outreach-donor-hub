@@ -30,6 +30,7 @@
     "react-slick": "^0.29.0",
     "rxjs": "^7.5.5",
     "sanitize-html": "^2.7.0",
+    "short-hash": "^1.0.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

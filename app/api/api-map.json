@@ -1,20 +1,23 @@
 {
   "v1": {
     "root": "./api/v1",
-    "event": {
-      "path": "/api/v1/event",
-      "responseType": null,
-      "request": {
-        "body": {}
+    "rpc": {
+      "root": "/api/v1/rpc",
+      "donation": {
+        "root": "/api/v1/rpc/donation",
+        "ref": {
+          "path": "/api/v1/rpc/donation/ref",
+          "responseType": null,
+          "request": {
+            "body": {}
+          }
+        }
       }
-    },
-    "cause": {
-      "root": "/api/v1/cause"
     },
     "auth": {
       "root": "/api/v1/auth",
       "sign-up": {
-        "root": "api/v1/auth/sign-up",
+        "root": "/api/v1/auth/sign-up",
         "index": {
           "path": "/api/v1/auth/sign-up/index",
           "responseType": "NextApiResponse<ServerMessageDto<SessionDto | Error>",
