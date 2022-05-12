@@ -10,6 +10,7 @@ import { Auditable } from "../../types/auditable";
 import { ClaimEvidenceDto } from "../../types/dtos/claim-evidence";
 import { FileDto } from "../../types/dtos/remote-file.dtos";
 import { EntityFetchedDto, EntityFetchedPageDto, EntityCreatedDto, EntityUpdatedDto, EntityDeletedDto } from "../../types/dtos/server-message.dtos";
+import { DatabaseProvider } from "../../types/enums/providers";
 import ICRUDREPO from "../../types/interfaces/crud.repo.interface";
 import { Ownable } from "../../types/ownable";
 import { Page } from "../../types/pagable";
@@ -19,7 +20,7 @@ export default class ClaimEvidenceRepo extends BaseRepo implements ICRUDREPO<Cla
     private static _instance:ClaimEvidenceRepo | null;
     
     constructor(){
-        super();
+        super(DatabaseProvider.FIREBASE);
     }
     get(identifier: string): Promise<EntityFetchedDto<Auditable & Ownable & ClaimEvidenceDto>> {
         throw new Error("Method not implemented.");
@@ -27,7 +28,7 @@ export default class ClaimEvidenceRepo extends BaseRepo implements ICRUDREPO<Cla
     getAll(): Promise<EntityFetchedPageDto<Auditable & ClaimEvidenceDto[]>> {
         throw new Error("Method not implemented.");
     }
-    getPage(page: Page<ClaimEvidenceDto>): Promise<EntityFetchedPageDto<Auditable & Ownable & ClaimEvidenceDto>> {
+    getPage(page: Page): Promise<EntityFetchedPageDto<Auditable & Ownable & ClaimEvidenceDto>> {
         throw new Error("Method not implemented.");
     }
     create(data: ClaimEvidenceDto): Promise<EntityCreatedDto<Auditable & Ownable & ClaimEvidenceDto>> {

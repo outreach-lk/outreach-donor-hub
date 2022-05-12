@@ -4,6 +4,7 @@ import { CauseDto } from "../../../../../app/types/dtos/cause.dtos";
 import { EntityUpdatedDto } from "../../../../../app/types/dtos/server-message.dtos";
 import { Auditable } from "../../../../../app/types/auditable";
 import { Ownable } from "../../../../../app/types/ownable";
+jest.mock('../../../../../app/data/repos/base.repo');
 
 const cause:Cause = new Cause({
     id: "hello",
@@ -32,7 +33,6 @@ describe("Creates Cause Entity and run CRUD methods on it", () => {
                 }} as EntityUpdatedDto<Auditable & Ownable & CauseDto>) )
         // mock delete on causerepo
         jest.spyOn(CauseRepo.prototype, 'delete')
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         .mockImplementation((_id:string)=>Promise.resolve({
             data: {
                 isDeleted: true,

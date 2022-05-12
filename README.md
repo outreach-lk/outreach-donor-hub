@@ -30,7 +30,7 @@ Describe how you use it here.
 
 ## Built With
 
-Explain which technologies you've used here.
+NextJS, Firebase & ChakraUI, 
 
 ## Contributing
 

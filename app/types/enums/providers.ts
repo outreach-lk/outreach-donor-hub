@@ -32,5 +32,6 @@ export enum OAuthProviders{
 export enum DatabaseProvider{
     FIREBASE = 'FIREBASE',
     DYNAMODB = 'DYNAMODB',
+    MOCK = 'MOCK'
     
 }

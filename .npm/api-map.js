@@ -13,7 +13,7 @@ const path = require('path');
 
         }else{
             const paths = scan('./pages/api',l);
-            fs.writeFileSync('./app/apis/api-map.json',JSON.stringify(paths,null,2),{
+            fs.writeFileSync('./app/api/api-map.json',JSON.stringify(paths,null,2),{
                 encoding: 'utf-8'
             });
         }
@@ -56,7 +56,7 @@ function scan(root,paths = []){
             const responseTypeRegex = new RegExp("NextApiResponse<.*?>")
             const responseType = file.match(responseTypeRegex);
             const handlerDesc = {
-                path: `${String(root).replace('pages/','')}/${String(curr).slice(0,-3)}`,
+                path: `${String(root).replace('pages/','/')}/${String(curr).slice(0,-3)}`,
                 responseType: responseType?`${responseType[0]}`:null,
                 request: {
                     body: {}

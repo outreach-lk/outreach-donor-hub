@@ -1,0 +1,96 @@
+{
+  "v1": {
+    "root": "./api/v1",
+    "event": {
+      "path": "/api/v1/event",
+      "responseType": null,
+      "request": {
+        "body": {}
+      }
+    },
+    "cause": {
+      "root": "/api/v1/cause"
+    },
+    "auth": {
+      "root": "/api/v1/auth",
+      "sign-up": {
+        "root": "api/v1/auth/sign-up",
+        "index": {
+          "path": "/api/v1/auth/sign-up/index",
+          "responseType": "NextApiResponse<ServerMessageDto<SessionDto | Error>",
+          "request": {
+            "body": {}
+          }
+        },
+        "federated": {
+          "path": "/api/v1/auth/sign-up/federated",
+          "responseType": "NextApiResponse<ServerMessageDto<SessionDto | Error>",
+          "request": {
+            "body": {}
+          }
+        }
+      },
+      "logout": {
+        "path": "/api/v1/auth/logout",
+        "responseType": "NextApiResponse<ServerMessageDto<null | Error>",
+        "request": {
+          "body": {}
+        }
+      },
+      "login": {
+        "root": "/api/v1/auth/login",
+        "index": {
+          "path": "/api/v1/auth/login/index",
+          "responseType": "NextApiResponse<ServerMessageDto<SessionDto | Error>",
+          "request": {
+            "body": {}
+          }
+        },
+        "firebase": {
+          "root": "/api/v1/auth/login/firebase",
+          "custom-token": {
+            "path": "/api/v1/auth/login/firebase/custom-token",
+            "responseType": "NextApiResponse<ServerMessageDto<SessionDto | Error>",
+            "request": {
+              "body": {}
+            }
+          }
+        },
+        "federated": {
+          "path": "/api/v1/auth/login/federated",
+          "responseType": "NextApiResponse<ServerMessageDto<SessionDto | Error>",
+          "request": {
+            "body": {}
+          }
+        }
+      }
+    },
+    "[entity]": {
+      "root": "/api/v1/[entity]",
+      "index": {
+        "path": "/api/v1/[entity]/index",
+        "responseType": null,
+        "request": {
+          "body": {}
+        }
+      },
+      "[id]": {
+        "root": "/api/v1/[entity]/[id]",
+        "index": {
+          "path": "/api/v1/[entity]/[id]/index",
+          "responseType": null,
+          "request": {
+            "body": {}
+          }
+        }
+      }
+    }
+  },
+  "hello": {
+    "path": ".//api/hello",
+    "responseType": "NextApiResponse<Data>",
+    "request": {
+      "body": {}
+    }
+  }
+}

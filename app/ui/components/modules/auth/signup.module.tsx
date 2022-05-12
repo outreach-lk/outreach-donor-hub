@@ -1,18 +1,12 @@
 import {
-  Flex,
   Box,
   FormControl,
   FormLabel,
   Input,
   InputGroup,
-  HStack,
   InputRightElement,
   Stack,
   Button,
-  Heading,
-  Text,
-  useColorModeValue,
-  Link,
   useBreakpointValue,
   useColorModeValue as mode,
 } from "@chakra-ui/react";
@@ -30,12 +24,12 @@ export function SignupCard() {
   const handleUserSignUp: React.FormEventHandler = (e) => {
     e.preventDefault();
     const target = {
-      email: (e.target as any).email.value,
-      password: (e.target as any).password.value,
+      email: (e.target as any).email.value as string,
+      password: (e.target as any).password.value as string,
       // firstName: (e.target as any).firstName.value,
       // lastName: (e.target as any).lastName.value,
     };
-    signUpWithEmail(target.email, target.password, UserRole.REGULAR);
+    signUpWithEmail(target.email, target.password , UserRole.REGULAR);
   };
 
   return (

@@ -1,6 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-import { authServiceFactory } from "../../../../../app/adapters/services";
+import { authServiceFactory } from "../../../../../app/api/services";
 import { SessionDto } from "../../../../../app/types/dtos/auth.dtos";
 import { ServerMessageDto } from "../../../../../app/types/dtos/server-message.dtos";
 import { OAuthProviders } from "../../../../../app/types/enums/providers";

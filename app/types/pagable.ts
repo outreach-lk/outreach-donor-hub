@@ -6,17 +6,15 @@
  */
 export type Pagable<T> = {
   total: number;
-  prev: Page<T>;
-  current: Page<T>;
-  next: Page<T>;
+  prev: Page;
+  current: Page;
+  next: Page;
+  data: T[]
+
 };
 
-export type Page<T> = {
-  count: number;
-  index: number;
-  dataIndices?: {
-    start: number;
-    end: number;
-  };
-  data?: T[];
+export type Page = {
+  pageId?: number;
+  start: number | string; 
+  limit: number;
 };

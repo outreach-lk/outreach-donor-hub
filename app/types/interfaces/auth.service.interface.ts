@@ -59,6 +59,12 @@ export interface IAuthService extends IAPIService {
   findUserByUid(uid: string): Promise<User>;
 
   /**
+   * Finds a user by a given token
+   * @param token 
+   */
+  findUserByToken(token: string): Promise<User>
+
+  /**
    * Updates a user password with a given user instance.
    * @param user user instance, with a valid uid
    * @returns the same user instance in the argument.
