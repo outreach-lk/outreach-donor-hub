@@ -22,7 +22,16 @@ const nextConfig = {
     }
 
     return config;
-}
+},
+async redirects() {
+  return [
+    {
+      source: '/',
+      destination: '/cause/list',
+      permanent: true,
+    },
+  ]
+},
 };
 
 module.exports = nextConfig;

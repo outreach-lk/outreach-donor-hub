@@ -35,10 +35,14 @@ export function Nav() {
         position={"sticky"}
       >
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
-          <Wrap align={"center"} spacing="20px">
+          <NxtLink href={{
+            pathname:'/cause/list',
+          }} passHref>
+          <Wrap as="a" align={"center"} spacing="20px">
             <Logo />
             <Heading color="linkedin.700">DonorHub</Heading>
           </Wrap>
+          </NxtLink>
 
           <Flex alignItems={"center"}>
             <Stack direction={"row"} spacing={7}>
