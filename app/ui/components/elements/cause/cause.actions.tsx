@@ -1,9 +1,10 @@
 import { Button, Box, Wrap, useDisclosure } from "@chakra-ui/react";
 import Cause from "../../../../data/entities/cause.entity";
-import NewDonationClaim from "../../modules/donation/pre-donation.module";
+import NewDonationClaimContainer from "../../modules/donation/pre-donation.module";
 
 interface CauseActionProps {
   cause: Cause;
+  forceRefresh: ()=>void
 }
 
 export function CauseActions(props: CauseActionProps) {
@@ -21,10 +22,11 @@ export function CauseActions(props: CauseActionProps) {
         <Button colorScheme={"linkedin"}>Share</Button>
         <Button colorScheme={"red"}>Report</Button>
       </Wrap>
-      <NewDonationClaim
+      <NewDonationClaimContainer
         cause={props.cause}
         isOpen={isDonationOpen}
         onClose={onDonationClose}
+        forceRefresh={props.forceRefresh}
       />
     </Box>
   );

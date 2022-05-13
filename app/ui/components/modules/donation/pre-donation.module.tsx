@@ -32,11 +32,16 @@ interface NewDonationClaimProps {
   cause: Cause;
   isOpen: boolean;
   onClose: () => void;
+  forceRefresh: ()=>void
+
 }
-export default function NewDonationClaim(props: NewDonationClaimProps) {
+export default function NewDonationClaimContainer(props: NewDonationClaimProps) {
   const donorRefRef = useRef<string>('');
   const [hasDonated,setHasDonated] = useState<boolean>(false);
-
+  const onDonationSave = () => {
+    props.onClose();
+    props.forceRefresh();
+  }
   useEffect(()=>{
     if(!props.isOpen){
       setHasDonated(false);
@@ -54,6 +59,7 @@ export default function NewDonationClaim(props: NewDonationClaimProps) {
             <NewDonation
               causeId={props.cause.id as string}
               refVal={donorRefRef.current}
+              onSave={onDonationSave}
             />
           :
           <List>

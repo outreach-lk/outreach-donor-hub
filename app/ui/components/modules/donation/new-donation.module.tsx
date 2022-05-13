@@ -1,6 +1,7 @@
 import { Box, Button, Container, Flex, FormControl, FormHelperText, FormLabel, Input, Text, Wrap } from "@chakra-ui/react";
 import { useState } from "react";
 import DonationRepo from "../../../../data/repos/donation.repo";
+import { useFeedback } from "../../../../hooks/feedback.hook";
 
 /**
  * make new donation claim
@@ -8,8 +9,10 @@ import DonationRepo from "../../../../data/repos/donation.repo";
 interface NewDonationProps {
     causeId: string,
     refVal: string,
+    onSave: () => void
 }
 export default function NewDonation(props:NewDonationProps){
+    const {show} = useFeedback();
     const [amount,setAmount] = useState<number>(0);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const handleSubmitClaim = () => {
@@ -18,6 +21,22 @@ export default function NewDonation(props:NewDonationProps){
             causeId: props.causeId,
             ref: props.refVal,
             amount,
+        })
+        .then(res=>{
+            show('Your donation claim was created',{
+                type: 'success',
+                title: 'New Donation Claim'
+            })
+            props.onSave();
+        })
+        .catch(err=>{
+            show(err.message || err, {
+                type: 'error',
+                title: 'New Donation Claim Error'
+            })
+        })
+        .finally(()=>{
+            setIsSubmitting(false);
         })
     }
     return (

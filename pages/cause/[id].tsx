@@ -27,7 +27,8 @@ export default function CausePage() {
   const { query } = useRouter();
   return (
     <EntityPage entity="cause" id={query.id as string}>
-      {(data: CauseDto) => {
+      {(props) => {
+        const data: CauseDto = props.data;
         const cause = new Cause(data);
         return (
           <>
@@ -88,8 +89,8 @@ export default function CausePage() {
                   alignItems={{ md: "flex-end", sm: "self-end" }}
                   marginTop={{ base: "3", sm: "0" }}
                 >
-                  <CauseStats amount={100} currency="LKR" target={10000} />
-                  <CauseActions cause={cause} />
+                  <CauseStats currentCollection={cause.currentCollection} currency="LKR" target={10000} />
+                  <CauseActions cause={cause} forceRefresh={props.forceRefresh} />
                 </Box>
               </Box>
               {/* Cause Activity */}

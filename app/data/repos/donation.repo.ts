@@ -62,12 +62,17 @@ export default class DonationRepo extends BaseRepo implements ICRUDREPO<Donation
 
                     return (this.db as IDatabaseService).save(data,this.entity)
                     .then(res => {
-                        
+                        cause.currentCollection = {
+                            ...cause.currentCollection,
+                            pending: cause.currentCollection.pending + data.amount
+                        }
+                        Promise.all([cause.update(),
                         AppEvent.create({
                             eventType: EventType.DONATION_CLAIM_CREATED,
                             topic: data.causeId,
-                            message: `A Donation of ${data.amount} LKR was claimed.`
-                        })
+                            message: `A Donation claim of ${data.amount} LKR was made.`
+                        })])
+                        .finally(()=>{})
                         return res;
                     })
                 } catch{

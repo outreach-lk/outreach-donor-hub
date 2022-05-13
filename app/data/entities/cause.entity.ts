@@ -29,6 +29,10 @@ export default class Cause
   description: SerializableBlock[];
   attachments: FileDto[]; // TODO: Convert to File Objects
   donations?: Donation[]; //TODO: 1.Create Donations 2. Should this rather be a Pagable of type Donation?
+  currentCollection: {
+    acknowledged: number,
+    pending: number
+};
   target?: number;
   currency?: Currency;
   expiryDate?: Date;
@@ -43,6 +47,7 @@ export default class Cause
     this.description = causeDto.description;
     this.attachments = causeDto?.attachments;
     this.donations = causeDto.donations?.map((dto) => new Donation(dto));
+    this.currentCollection = causeDto.currentCollection || {acknowledged:0, pending:0}
     this.target = causeDto.target;
     this.currency = causeDto.currency;
     this.expiryDate = causeDto.expiry;
@@ -55,6 +60,7 @@ export default class Cause
     this.bankAccount = causeDto.bankAccount
     this.status = causeDto.verificationStatus || VerificationStatus.UNKNOWN
     this.isVerified = causeDto.isVerified || false
+
   }
 
   $browser_UploadCauseAttachments(
@@ -118,6 +124,7 @@ export default class Cause
       donations: cause.donations
         ? cause.donations.map((don) => Donation.map2Dto(don))
         : [],
+      currentCollection: cause.currentCollection,
       target: cause.target,
       currency: cause.currency,
       expiry: cause.expiryDate,
@@ -138,6 +145,7 @@ export default class Cause
     cause.donations = dto.donations
       ? dto.donations.map((d) => new Donation(d))
       : cause.donations;
+    cause.currentCollection = dto.currentCollection || cause.currentCollection
     cause.target = dto.target || cause.target;
     cause.currency = dto.currency || cause.currency;
     cause.expiryDate = dto.expiry || cause.expiryDate;

@@ -25,6 +25,10 @@ export function EntityPage<T>(props: SingleEntityPageProps<T>) {
    * progress or not. Is set to true upon success or failure.
    */
   const [isLoading, setIsLoading] = useState(true);
+  /**
+   * forces reloading entity data
+   */
+  const [shouldForceRefresh, setShouldForceRefresh] = useState(false);
   const { checkEntityPerms, deleteEntity, updateEntity, fetchEntity } =
     useEntity(props.entity);
 
@@ -43,16 +47,22 @@ export function EntityPage<T>(props: SingleEntityPageProps<T>) {
           }
         })
         .catch((error: Error) => setError(error))
-        .finally(() => setIsLoading(false));
+        .finally(() => {
+          setIsLoading(false)
+        });
     }
-  }, [props]);
+  }, [props,shouldForceRefresh]);
+
+  const forceRefresh = () => {
+    setShouldForceRefresh(!shouldForceRefresh);
+  }
 
   if (entityData && !isLoading) {
     return (
       /* Child components are responsible for showing entity data  */
       <>
         <Nav />
-        {props.children(entityData)}
+        {props.children({data:entityData,forceRefresh})}
         <Footer />
       </>
     );
