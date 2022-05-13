@@ -24,11 +24,13 @@ import BaseRepo from "./base.repo";
 import apiMap from "../../api/api-map.json";
 import axios from "axios";
 import { queryMap2string } from "../../utils/parse-querystring";
+import EventEmitter from "events";
+
 
 export default class EventRepo extends BaseRepo implements ICRUDREPO<EventDto> {
   private static _instance: EventRepo | null;
   private entity = "event";
-
+  public emitter = new EventEmitter()
   constructor() {
     super(DatabaseProvider.FIREBASE);
   }
@@ -66,13 +68,18 @@ export default class EventRepo extends BaseRepo implements ICRUDREPO<EventDto> {
     }
   }
   create(
-    data: EventDto
+    data: EventDto,
   ): Promise<EntityCreatedDto<Auditable & Ownable & EventDto>> {
     if (this.isBrowser) {
       throw new Error("Method not allowed");
     } else {
       console.log("creating event");
-      return (this.db as IDatabaseService).save(data, this.entity);
+      return (this.db as IDatabaseService).save(data, this.entity)
+      .then(res=>{
+        console.log(res.data?.eventType)
+        this.emitter.emit(res.data?.eventType as string, res.data)
+        return res;
+      })
     }
   }
   update(

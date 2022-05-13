@@ -46,11 +46,11 @@ export function Nav() {
 
           <Flex alignItems={"center"}>
             <Stack direction={"row"} spacing={7}>
-              {/* <NxtLink href={"/cause/new"} passHref>
+              <NxtLink href={"/cause/new"} passHref>
                 <Button as="a" colorScheme={"blue"}>
                   Create Campaign
                 </Button>
-              </NxtLink> */}
+              </NxtLink>
               <Button onClick={toggleColorMode}>
                 {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
               </Button>

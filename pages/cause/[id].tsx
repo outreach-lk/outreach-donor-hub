@@ -82,11 +82,10 @@ export default function CausePage() {
                 </Box>
                 {/* Cause Stats  */}
                 <Box
-                  display="flex"
-                  flex="1"
+                  display="flex"  
                   flexDirection="column"
                   justifyContent={"center"}
-                  alignItems={{ md: "flex-end", sm: "self-end" }}
+                  // // alignItems={{ md: "flex-end", sm: "self-end" }}
                   marginTop={{ base: "3", sm: "0" }}
                 >
                   <CauseStats currentCollection={cause.currentCollection} currency="LKR" target={10000} />

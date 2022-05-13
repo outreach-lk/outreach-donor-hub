@@ -137,7 +137,7 @@ export default class Cause
     } as CauseDto;
   }
 
-  mapInstanceToDto(dto: Auditable & CauseDto, cause: Cause): void {
+  updateInstanceWithDto(dto: Auditable & CauseDto, cause: Cause): void {
     cause.id = dto.id || cause.id;
     cause.title = dto.title || cause.title;
     cause.description = dto.description || cause.description;

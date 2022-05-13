@@ -32,6 +32,8 @@ export async function tokenInterceptor(req:NextApiRequest): Promise<User | null>
                         return {uid: 'demo_owner',role: UserRole.REGULAR} as User;
                     case 'Bearer mod':
                         return {uid: 'demo_mod',role: UserRole.MODERATOR} as User
+                    case `Bearer ${undefined}`:
+                        throw new Error('token_interception_error');
                 }
             } else {
                 throw new Error('token_interception_error');

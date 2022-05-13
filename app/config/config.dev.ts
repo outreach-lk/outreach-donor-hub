@@ -126,6 +126,24 @@ export const devConfig: AppConfig = {
             apiMethod: HTTPMethod.POST,
             allowedRoles: [ UserRole.REGULAR, UserRole.ADMIN, UserRole.MODERATOR ]
         },
+        {
+            id: 'api-donation-fetch-page',
+            path: '/api/v1/donation',
+            isApi: true,
+            isEntity: false,
+            isProtected: false,
+            apiMethod: HTTPMethod.GET
+        },
+        {
+            id: 'api-donation-update',
+            path: '/api/v1/donation/:id',
+            isApi: true,
+            isEntity: true,
+            isProtected: true,
+            apiMethod: HTTPMethod.PUT,
+            allowedRoles: [ UserRole.REGULAR, UserRole.ADMIN, UserRole.MODERATOR ]
+
+        },
 
     ]
 }

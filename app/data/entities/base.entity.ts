@@ -51,7 +51,7 @@ export default abstract class BaseEntity<E,D> extends MultiEnv {
      * @param d 
      * @param e 
      */
-    abstract mapInstanceToDto(dto: Auditable & D, entity:E):void
+    abstract updateInstanceWithDto(dto: Auditable & D, entity:E):void
 
     /**
      * Persists the current entity in the database as a new entity.
@@ -65,7 +65,7 @@ export default abstract class BaseEntity<E,D> extends MultiEnv {
                const createRes = this.repo.create(this.mapper(this as unknown as E));
             //  updates current entity instance.
                void createRes
-               .then(res => this.mapInstanceToDto(res.data as D,this as unknown as E));
+               .then(res => this.updateInstanceWithDto(res.data as D,this as unknown as E));
                return createRes; 
            }
        } catch (error) {
@@ -83,7 +83,7 @@ export default abstract class BaseEntity<E,D> extends MultiEnv {
                 const updateRes = this.repo.update(this._id,d||this.mapper(this as unknown as E))
         //  updates current entity instance.        
                 void updateRes
-                .then(res => this.mapInstanceToDto(res.data as D,this as unknown as E))
+                .then(res => this.updateInstanceWithDto(res.data as D,this as unknown as E))
                 return updateRes;
             }else{
                 throw new Error('invalid_identifier');
@@ -99,7 +99,7 @@ export default abstract class BaseEntity<E,D> extends MultiEnv {
             if(this.id){
                 const deleteRes = this.repo.delete(this.id);
                 void deleteRes
-                .then(res => this.mapInstanceToDto(res.data as D,this as unknown as E))
+                .then(res => this.updateInstanceWithDto(res.data as D,this as unknown as E))
                 return deleteRes;
             }else{
                 throw new Error("invalid_identifier");

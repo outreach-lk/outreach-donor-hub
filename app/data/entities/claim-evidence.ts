@@ -91,7 +91,7 @@ export default class ClaimEvidence extends BaseEntity<ClaimEvidence,ClaimEvidenc
         } as ClaimEvidenceDto
     }
 
-    mapInstanceToDto(d: Auditable & Ownable & { attachments: FileDto; status: ClaimStatus; }, e: ClaimEvidence): void {
+    updateInstanceWithDto(d: Auditable & Ownable & { attachments: FileDto; status: ClaimStatus; }, e: ClaimEvidence): void {
         throw new Error("Method not implemented.");
     }
 

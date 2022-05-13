@@ -69,7 +69,7 @@ export default class User extends BaseEntity<User, UserDto> {
    * @param dto
    * @param user
    */
-   mapInstanceToDto(dto: Auditable & UserDto, user: User): void {
+   updateInstanceWithDto(dto: Auditable & UserDto, user: User): void {
     user.email = dto.email || user.email;
     user.firstName = dto.firstName || user.firstName;
     user.lastName = dto.lastName || user.lastName;

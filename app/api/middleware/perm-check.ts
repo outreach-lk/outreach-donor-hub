@@ -27,7 +27,7 @@ export async function permissionCheck(req: NextApiRequest, res: NextApiResponse,
          * for Auditing Purposes
         */
         if(user) databaseServiceFactory.getService( DatabaseProvider.FIREBASE ).authenticatedUser = user;
-        
+
         /**
          * Unless the route isProtected always set isAllowed to true.
          * If not, continue to the rest of the checks.
@@ -61,7 +61,6 @@ export async function permissionCheck(req: NextApiRequest, res: NextApiResponse,
                  * do not allow, as this is a protected api.
                  */
                 if (user) {
-
                     isOwner = (data.owner === user.uid && data.owner !== undefined);
                     if (data.sharedWith) {
                         isSharedWith = (data.sharedWith?.indexOf(user.uid) > -1)

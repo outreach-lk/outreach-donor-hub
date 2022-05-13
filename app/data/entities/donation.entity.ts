@@ -16,11 +16,9 @@ import ClaimEvidence from "./claim-evidence";
 import { Ownable } from "../../types/ownable";
 import { CauseDto } from "../../types/dtos/cause.dtos";
 import { ClaimEvidenceDto } from "../../types/dtos/claim-evidence";
+import CauseRepo from "../repos/cause.repo";
 
 export default class Donation extends BaseEntity<Donation,DonationDto> implements IDonationActions{
-    mapInstanceToDto(dto: Auditable & Ownable & { ref: string; causeId: string; amount: number; note?: string | undefined; evidence?: ClaimEvidenceDto[] | undefined; status?: DonationStatus | undefined; }, entity: Donation): void {
-        throw new Error("Method not implemented.");
-    }
 
     // Define properties;
     ref: string;
@@ -37,7 +35,7 @@ export default class Donation extends BaseEntity<Donation,DonationDto> implement
         this.amount = DonationDto.amount;
         this.note = DonationDto.note;
         this.evidence = DonationDto.evidence?.map(e=>new ClaimEvidence(e));
-        this.status = DonationDto.status;
+        this.status = DonationDto.status || DonationStatus.CLAIMED;
         this.owner = DonationDto.owner
         this.createdOn = DonationDto.createdOn?DonationDto.createdOn:null;
         this.createdBy = DonationDto.createdBy;
@@ -45,6 +43,21 @@ export default class Donation extends BaseEntity<Donation,DonationDto> implement
         this.updatedBy = DonationDto.updatedBy;
         this.permissions = DonationDto.permissions;
         this.sharedWith = DonationDto.sharedWith;
+    }
+
+    public confirmDonationClaim(){
+        this.status = DonationStatus.ACKNOWLEDGED
+        return this.update()
+    }
+
+    public disputeDonationClaim(){
+        this.status = DonationStatus.DISPUTED
+        return this.update()
+    }
+
+    updateInstanceWithDto(dto: Auditable & Ownable & { ref: string; causeId: string; amount: number; note?: string | undefined; evidence?: ClaimEvidenceDto[] | undefined; status?: DonationStatus | undefined; }, entity: Donation): void {
+        entity.id = dto.id || entity.id;
+        entity.status = dto.status || entity.status
     }
 
     /** Static CRUD Methods for GET and POST */
@@ -96,7 +109,16 @@ export default class Donation extends BaseEntity<Donation,DonationDto> implement
      */
     static map2Dto(Donation:Donation):DonationDto {
         return {
-           
+           id: Donation.id,
+           amount: Donation.amount,
+           causeId: Donation.causeId,
+           ref: Donation.ref,
+           evidence: Donation.evidence,
+           note: Donation.note,
+           owner: Donation.owner,
+           permissions: Donation.permissions,
+           sharedWith: Donation.sharedWith,
+           status: Donation.status
         } as DonationDto
     }
 

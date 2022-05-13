@@ -24,22 +24,58 @@ import { authClientFactory } from "../../api/clients";
 import CauseRepo from "./cause.repo";
 import Cause from "../entities/cause.entity";
 import { CauseDto } from "../../types/dtos/cause.dtos";
+import { queryMap2string } from "../../utils/parse-querystring";
+import { donationStatusToEventMapping } from "../../utils/donation-status-to-event-mapping";
 
 
 export default class DonationRepo extends BaseRepo implements ICRUDREPO<DonationDto>{
     private static _instance:DonationRepo | null;
     private entity = 'donation'
+    private token?: string
     constructor(){
         super(DatabaseProvider.FIREBASE);
+        this.token = authClientFactory.getClient(
+            AuthProvider.FIREBASE
+          ).accessToken
     }
-    get(identifier: string): Promise<EntityFetchedDto<Auditable & Ownable & DonationDto>> {
-        throw new Error("Method not implemented.");
+    async get(identifier: string): Promise<EntityFetchedDto<Auditable & Ownable & DonationDto>> {
+        if (this.isBrowser) {
+            const path = apiMap.v1["[entity]"]["[id]"].root
+              .replace("[entity]", this.entity)
+              .replace("[id]", identifier);
+            return (await axios.get(path)).data as EntityFetchedDto<
+              Auditable & Ownable & DonationDto
+            >;
+          } else {
+            return (this.db as IDatabaseService).find(identifier, this.entity);
+          }
     }
     getAll(): Promise<EntityFetchedPageDto<Auditable & DonationDto[]>> {
         throw new Error("Method not implemented.");
     }
-    getPage(page: Page): Promise<EntityFetchedPageDto<Auditable & Ownable & DonationDto>> {
-        throw new Error("Method not implemented.");
+    async getPage(page: Page, queryMap?: Map<string, string | number>): Promise<EntityFetchedPageDto<Auditable & Ownable & DonationDto>> {
+        if (this.isBrowser) {
+            let path = apiMap.v1["[entity]"].root
+              .replace("[entity]", this.entity)
+              .concat("?", "limit=", page.limit.toString());
+            if (page.start) {
+              path = path.concat("&from=", String(page.start));
+            }
+            if (queryMap) {
+              path = path.concat("&query=", queryMap2string(queryMap));
+            }
+            try {
+              return (await axios.get(path, {})).data.data;
+            } catch (error) {
+              throw error;
+            }
+          } else {
+            return (this.db as IDatabaseService).findPage(
+              page,
+              this.entity,
+              queryMap
+            );
+          }
     }
     async create(data: DonationDto): Promise<EntityCreatedDto<Auditable & Ownable & DonationDto>> {
         if(this.isBrowser){
@@ -59,7 +95,10 @@ export default class DonationRepo extends BaseRepo implements ICRUDREPO<Donation
                 try{
                     const _cause = await CauseRepo.getRepo().get(data.causeId);
                     const cause = new Cause(_cause.data as CauseDto);
-
+                    data.sharedWith?.push(
+                        cause.owner as string,
+                        ...cause.sharedWith as string[],
+                    )
                     return (this.db as IDatabaseService).save(data,this.entity)
                     .then(res => {
                         cause.currentCollection = {
@@ -83,8 +122,32 @@ export default class DonationRepo extends BaseRepo implements ICRUDREPO<Donation
             }
         }
     }
-    update(identifier: string, data: DonationDto): Promise<EntityUpdatedDto<Auditable & Ownable & DonationDto>> {
-        return Promise.resolve({data} as EntityUpdatedDto<Auditable & Ownable & DonationDto>);
+    async update(identifier: string, data: DonationDto): Promise<EntityUpdatedDto<Auditable & Ownable & DonationDto>> {
+        if (this.isBrowser) {
+            let path = apiMap.v1["[entity]"]["[id]"].root
+            .replace("[entity]", this.entity)
+            .replace("[id]",identifier);
+            return (await axios.put(path, data,{
+                headers:{
+                    authorization: `Bearer ${this.token}`
+                }
+            })).data
+          } else {
+            // Create Donation Status Update Event  
+            if(data.status){
+                AppEvent.create({
+                    eventType: donationStatusToEventMapping(data.status),
+                    message: 'Donation Claim Acknwoledged',
+                    topic: data.causeId,
+                    payload: data
+                })    
+            }
+            return (this.db as IDatabaseService).update(
+              identifier,
+              data,
+              this.entity
+            );
+          }
     }
     delete(identifier: string): Promise<EntityDeletedDto<Auditable & Ownable & DonationDto >> {
         throw new Error("Method not implemented.");
