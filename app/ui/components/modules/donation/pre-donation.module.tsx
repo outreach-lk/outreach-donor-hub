@@ -24,6 +24,8 @@ import { DonationAccountDetails } from "../../elements/donation/donation-account
 import { UniqueDonorId } from "../../elements/donation/unique-donor-id";
 import { createRef, useEffect, useRef, useState } from "react";
 import NewDonation from "./new-donation.module";
+import { useAuth } from "../../../../hooks/auth.hooks";
+import { useRouter } from "next/router";
 
 /**
  * Create new Donation Claim Module
@@ -37,10 +39,15 @@ interface NewDonationClaimProps {
 }
 export default function NewDonationClaimContainer(props: NewDonationClaimProps) {
   const donorRefRef = useRef<string>('');
+  const {push} = useRouter();
+  const {isAuthorized} = useAuth();
   const [hasDonated,setHasDonated] = useState<boolean>(false);
   const onDonationSave = () => {
     props.onClose();
     props.forceRefresh();
+  }
+  const gotoSignIn = () => {
+    push('/auth/sign-in')
   }
   useEffect(()=>{
     if(!props.isOpen){
@@ -92,8 +99,11 @@ export default function NewDonationClaimContainer(props: NewDonationClaimProps) 
           </List>}
         </ModalBody>
         <ModalFooter>
-          {!hasDonated&&<Button colorScheme="blue" mr={3} onClick={()=>setHasDonated(true)}>
+          {(!hasDonated&&isAuthorized)&&<Button colorScheme="blue" mr={3} onClick={()=>setHasDonated(true)}>
             I've Donated
+          </Button>}
+          {!isAuthorized&&<Button colorScheme="blue" mr={3} onClick={()=>gotoSignIn()}>
+                Sign In to Donate
           </Button>}
           <Button variant="ghost" onClick={props.onClose}>
             Cancel

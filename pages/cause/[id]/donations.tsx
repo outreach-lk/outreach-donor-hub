@@ -3,6 +3,7 @@
  */
 
 import {
+    Badge,
   Box,
   Button,
   Container,
@@ -32,28 +33,28 @@ export default function CauseDonations() {
   const { query, push } = useRouter();
   const map = new Map<string, string>();
   map.set("causeId", "cause-" + query.id);
-  const {show} = useFeedback();
+  const { show } = useFeedback();
   const handleDonationStatusChange = (
     status: DonationStatus,
     donation: Donation
   ) => {
     let task: Promise<any>;
     if (status === DonationStatus.ACKNOWLEDGED) {
-        task = donation.confirmDonationClaim()
-    } else{
-        task = donation.disputeDonationClaim();
+      task = donation.confirmDonationClaim();
+    } else {
+      task = donation.disputeDonationClaim();
     }
     task
-    .then(()=>{
-        show('Donation Claim Acknowledged.',{
-            type:'success'
-        })
-    })
-    .catch(()=>{
-        show('Error updating claim status',{
-            type:'error'
-        })
-    })
+      .then(() => {
+        show("Donation Claim Acknowledged.", {
+          type: "success",
+        });
+      })
+      .catch(() => {
+        show("Error updating claim status", {
+          type: "error",
+        });
+      });
   };
   return (
     <>
@@ -72,11 +73,23 @@ export default function CauseDonations() {
         <EntityListPage entity="donation" query={map} isEmbedded={true}>
           {(_data: DonationDto) => {
             const data = new Donation(_data);
+            const isDisputed = data.status===DonationStatus.DISPUTED;
+            const isPending = data.status===DonationStatus.CLAIMED || data.status === undefined;
+            const isConfirmed = data.status ===DonationStatus.ACKNOWLEDGED
             // FIXME: Move to own component
             return (
               <Box p="4" shadow={"md"}>
-                <Flex align={"baseline"} justify="space-between">
-                  <Box>
+                    {isDisputed&&
+                        <Badge colorScheme={"red"}>Disputed</Badge>
+                    }
+                    {isPending&&
+                        <Badge colorScheme={"yellow"}>Pending Confirmation</Badge>
+                    }
+                    {isConfirmed&&
+                        <Badge colorScheme={"green"}>Confirmed</Badge>
+                    }
+                <Flex textDecoration={isDisputed?"line-through":''} align={"baseline"} justify="space-between">
+                  <Box >
                     <Text>
                       {getDateFromFirebaseDateTimeObject(
                         (data as any).createdOn
@@ -84,7 +97,7 @@ export default function CauseDonations() {
                     </Text>
                     <Stat>
                       <StatLabel>Amount</StatLabel>
-                      <StatNumber>{data.amount.toFixed(2)}</StatNumber>
+                      <StatNumber >{data.amount.toFixed(2)}</StatNumber>
                     </Stat>
                   </Box>
                   <Box>
@@ -99,32 +112,32 @@ export default function CauseDonations() {
                         <FaLink /> <small>Unique Donation Id</small>
                       </Flex>
                     </Tooltip>
-                    <Wrap py="2">
-                      <Button
-                        disabled={data.status === DonationStatus.ACKNOWLEDGED}
-                        colorScheme={"blue"}
-                        onClick={() =>
-                          handleDonationStatusChange(
-                            DonationStatus.ACKNOWLEDGED,
-                            data
-                          )
-                        }
-                      >
-                        Confirm Claim
-                      </Button>
-                      <Button
-                        disabled={data.status === DonationStatus.DISPUTED}
-                        colorScheme={"red"}
-                        onClick={() =>
-                          handleDonationStatusChange(
-                            DonationStatus.DISPUTED,
-                            data
-                          )
-                        }
-                      >
-                        Dispute Claim
-                      </Button>
-                    </Wrap>
+                    {data.status===DonationStatus.CLAIMED&& (
+                      <Wrap py="2">
+                        <Button
+                          colorScheme={"blue"}
+                          onClick={() =>
+                            handleDonationStatusChange(
+                              DonationStatus.ACKNOWLEDGED,
+                              data
+                            )
+                          }
+                        >
+                          Confirm Claim
+                        </Button>
+                        <Button
+                          colorScheme={"red"}
+                          onClick={() =>
+                            handleDonationStatusChange(
+                              DonationStatus.DISPUTED,
+                              data
+                            )
+                          }
+                        >
+                          Dispute Claim
+                        </Button>
+                      </Wrap>
+                    )}
                   </Box>
                 </Flex>
               </Box>

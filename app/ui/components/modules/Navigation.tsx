@@ -25,7 +25,7 @@ export function Nav() {
   const { isAuthorized, client } = useAuth();
   const handleLogout = () => {
     client.logout();
-  }
+  };
   return (
     <>
       <Box
@@ -35,13 +35,16 @@ export function Nav() {
         position={"sticky"}
       >
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
-          <NxtLink href={{
-            pathname:'/cause/list',
-          }} passHref>
-          <Wrap as="a" align={"center"} spacing="20px">
-            <Logo />
-            <Heading color="linkedin.700">DonorHub</Heading>
-          </Wrap>
+          <NxtLink
+            href={{
+              pathname: "/cause/list",
+            }}
+            passHref
+          >
+            <Wrap as="a" align={"center"} spacing="20px">
+              <Logo />
+              <Heading color="linkedin.700">DonorHub</Heading>
+            </Wrap>
           </NxtLink>
 
           <Flex alignItems={"center"}>
@@ -54,47 +57,51 @@ export function Nav() {
               <Button onClick={toggleColorMode}>
                 {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
               </Button>
-              
-              {isAuthorized?<Menu>
-                <MenuButton
-                  as={Button}
-                  rounded={"full"}
-                  variant={"link"}
-                  cursor={"pointer"}
-                  minW={0}
-                >
-                  <Avatar
-                    size={"sm"}
-                    src={"https://avatars.dicebear.com/api/croodles-neutral/outreach.svg"}
-                  />
-                </MenuButton>
-                <MenuList alignItems={"center"}>
-                  <br />
-                  <Center>
+
+              {isAuthorized ? (
+                <Menu>
+                  <MenuButton
+                    as={Button}
+                    rounded={"full"}
+                    variant={"link"}
+                    cursor={"pointer"}
+                    minW={0}
+                  >
                     <Avatar
-                      size={"2xl"}
-                      src={"https://avatars.dicebear.com/api/croodles-neutral/outreach.svg"}
+                      size={"sm"}
+                      src={
+                        "https://avatars.dicebear.com/api/croodles-neutral/outreach.svg"
+                      }
                     />
-                  </Center>
-                  <br />
-                  <Center>
-                    <p>Username</p>
-                  </Center>
-                  <br />
-                  <MenuDivider />
-                  <MenuItem>Your Servers</MenuItem>
-                  <MenuItem>Account Settings</MenuItem>
-                  <MenuItem onClick={handleLogout}>Logout</MenuItem>
-                </MenuList>
-              </Menu>
-              :
-              <NxtLink 
-                href="/auth/sign-in"
-                passHref
-              >
-                <Button as="a" colorScheme={"blue"}>Sign In</Button>
-              </NxtLink>
-              }
+                  </MenuButton>
+                  <MenuList alignItems={"center"}>
+                    <br />
+                    <Center>
+                      <Avatar
+                        size={"2xl"}
+                        src={
+                          "https://avatars.dicebear.com/api/croodles-neutral/outreach.svg"
+                        }
+                      />
+                    </Center>
+                    <br />
+                    <Center>
+                      <p>Username</p>
+                    </Center>
+                    <br />
+                    <MenuDivider />
+                    <MenuItem>Your Servers</MenuItem>
+                    <MenuItem>Account Settings</MenuItem>
+                    <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                  </MenuList>
+                </Menu>
+              ) : (
+                <NxtLink href="/auth/sign-in" passHref>
+                  <Button as="a" colorScheme={"blue"}>
+                    Sign In
+                  </Button>
+                </NxtLink>
+              )}
             </Stack>
           </Flex>
         </Flex>
