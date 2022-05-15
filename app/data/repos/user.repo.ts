@@ -57,7 +57,7 @@ export default class UserRepo extends BaseRepo implements ICRUDREPO<UserDto> {
    */
   async create(data: UserDto): Promise<EntityCreatedDto<Auditable & UserDto>> {
       if (this.isBrowser) {
-        let path = apiMap.v1["[entity]"].root.replace("[entity]", this.entity);
+        let path = apiMap.v1.auth["sign-up"].root
         const token = authClientFactory.getClient(
           AuthProvider.FIREBASE
         ).accessToken;
@@ -67,7 +67,7 @@ export default class UserRepo extends BaseRepo implements ICRUDREPO<UserDto> {
           }
         })).data
       } else {
-        return (this.db as IDatabaseService).save(data, this.entity, data.uid);
+        return (this.db as IDatabaseService).save(data, this.entity, 'user-'+data.uid);
       }
   }
   update(

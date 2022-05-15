@@ -109,8 +109,8 @@ export default class DonationRepo
         try {
           const _cause = await CauseRepo.getRepo().get(data.causeId);
           const cause = new Cause(_cause.data as CauseDto);
-          data.sharedWith?.push(
-            cause.owner as string,
+          data.sharedWith = [];
+          data.sharedWith.push(
             ...(cause.sharedWith as string[])
           );
           return (this.db as IDatabaseService)

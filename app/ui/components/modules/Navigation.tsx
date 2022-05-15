@@ -22,7 +22,7 @@ import { useAuth } from "../../../hooks/auth.hooks";
 
 export function Nav() {
   const { colorMode, toggleColorMode } = useColorMode();
-  const { isAuthorized, client } = useAuth();
+  const { isAuthorized, client, user } = useAuth();
   const handleLogout = () => {
     client.logout();
   };
@@ -70,7 +70,7 @@ export function Nav() {
                     <Avatar
                       size={"sm"}
                       src={
-                        "https://avatars.dicebear.com/api/croodles-neutral/outreach.svg"
+                        "https://avatars.dicebear.com/api/croodles-neutral/" + user.uid + '.svg'
                       }
                     />
                   </MenuButton>
@@ -80,7 +80,7 @@ export function Nav() {
                       <Avatar
                         size={"2xl"}
                         src={
-                          "https://avatars.dicebear.com/api/croodles-neutral/outreach.svg"
+                          "https://avatars.dicebear.com/api/adventurer-neutral/" + user.uid + '.svg'
                         }
                       />
                     </Center>

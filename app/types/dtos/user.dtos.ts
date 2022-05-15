@@ -17,8 +17,8 @@ import { ServerError } from "./server-message.dtos";
 export type UserDto = {
     uid: string,
     email: string,
-    firstName: string,
-    lastName: string,
+    firstName?: string,
+    lastName?: string,
     mobile?: string,
     isMobileVerified?: boolean,
     isEmailVerified: boolean,

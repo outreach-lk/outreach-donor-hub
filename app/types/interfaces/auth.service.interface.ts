@@ -4,7 +4,7 @@
  */
 import User from "../../data/entities/user.entity";
 import { SessionDto } from "../dtos/auth.dtos";
-import { UserRole } from "../dtos/user.dtos";
+import { UserDto, UserRole } from "../dtos/user.dtos";
 import { OAuthProviders } from "../enums/providers";
 import IAPIService from "./api.service.interface";
 
@@ -44,7 +44,7 @@ export interface IAuthService extends IAPIService {
    * @param email email of the new user
    * @param role role of the new user
    */
-  createUser(email: string, role: UserRole): Promise<User>;
+  createUser(email: string, role: UserRole,token:string): Promise<UserDto>;
 
   /**
    * Finds a user by their email.

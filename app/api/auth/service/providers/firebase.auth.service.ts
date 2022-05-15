@@ -9,13 +9,14 @@ import {
   AccessTokenPayload,
   SessionDto,
 } from "../../../../types/dtos/auth.dtos";
-import { UserRole } from "../../../../types/dtos/user.dtos";
+import { UserDto, UserRole } from "../../../../types/dtos/user.dtos";
 import { OAuthProviders } from "../../../../types/enums/providers";
 import { IAuthService } from "../../../../types/interfaces/auth.service.interface";
 import init from "../../../../libs/firebase.admin.sdk";
 import User from "../../../../data/entities/user.entity";
 import { DecodedIdToken } from "firebase-admin/lib/auth/token-verifier";
 import { generateSessionId } from "../../../../utils/generate-ids";
+import UserRepo from "../../../../data/repos/user.repo";
 
 export default class FirebaseAuthService implements IAuthService {
   private admin: admin.app.App;
@@ -66,6 +67,7 @@ export default class FirebaseAuthService implements IAuthService {
         throw new Error("Invalid Token");
       }
     } catch (error) {
+      console.log(error);
       throw new Error("error fetching user from token");
     }
   }
@@ -82,8 +84,26 @@ export default class FirebaseAuthService implements IAuthService {
   revokeSession(session: SessionDto, accessToken: string): Promise<void> {
     throw new Error("Method not implemented.");
   }
-  createUser(email: string, role: UserRole): Promise<userEntity> {
-    throw new Error("Method not implemented.");
+  async createUser(email: string, role: UserRole, token: string): Promise<UserDto> {
+    const decodedToken: DecodedIdToken = (await this.admin.auth().verifyIdToken(token));
+    if(decodedToken){
+      return UserRepo.getRepo().create({
+        uid: decodedToken.uid,
+        email,
+        role,
+        isEmailVerified: false,
+        isVerifiedUser: false,
+      } as UserDto)
+      .then(res=>{
+        if(res.data){
+          return res.data
+        }else{
+          throw new Error('failed to create user')
+        }
+      })
+    }else{
+      throw new Error('unauthorized');
+    }
   }
   findUserByEmail(email: string): Promise<userEntity> {
     throw new Error("Method not implemented.");

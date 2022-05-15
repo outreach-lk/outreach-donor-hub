@@ -115,6 +115,7 @@ export default class FirebaseDatabaseService implements IDatabaseService {
     if ((data as any).permissions) {
       delete (data as any).permissions;
     }
+    console.log(data);
     return this.firestore
       .collection(entity)
       .doc(id)
@@ -124,10 +125,10 @@ export default class FirebaseDatabaseService implements IDatabaseService {
         ...data,
         permissions: (data as any).permissions || getEntityDefaultPermissions(entity),
         createdOn: new Date(),
-        createdBy: this.authenticatedUser?.uid,
+        createdBy: this.authenticatedUser?.uid || 'system',
         isDeleted: false,
-        owner: this.authenticatedUser?.uid,
-        sharedWith: [this.authenticatedUser?.uid],
+        owner: this.authenticatedUser?.uid || 'system',
+        sharedWith: (data as any).sharedWith || [this.authenticatedUser?.uid],
       } as Auditable & Ownable & T)
       .then(() => {
         return {
