@@ -99,7 +99,7 @@ export default function CauseDonations() {
             // FIXME: Move to own component
             return (
               <Box mb="4" p="4" shadow={"md"} bg={useColorModeValue("azure.100", "linkedin.900")}>
-                {data.owner === user.uid && (
+                {data.owner === user?.uid && (
                   <Badge colorScheme={"blue"}>Your Donation</Badge>
                 )}
                 {isDisputed && <Badge colorScheme={"red"}>Disputed</Badge>}
