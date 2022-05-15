@@ -111,6 +111,7 @@ export default class DonationRepo
           const cause = new Cause(_cause.data as CauseDto);
           data.sharedWith = [];
           data.sharedWith.push(
+            cause.owner as string,
             ...(cause.sharedWith as string[])
           );
           return (this.db as IDatabaseService)

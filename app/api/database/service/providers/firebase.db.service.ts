@@ -125,10 +125,10 @@ export default class FirebaseDatabaseService implements IDatabaseService {
         ...data,
         permissions: (data as any).permissions || getEntityDefaultPermissions(entity),
         createdOn: new Date(),
-        createdBy: this.authenticatedUser?.uid || 'system',
+        createdBy: this.authenticatedUser?.uid || '__system',
         isDeleted: false,
-        owner: this.authenticatedUser?.uid || 'system',
-        sharedWith: (data as any).sharedWith || [this.authenticatedUser?.uid],
+        owner: this.authenticatedUser?.uid || '__system',
+        sharedWith: (data as any).sharedWith || [],
       } as Auditable & Ownable & T)
       .then(() => {
         return {

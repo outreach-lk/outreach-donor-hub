@@ -33,6 +33,10 @@ export default class Cause
     acknowledged: number,
     pending: number
 };
+  expenses: {
+    confirmed: number,
+    pending: number
+  }
   target?: number;
   currency?: Currency;
   expiryDate?: Date;
@@ -48,6 +52,7 @@ export default class Cause
     this.attachments = causeDto?.attachments;
     this.donations = causeDto.donations?.map((dto) => new Donation(dto));
     this.currentCollection = causeDto.currentCollection || {acknowledged:0, pending:0}
+    this.expenses = causeDto.expenses || {confirmed:0, pending:0}
     this.target = causeDto.target;
     this.currency = causeDto.currency;
     this.expiryDate = causeDto.expiry;

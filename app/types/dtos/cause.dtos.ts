@@ -26,6 +26,10 @@ export type CauseDto = Ownable & {
         acknowledged: number,
         pending: number
     }
+    expenses: {
+        confirmed: number,
+        pending: number,
+    }
     bankAccount: BankAccountDetails;
     target?: number;
     currency?: Currency;

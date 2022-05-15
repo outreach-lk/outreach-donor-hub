@@ -3,7 +3,7 @@ export enum EventType {
     CAUSE_QUEUED = "cause_queued",
     CAUSE_VERIFIED = "cause_verified",
     CAUSE_DECLINED = "cause_declined",
-    CAUSE_MILESTONE = "cause_milestone",
+    CAUSE_MILESTONE_CREATED = "cause_milestone_created",
     DONATION_CLAIM_CREATED = "donation_claim_created",
     DONATION_CLAIM_ACKNOWLEDGED = "donation_claim_acknowledged",
     DONATION_CLAIM_DECLINED = "donation_claim_declined",

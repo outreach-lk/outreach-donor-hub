@@ -15,6 +15,11 @@ export function CauseStats(props: CauseStatProps) {
         {props.currency} {props.currentCollection.acknowledged }
       </StatNumber>
       <StatHelpText>Total Donations: {props.currency} {props.currentCollection.acknowledged + props.currentCollection.pending}</StatHelpText>
-    </Stat>
+      <StatLabel>Confirmed Expenses</StatLabel>
+      <StatNumber>
+        ({props.currency} {props.currentCollection.acknowledged })
+      </StatNumber>
+      <StatHelpText>Total Expenses: ({props.currency} {props.currentCollection.acknowledged + props.currentCollection.pending})</StatHelpText>
+   </Stat>
   );
 }
