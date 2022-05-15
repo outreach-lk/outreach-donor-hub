@@ -71,17 +71,7 @@ export function EntityListPage<T>(props: EntityListPageProps) {
     console.log(_nxtPg);
     setPage(_nxtPg);
   };
-  //FIXME: this is a shitty practice
-  if(isLoading) {
-    return (
-      <>
-      {!props.isEmbedded && <Nav />}
-      <FullScreenLoader/>
-      {!props.isEmbedded && <Footer />}
 
-      </>
-    )
-  }
   return (
     <>
       {/* Create Entity Control goes here */}
@@ -94,10 +84,9 @@ export function EntityListPage<T>(props: EntityListPageProps) {
             return <div key={i}>{props.children(item)}</div>;
           })}
         </Flex>
-
         <Center p="12">
           {/* Pagination Controls Go here */}
-          <Button onClick={loadNextPage}>Load More</Button>
+          <Button isLoading={isLoading} onClick={loadNextPage}>Load More</Button>
         </Center>
       </Container>
       {!props.isEmbedded && <Footer />}
