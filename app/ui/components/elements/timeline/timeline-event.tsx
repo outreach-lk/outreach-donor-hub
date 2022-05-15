@@ -34,21 +34,17 @@ export function TimelineEvent(props: AuditableEventDto) {
   const shouldShowRichTextEditor =
     !!props.payload?.description && Array.isArray(props.payload.description);
   const {
-    isOpen: isDonationOpen,
-    onOpen: onDonationOpen,
-    onClose: onDonationClose,
+    isOpen: isReadmoreOpen,
+    onOpen: onReadMoreOpen,
+    onClose: onReadMoreClose,
   } = useDisclosure();
-  const [currentReadmoreBlocks, setCurrBlocks] = useState<SerializableBlock[]>(
-    []
-  );
-  const [currReadmoreTitle, setReadmoreTitle] = useState<string>("");
 
   return (
     <>
       <Stack direction="row" h="120px" width={"full"} p={4}>
         <Avatar
-          color={useColorModeValue("gold", "facebook.700")}
-          background={useColorModeValue("facebook.400", "gold")}
+          color={'gold'}
+          background={useColorModeValue("facebook.400", "facebook.800")}
           icon={<TimelineEventIcon type={props.eventType} />}
         />
         <Divider orientation="vertical" />
@@ -66,18 +62,18 @@ export function TimelineEvent(props: AuditableEventDto) {
                 <>
                   <Button
                     variant={"link"}
-                    rightIcon={<MdReadMore />}
-                    onClick={onDonationOpen}
+                    leftIcon={<MdReadMore />}
+                    onClick={onReadMoreOpen}
                   >
                     {" "}
                     Read More{" "}
                   </Button>
-                  <TimelineEventReadMore
+                  {isReadmoreOpen&&<TimelineEventReadMore
                     blocks={props.payload.description}
                     title={props.message}
-                    isOpen={isDonationOpen}
-                    onClose={onDonationClose}
-                  />
+                    isOpen={isReadmoreOpen}
+                    onClose={onReadMoreClose}
+                  />}
                 </>
               )}
             </Text>

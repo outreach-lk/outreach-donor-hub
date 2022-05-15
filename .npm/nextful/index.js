@@ -7,7 +7,6 @@
 const fs = require("fs");
 const { Command } = require("commander");
 const prompt = require("prompt");
-const path = require("path");
 const nextful = new Command();
 
 const VERSION = "v1";
@@ -37,60 +36,64 @@ nextful
   .description("Create REST entity class, repo and dtos")
   .argument("name", "Entity Name")
   .action(async (name) => {
-    var Name = String(name)
-      .charAt(0)
-      .toUpperCase()
-      .concat(String(name).slice(1)); // capitalize name.
-
-    const attributesMap = await promptAttributes(Name);
-    const attribs2Propertiess = printAttribs(attributesMap);
-
-    // load templates.
-    var dtos = fs.readFileSync(
-      __dirname + `/templates/types/dto/dto.template.${VERSION}.txt`,
-      "utf-8"
-    );
-    var entity = fs.readFileSync(
-      __dirname + `/templates/entity/entity.template.${VERSION}.txt`,
-      "utf-8"
-    );
-    var repo = fs.readFileSync(
-      __dirname + `/templates/repo/repo.template.${VERSION}.txt`,
-      "utf-8"
-    );
-    var i = fs.readFileSync(
-      __dirname + `/templates/types/interfaces/i.template.${VERSION}.txt`,
-      "utf-8"
-    );
-
-    // replace name placeholders
-    dtos = dtos
-      .replace(NAME_PLACEHOLDER_REGEX, Name)
-      .replace(ATTRIB_PLACEHOLDER_REGEX, attribs2Propertiess)
-    entity = entity
-      .replace(NAME_PLACEHOLDER_REGEX, Name)
-      .replace(PATH_PLACEHOLDER_REGEX, name)
-      .replace(ATTRIB_PLACEHOLDER_REGEX, attribs2Propertiess)
-    repo = repo
-      .replace(NAME_PLACEHOLDER_REGEX, Name)
-      .replace(PATH_PLACEHOLDER_REGEX, name);
-    i = i
-      .replace(NAME_PLACEHOLDER_REGEX, Name)
-      .replace(PATH_PLACEHOLDER_REGEX, name);
-
-    // write to standard directories.
-    fs.writeFile(ENTITY_BASE_DIR + name + ".entity.ts", entity, (err) =>
-      fileCreationCb(err, ENTITY_BASE_DIR + name + ".entity.ts")
-    );
-    fs.writeFile(DTO_BASE_DIR + name + ".dtos.ts", dtos, (err) =>
-      fileCreationCb(err, DTO_BASE_DIR + name + ".dto.ts")
-    );
-    fs.writeFile(REPO_BASE_DIR + name + ".repo.ts", repo, (err) =>
-      fileCreationCb(err, REPO_BASE_DIR + name + ".repo.ts")
-    );
-    fs.writeFile(I_BASE_DIR + name + ".entity.interface.ts", i, (err) =>
-      fileCreationCb(err, I_BASE_DIR + name + ".interface.ts")
-    );
+    try{
+      var Name = String(name)
+        .charAt(0)
+        .toUpperCase()
+        .concat(String(name).slice(1)); // capitalize name.
+  
+      const attributesMap = await promptAttributes(Name);
+      const attribs2Propertiess = printAttribs(attributesMap);
+  
+      // load templates.
+      var dtos = fs.readFileSync(
+        __dirname + `/templates/types/dto/dto.template.${VERSION}.txt`,
+        "utf-8"
+      );
+      var entity = fs.readFileSync(
+        __dirname + `/templates/entity/entity.template.${VERSION}.txt`,
+        "utf-8"
+      );
+      var repo = fs.readFileSync(
+        __dirname + `/templates/repo/repo.template.${VERSION}.txt`,
+        "utf-8"
+      );
+      var i = fs.readFileSync(
+        __dirname + `/templates/types/interfaces/i.template.${VERSION}.txt`,
+        "utf-8"
+      );
+  
+      // replace name placeholders
+      dtos = dtos
+        .replace(NAME_PLACEHOLDER_REGEX, Name)
+        .replace(ATTRIB_PLACEHOLDER_REGEX, attribs2Propertiess)
+      entity = entity
+        .replace(NAME_PLACEHOLDER_REGEX, Name)
+        .replace(PATH_PLACEHOLDER_REGEX, name)
+        .replace(ATTRIB_PLACEHOLDER_REGEX, attribs2Propertiess)
+      repo = repo
+        .replace(NAME_PLACEHOLDER_REGEX, Name)
+        .replace(PATH_PLACEHOLDER_REGEX, name);
+      i = i
+        .replace(NAME_PLACEHOLDER_REGEX, Name)
+        .replace(PATH_PLACEHOLDER_REGEX, name);
+  
+      // write to standard directories.
+      fs.writeFile(ENTITY_BASE_DIR + name + ".entity.ts", entity, (err) =>
+        fileCreationCb(err, ENTITY_BASE_DIR + name + ".entity.ts")
+      );
+      fs.writeFile(DTO_BASE_DIR + name + ".dtos.ts", dtos, (err) =>
+        fileCreationCb(err, DTO_BASE_DIR + name + ".dto.ts")
+      );
+      fs.writeFile(REPO_BASE_DIR + name + ".repo.ts", repo, (err) =>
+        fileCreationCb(err, REPO_BASE_DIR + name + ".repo.ts")
+      );
+      fs.writeFile(I_BASE_DIR + name + ".entity.interface.ts", i, (err) =>
+        fileCreationCb(err, I_BASE_DIR + name + ".interface.ts")
+      );
+    } catch(error){
+      console.log(error);
+    }
   });
 
 /**
