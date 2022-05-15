@@ -88,7 +88,11 @@ export default function CausePage() {
                   // // alignItems={{ md: "flex-end", sm: "self-end" }}
                   marginTop={{ base: "3", sm: "0" }}
                 >
-                  <CauseStats currentCollection={cause.currentCollection} currency="LKR" target={10000} />
+                  <CauseStats 
+                    currentCollection={cause.currentCollection}  
+                    expenses={cause.expenses}
+                    currency="LKR" 
+                    target={cause.target || 0} />
                   <CauseActions cause={cause} forceRefresh={props.forceRefresh} />
                 </Box>
               </Box>

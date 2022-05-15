@@ -130,6 +130,7 @@ export default class Cause
         ? cause.donations.map((don) => Donation.map2Dto(don))
         : [],
       currentCollection: cause.currentCollection,
+      expenses: cause.expenses,
       target: cause.target,
       currency: cause.currency,
       expiry: cause.expiryDate,
@@ -151,6 +152,7 @@ export default class Cause
       ? dto.donations.map((d) => new Donation(d))
       : cause.donations;
     cause.currentCollection = dto.currentCollection || cause.currentCollection
+    cause.expenses = dto.expenses || cause.expenses;
     cause.target = dto.target || cause.target;
     cause.currency = dto.currency || cause.currency;
     cause.expiryDate = dto.expiry || cause.expiryDate;

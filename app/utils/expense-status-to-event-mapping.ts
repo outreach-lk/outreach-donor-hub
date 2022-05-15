@@ -6,11 +6,12 @@ import { ExpenseStatus } from "../types/enums/status";
 export function ExpenseStatusToEventMapping(
   status: ExpenseStatus
 ): EventType {
+  console.log(status)
   switch (status) {
     case ExpenseStatus.ACKNOWLEDGED:
-      return EventType.DONATION_CLAIM_ACKNOWLEDGED;
+      return EventType.EXPENSE_CLAIM_APPROVED;
     case ExpenseStatus.DISPUTED:
-      return EventType.DONATION_CLAIM_DECLINED;
+      return EventType.EXPENSE_CLAIM_DECLINED;
     default:
       throw new Error("invalid status");
   }

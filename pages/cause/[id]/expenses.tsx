@@ -1,5 +1,5 @@
 /**
- * donations related to a given cause
+ * expenses related to a given cause
  */
 
 import {
@@ -23,18 +23,18 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { FaLink } from "react-icons/fa";
 import Cause from "../../../app/data/entities/cause.entity";
-import Donation from "../../../app/data/entities/donation.entity";
+import Expense from "../../../app/data/entities/expense.entity";
 import { useAuth } from "../../../app/hooks/auth.hooks";
 import { useEntity } from "../../../app/hooks/entity";
 import { useFeedback } from "../../../app/hooks/feedback.hook";
-import { DonationDto } from "../../../app/types/dtos/donation.dtos";
-import { DonationStatus } from "../../../app/types/enums/status";
+import { ExpenseDto } from "../../../app/types/dtos/expense.dtos";
+import { ExpenseStatus } from "../../../app/types/enums/status";
 import { EntityListPage } from "../../../app/ui/components/layouts/pages/entity/entity.list.layout";
 import { Footer } from "../../../app/ui/components/modules/Footer";
 import { Nav } from "../../../app/ui/components/modules/Navigation";
 import { getDateFromFirebaseDateTimeObject } from "../../../app/utils/date-time";
 
-export default function CauseDonations() {
+export default function CauseExpenses() {
   const { query, push } = useRouter();
   const { fetchEntity, checkEntityPerms } = useEntity("cause");
   const [canReview, setCanReview] = useState(true);
@@ -52,19 +52,19 @@ export default function CauseDonations() {
   const map = new Map<string, string>();
   map.set("causeId", "cause-" + query.id);
   const { show } = useFeedback();
-  const handleDonationStatusChange = (
-    status: DonationStatus,
-    donation: Donation
+  const handleExpenseStatusChange = (
+    status: ExpenseStatus,
+    expense: Expense
   ) => {
     let task: Promise<any>;
-    if (status === DonationStatus.ACKNOWLEDGED) {
-      task = donation.confirmDonationClaim();
+    if (status === ExpenseStatus.ACKNOWLEDGED) {
+      task = expense.confirmexpenseClaim();
     } else {
-      task = donation.disputeDonationClaim();
+      task = expense.disputeexpenseClaim();
     }
     task
       .then(() => {
-        show("Donation Claim Acknowledged.", {
+        show("Expense Claim Acknowledged.", {
           type: "success",
         });
       })
@@ -79,7 +79,7 @@ export default function CauseDonations() {
       <Nav />
       <Container minW={"full"} p="4">
         <Wrap direction={"column"}>
-          <Heading size={"sm"}>Donations</Heading>
+          <Heading size={"sm"}>Expenses</Heading>
           <Button
             onClick={() => {
               push("/cause/" + query.id);
@@ -88,19 +88,19 @@ export default function CauseDonations() {
             Back to Campaign
           </Button>
         </Wrap>
-        <EntityListPage entity="donation" query={map} isEmbedded={true}>
-          {(_data: DonationDto) => {
-            const data = new Donation(_data);
-            const isDisputed = data.status === DonationStatus.DISPUTED;
+        <EntityListPage entity="expense" query={map} isEmbedded={true}>
+          {(_data: ExpenseDto) => {
+            const data = new Expense(_data);
+            const isDisputed = data.status === ExpenseStatus.DISPUTED;
             const isPending =
-              data.status === DonationStatus.CLAIMED ||
+              data.status === ExpenseStatus.CLAIMED ||
               data.status === undefined;
-            const isConfirmed = data.status === DonationStatus.ACKNOWLEDGED;
+            const isConfirmed = data.status === ExpenseStatus.ACKNOWLEDGED;
             // FIXME: Move to own component
             return (
               <Box mb="4" p="4" shadow={"md"} bg={useColorModeValue("azure.100", "linkedin.900")}>
                 {data.owner === user.uid && (
-                  <Badge colorScheme={"blue"}>Your Donation</Badge>
+                  <Badge colorScheme={"blue"}>Your Expense</Badge>
                 )}
                 {isDisputed && <Badge colorScheme={"red"}>Disputed</Badge>}
                 {isPending && (
@@ -124,24 +124,15 @@ export default function CauseDonations() {
                     </Stat>
                   </Box>
                   <Box>
-                    Donor Ref:
-                    <Heading>{data.ref}</Heading>
-                    <Tooltip label={data.id}>
-                      <Flex
-                        align={"baseline"}
-                        cursor="pointer"
-                        textDecoration={"underline"}
-                      >
-                        <FaLink /> <small>Unique Donation Id</small>
-                      </Flex>
-                    </Tooltip>
-                    {data.status === DonationStatus.CLAIMED && canReview && (
+                    Particulars
+                    <Text>{data.note}</Text>
+                    {data.status === ExpenseStatus.CLAIMED && canReview && (
                       <Wrap py="2">
                         <Button
                           colorScheme={"blue"}
                           onClick={() =>
-                            handleDonationStatusChange(
-                              DonationStatus.ACKNOWLEDGED,
+                            handleExpenseStatusChange(
+                              ExpenseStatus.ACKNOWLEDGED,
                               data
                             )
                           }
@@ -151,8 +142,8 @@ export default function CauseDonations() {
                         <Button
                           colorScheme={"red"}
                           onClick={() =>
-                            handleDonationStatusChange(
-                              DonationStatus.DISPUTED,
+                            handleExpenseStatusChange(
+                              ExpenseStatus.DISPUTED,
                               data
                             )
                           }

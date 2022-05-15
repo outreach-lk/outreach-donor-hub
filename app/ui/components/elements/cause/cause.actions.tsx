@@ -26,7 +26,7 @@ export function CauseActions(props: CauseActionProps) {
         <Button colorScheme={"linkedin"}>Share</Button>
         {!canUpdate&&<Button colorScheme={"red"}>Report</Button>}
         <Wrap direction={"column"}>
-        <Heading size={"sm"}>Donation Claims</Heading>
+        <Heading size={"sm"}>Campaign Claims</Heading>
         <Link href={{
             pathname: '/cause/[id]/donations',
             query: {
@@ -34,6 +34,14 @@ export function CauseActions(props: CauseActionProps) {
             }
           }}>
             <Button cursor={"pointer"} as="a" colorScheme={"blue"}>View Donations</Button>
+          </Link>
+          <Link href={{
+            pathname: '/cause/[id]/expenses',
+            query: {
+              id: props.cause.id?.slice(6)
+            }
+          }}>
+            <Button cursor={"pointer"} as="a" colorScheme={"blue"}>View Expenses</Button>
           </Link>
           {
             canUpdate&&

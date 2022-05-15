@@ -117,9 +117,9 @@ export default class ExpenseRepo
           return (this.db as IDatabaseService)
             .save(data, this.entity)
             .then((res) => {
-              cause.currentCollection = {
-                ...cause.currentCollection,
-                pending: cause.currentCollection.pending + data.amount,
+              cause.expenses = {
+                ...cause.expenses,
+                pending: cause.expenses.pending + data.amount,
               };
               Promise.all([
                 cause.update(),
