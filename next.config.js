@@ -6,7 +6,7 @@ const nextConfig = {
   eslint: {
     // Warning: This allows production builds to successfully complete even if
     // your project has ESLint errors.
-    // FIXME: Remove
+    // FIXME: fix lint errors and remove this.
     ignoreDuringBuilds: true,
     dirs: ["app", "pages"],
   },

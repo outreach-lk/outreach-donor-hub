@@ -1,6 +1,8 @@
 
 import { AppConfig } from "../types/config";
 import { devConfig } from "./config.dev";
+import { stagingConfig } from "./config.staging";
+
 
 
 /**
@@ -10,6 +12,8 @@ import { devConfig } from "./config.dev";
 export function getConfig(): AppConfig {
     if (process.env.NEXT_PUBLIC_STAGE === 'prod') {
         return {} as AppConfig;
+    } else if (process.env.NEXT_PUBLIC_STAGE === 'staging') {
+        return stagingConfig;
     } else {
         return devConfig;
     }
