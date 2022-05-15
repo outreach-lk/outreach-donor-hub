@@ -15,6 +15,7 @@ import { useEntity } from "../../../../../hooks/entity";
 import { Pagable, Page } from "../../../../../types/pagable";
 import { EntityListPageProps } from "../../../../../types/props/entity.props";
 import { Footer } from "../../../modules/Footer";
+import { FullScreenLoader } from "../../../modules/loader";
 import { Nav } from "../../../modules/Navigation";
 
 export function EntityListPage<T>(props: EntityListPageProps) {
@@ -70,6 +71,17 @@ export function EntityListPage<T>(props: EntityListPageProps) {
     console.log(_nxtPg);
     setPage(_nxtPg);
   };
+  //FIXME: this is a shitty practice
+  if(isLoading) {
+    return (
+      <>
+      {!props.isEmbedded && <Nav />}
+      <FullScreenLoader/>
+      {!props.isEmbedded && <Footer />}
+
+      </>
+    )
+  }
   return (
     <>
       {/* Create Entity Control goes here */}

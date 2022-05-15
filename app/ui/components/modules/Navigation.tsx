@@ -32,7 +32,6 @@ export function Nav() {
         bg={useColorModeValue("gray.100", "gray.900")}
         px={4}
         shadow="md"
-        position={"sticky"}
       >
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
           <NxtLink
@@ -70,11 +69,11 @@ export function Nav() {
                     <Avatar
                       size={"sm"}
                       src={
-                        "https://avatars.dicebear.com/api/croodles-neutral/" + user.uid + '.svg'
+                        "https://avatars.dicebear.com/api/adventurer-neutral/" + user.uid + '.svg'
                       }
                     />
                   </MenuButton>
-                  <MenuList alignItems={"center"}>
+                  <MenuList alignItems={"center"} zIndex="modal">
                     <br />
                     <Center>
                       <Avatar
@@ -86,12 +85,13 @@ export function Nav() {
                     </Center>
                     <br />
                     <Center>
-                      <p>Username</p>
+                      <p>{user.email}</p>
                     </Center>
                     <br />
                     <MenuDivider />
-                    <MenuItem>Your Servers</MenuItem>
-                    <MenuItem>Account Settings</MenuItem>
+                    <NxtLink href={"/me/campaigns"} passHref>
+                      <MenuItem as="a">My Campaigns</MenuItem>
+                    </NxtLink>
                     <MenuItem onClick={handleLogout}>Logout</MenuItem>
                   </MenuList>
                 </Menu>

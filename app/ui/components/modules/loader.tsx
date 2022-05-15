@@ -3,15 +3,17 @@
  * @kulathilake
  */
 
-import { VStack } from "@chakra-ui/react";
+import { VStack,useColorModeValue, Spacer } from "@chakra-ui/react";
 import { Logo } from "../elements/branding/Logo";
 import { CenteredLayout } from "../layouts/pages/centred.layout";
 
-export const FullScreenLoader = () => (
-  <CenteredLayout>
+export const FullScreenLoader = () => {
+  const color = useColorModeValue('#0077B5','#90cdf4');
+  return <CenteredLayout>
     <VStack>
       <Logo />
-      <span className="loader"></span>
+      <Spacer/>
+      <div className="loader" style={{color}}></div>
     </VStack>
   </CenteredLayout>
-);
+};

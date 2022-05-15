@@ -22,7 +22,7 @@ interface TimelineProps {
 }
 
 export function EventTimeline(props: TimelineProps) {
-  const [hideDonations, setHideDonations] = useState(true);
+  const [hideDonations, setHideDonations] = useState(false);
   const _map = new Map<string, string>();
   _map.set("topic", props.topic);
 
@@ -34,10 +34,10 @@ export function EventTimeline(props: TimelineProps) {
           <Switch
             id="hideDonations"
             onChange={(e) => {
-              setHideDonations(e.target.checked);
+              setHideDonations(!e.target.checked);
             }}
-            checked={hideDonations}
-            defaultChecked={hideDonations}
+            checked={!hideDonations}
+            defaultChecked={!hideDonations}
           />
           <FormHelperText>{hideDonations?'Donations are hidden':'Donations are shown'}</FormHelperText>
         </FormControl>

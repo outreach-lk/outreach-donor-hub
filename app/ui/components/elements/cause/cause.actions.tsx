@@ -22,20 +22,25 @@ export function CauseActions(props: CauseActionProps) {
         {!canUpdate&&<Button colorScheme={"blue"} onClick={onDonationOpen}>Donate</Button>}
         <Button colorScheme={"linkedin"}>Share</Button>
         {!canUpdate&&<Button colorScheme={"red"}>Report</Button>}
-        {canUpdate && 
         <Wrap direction={"column"}>
-          <Heading size={"sm"}>Edit Campaign</Heading>
-          <Link href={{
+        <Heading size={"sm"}>Donation Claims</Heading>
+        <Link href={{
             pathname: '/cause/[id]/donations',
             query: {
               id: props.cause.id?.slice(6)
             }
           }}>
-            <Button cursor={"pointer"} as="a" colorScheme={"blue"}>View Donation Claims</Button>
+            <Button cursor={"pointer"} as="a" colorScheme={"blue"}>View Donations</Button>
           </Link>
-          {/* <Button colorScheme={"blue"}>Add Campaign Expense</Button> */}
-          <Button colorScheme={"blue"} onClick={onMilestoneOpen}>Add Campaign Milestone</Button>
-        </Wrap>}
+          {
+            canUpdate&&
+            <>
+            <Heading size={"sm"}>Edit Campaign</Heading>
+            {/* <Button colorScheme={"blue"}>Add Campaign Expense</Button> */}
+            <Button colorScheme={"blue"} onClick={onMilestoneOpen}>Add Campaign Milestone</Button>
+            </>
+          }
+        </Wrap>
       </Wrap>
       <NewDonationClaimContainer
         cause={props.cause}
