@@ -22,7 +22,7 @@ interface TimelineProps {
 }
 
 export function EventTimeline(props: TimelineProps) {
-  const [hideDonations, setHideDonations] = useState(false);
+  const [hideDonations, setHideDonations] = useState(true);
   const _map = new Map<string, string>();
   _map.set("topic", props.topic);
 
