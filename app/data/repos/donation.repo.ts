@@ -31,7 +31,7 @@ import CauseRepo from "./cause.repo";
 import Cause from "../entities/cause.entity";
 import { CauseDto } from "../../types/dtos/cause.dtos";
 import { queryMap2string } from "../../utils/parse-querystring";
-import { donationStatusToEventMapping } from "../../utils/donation-status-to-event-mapping";
+import { donationStatusToEventMapping, donationStatusToEventMessageMapping } from "../../utils/donation-status-to-event-mapping";
 import { DonationStatus } from "../../types/enums/status";
 
 export default class DonationRepo
@@ -165,7 +165,7 @@ export default class DonationRepo
           if(data.status) {
             AppEvent.create({
                 eventType: donationStatusToEventMapping(data.status),
-                message: "Donation Claim Acknwoledged",
+                message: donationStatusToEventMessageMapping(data),
                 topic: data.causeId,
                 payload: data,
               });

@@ -15,6 +15,7 @@ import { generateEntityId } from "../../../../utils/generate-ids";
 import { AccessPerms, Ownable } from "../../../../types/ownable";
 import userEntity from "../../../../data/entities/user.entity";
 import { start } from "repl";
+import { getEntityDefaultPermissions } from "../../../../utils/entity-perms";
 export default class FirebaseDatabaseService implements IDatabaseService {
   private serverPrivateKey: string;
   private firestore: Firestore;
@@ -121,12 +122,7 @@ export default class FirebaseDatabaseService implements IDatabaseService {
         _id: id,
         id,
         ...data,
-        permissions: {
-          owner: [AccessPerms.MODIFY, AccessPerms.READ, AccessPerms.DELETE],
-          shared: [AccessPerms.READ, AccessPerms.MODIFY],
-          mods: [AccessPerms.MODIFY, AccessPerms.READ],
-          admins: [AccessPerms.MODIFY, AccessPerms.READ, AccessPerms.DELETE],
-        },
+        permissions: (data as any).permissions || getEntityDefaultPermissions(entity),
         createdOn: new Date(),
         createdBy: this.authenticatedUser?.uid,
         isDeleted: false,

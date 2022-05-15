@@ -144,6 +144,15 @@ export const devConfig: AppConfig = {
             allowedRoles: [ UserRole.REGULAR, UserRole.ADMIN, UserRole.MODERATOR ]
 
         },
+        {
+            id: 'api-use-create-entity',
+            path: '/api/v1/user',
+            isApi: true,
+            isEntity: true,
+            isProtected: true,
+            apiMethod: HTTPMethod.POST,
+            allowedRoles: [ UserRole.REGULAR, UserRole.ADMIN, UserRole.MODERATOR ]
+        },
 
     ]
 }

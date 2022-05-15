@@ -54,7 +54,6 @@ export default class FirebaseAuthClient implements IAuthClient {
           if( user ){
             const session = this.retrieveSession();
             this.accessToken = await user.getIdToken();
-            console.log(this.accessToken);
             if (session) {
               subscriber.next( {
                 accessToken: this.accessToken,

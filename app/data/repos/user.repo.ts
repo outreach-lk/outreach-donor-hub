@@ -7,12 +7,16 @@ import {
   EntityDeletedDto,
 } from "../../types/dtos/server-message.dtos";
 import { UserDto, UserRole } from "../../types/dtos/user.dtos";
-import { DatabaseProvider } from "../../types/enums/providers";
+import { AuthProvider, DatabaseProvider } from "../../types/enums/providers";
 import ICRUDREPO from "../../types/interfaces/crud.repo.interface";
 import { IDatabaseClient } from "../../types/interfaces/db.client.interface";
 import { IDatabaseService } from "../../types/interfaces/db.service.interface";
 import { Page } from "../../types/pagable";
 import BaseRepo from "./base.repo";
+import apiMap from "../../api/api-map.json";
+import { authClientFactory } from "../../api/clients";
+import axios from "axios";
+
 
 /**
  * User Data access repository
@@ -51,19 +55,17 @@ export default class UserRepo extends BaseRepo implements ICRUDREPO<UserDto> {
    * Additional user verficiation may be done via back-end services.
    * @param data {UserDto}
    */
-  create(data: UserDto): Promise<EntityCreatedDto<Auditable & UserDto>> {
+  async create(data: UserDto): Promise<EntityCreatedDto<Auditable & UserDto>> {
       if (this.isBrowser) {
-        // Cannot create elevated users from browser.
-        if(data.role === UserRole.ADMIN || data.role === UserRole.MODERATOR){
-          throw new Error('elevated users need to be created through admin action');
-        }
-        return (this.db as IDatabaseClient).create<UserDto>(
-          {
-            ...data,
-          },
-          this.entity,
-          data.uid
-        );
+        let path = apiMap.v1["[entity]"].root.replace("[entity]", this.entity);
+        const token = authClientFactory.getClient(
+          AuthProvider.FIREBASE
+        ).accessToken;
+        return (await axios.post(path, data, {
+          headers:{
+            authorization: `Bearer ${token}`
+          }
+        })).data
       } else {
         return (this.db as IDatabaseService).save(data, this.entity, data.uid);
       }
