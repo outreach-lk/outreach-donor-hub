@@ -61,9 +61,7 @@ export function EntityPage<T>(props: SingleEntityPageProps<T>) {
     return (
       /* Child components are responsible for showing entity data  */
       <>
-        <Nav />
         {props.children({data:entityData,forceRefresh})}
-        <Footer />
       </>
     );
   } else if (error && !isLoading) {

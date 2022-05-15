@@ -4,6 +4,7 @@ import { HTTPMethod } from "../types/enums/api";
 
 export const devConfig: AppConfig = {
     title: "Outreach Donor Hub",
+    appUrl: 'http://localhost:3000',
     laguages: ['en','si','tam'],
     version: "1.0.0b",
     routes: [
