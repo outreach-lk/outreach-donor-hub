@@ -3,6 +3,7 @@ import Link from "next/link";
 import Cause from "../../../../data/entities/cause.entity";
 import { useEntity } from "../../../../hooks/entity";
 import NewDonationClaimContainer from "../../modules/donation/pre-donation.module";
+import { NewExpenseForm } from "../../modules/expense/new-expense.module";
 import { MilestoneFormModal } from "../../modules/milestone/milestone-form.module";
 
 interface CauseActionProps {
@@ -15,6 +16,8 @@ export function CauseActions(props: CauseActionProps) {
   const {canUpdate} = checkEntityPerms(props.cause);
   const { isOpen: isDonationOpen, onOpen: onDonationOpen, onClose: onDonationClose } = useDisclosure();
   const { isOpen: isMilestonrOpen, onOpen: onMilestoneOpen, onClose: onMilestoneClose } = useDisclosure();
+  const { isOpen: isExpenseOpen, onOpen: onExpenseOpen, onClose: onExpenseClose } = useDisclosure();
+
 
   return (
     <Box>
@@ -36,7 +39,7 @@ export function CauseActions(props: CauseActionProps) {
             canUpdate&&
             <>
             <Heading size={"sm"}>Edit Campaign</Heading>
-            {/* <Button colorScheme={"blue"}>Add Campaign Expense</Button> */}
+            <Button colorScheme={"blue"} onClick={onExpenseOpen}>Add Campaign Expense</Button>
             <Button colorScheme={"blue"} onClick={onMilestoneOpen}>Add Campaign Milestone</Button>
             </>
           }
@@ -54,6 +57,12 @@ export function CauseActions(props: CauseActionProps) {
         onClose={onMilestoneClose}
         forceRefresh={props.forceRefresh}
 
+      />
+      <NewExpenseForm 
+           causeId={props.cause.id as string}
+           isOpen={isExpenseOpen}
+           onClose={onExpenseClose}
+           forceRefresh={props.forceRefresh}
       />
     </Box>
   );

@@ -4,6 +4,8 @@ import { EntitySignature } from "./api-route-info";
 import { CauseDto } from "../types/dtos/cause.dtos";
 import Donation from "../data/entities/donation.entity";
 import { DonationDto } from "../types/dtos/donation.dtos";
+import Expense from "../data/entities/expense.entity";
+import { ExpenseDto } from "../types/dtos/expense.dtos";
 
 /**
  * Fetches an entity based on an entity signature object.
@@ -29,7 +31,14 @@ export async function fetchEntityFromSignature(
       if (dto) {
         return new Donation(dto as DonationDto);
       } else {
-        throw new Error("error_fetching_cause");
+        throw new Error("error_fetching_donation");
       }
+      case "expense":
+        dto = (await Expense.get(signature.entityId)).data;
+        if (dto) {
+          return new Expense(dto as ExpenseDto);
+        } else {
+          throw new Error("error_fetching_expense");
+        }
   }
 }
