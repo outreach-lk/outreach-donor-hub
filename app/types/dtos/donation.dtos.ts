@@ -13,11 +13,12 @@ import type { CauseDto } from "./cause.dtos";
 import type { ClaimEvidenceDto } from "./claim-evidence";
 
 export type DonationDto = Ownable & {
-    cause: CauseDto
+    ref: string,
+    causeId: string,
     amount: number
-    note: string
-    evidence: ClaimEvidenceDto[]
-    status: DonationStatus
+    note?: string
+    evidence?: ClaimEvidenceDto[]
+    status?: DonationStatus
 }
 
 export type DonationPage = Pagable<DonationDto>

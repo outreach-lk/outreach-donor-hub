@@ -5,6 +5,7 @@ import {
   Divider,
   Heading,
   HStack,
+  Spacer,
   Tooltip,
   useColorModeValue,
 } from "@chakra-ui/react";
@@ -20,14 +21,17 @@ export default function CauseListPage() {
     <EntityListPage entity="cause" query={query}>
       {(data: CauseDto) => (
         // Should be in own component element file.
-        <>
+        <Box
+          p="4"
+          my="4"
+          shadow={"lg"}
+          rounded="md"
+          bg={useColorModeValue("azure.100", "linkedin.900")}
+          maxH="lg"
+          display={"flex"}
+          alignItems="flex-end"
+        >
           <Box
-            p="4"
-            my="4"
-            shadow={"lg"}
-            rounded="md"
-            bg={useColorModeValue("azure.100", "linkedin.900")}
-            maxH="md"
             overflow={"hidden"}
           >
             <HStack>
@@ -52,6 +56,8 @@ export default function CauseListPage() {
                 hideMenu: true,
               }}
             />
+          </Box>
+            <Box p={"2"}> 
             <Link
               href={{
                 pathname: "/cause/[id]",
@@ -63,9 +69,8 @@ export default function CauseListPage() {
             >
               <Button colorScheme={"blue"}>Read More</Button>
             </Link>
-          </Box>
-          <Divider />
-        </>
+            </Box>
+        </Box>
       )}
     </EntityListPage>
   );

@@ -1,16 +1,20 @@
 import { Box, Button, Heading, Spinner, Text } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { MutableRefObject, RefObject, useEffect, useState } from "react";
 import { useAuth } from "../../../../hooks/auth.hooks";
 import apiMap from "../../../../api/api-map.json";
 import axios from "axios";
 
 interface UniqueDonorIdProps{
-    causeId: string
+    causeId: string,
+    refRef: MutableRefObject<string>
 }
 export function UniqueDonorId(props:UniqueDonorIdProps) {
   const { isAuthorized, user,client } = useAuth();
   const [ref,setRef] = useState<string|null>(null);
   const fetchUniqueDonorId = async () => {
+    if(!user) {
+      throw new Error('guest_user')
+    }
     let path = apiMap.v1.rpc.donation.ref.path;
     return ( await axios({
         url: path,
@@ -27,13 +31,18 @@ export function UniqueDonorId(props:UniqueDonorIdProps) {
   useEffect(()=>{
     fetchUniqueDonorId()
     .then((res)=>{
+        props.refRef.current = res.data
         setRef(res.data)
+    })
+    .catch(err=>{
+      props.refRef.current = '';
+      setRef('')
     })
   },[])
 
   return (
     <>
-      {isAuthorized ? (
+      {isAuthorized && (
         <Box>
           <Text>Your Reference Number</Text>
           {ref?
@@ -41,8 +50,6 @@ export function UniqueDonorId(props:UniqueDonorIdProps) {
             <Spinner/>
           }
         </Box>
-      ) : (
-        <Button>Sign In</Button>
       )}
     </>
   );

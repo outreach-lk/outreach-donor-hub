@@ -17,8 +17,8 @@ export default class User extends BaseEntity<User, UserDto> {
 
   uid: string;
   email: string;
-  firstName: string;
-  lastName: string;
+  firstName?: string;
+  lastName?: string;
   mobile?: string;
   isMobileVerified?: boolean;
   isEmailVerified: boolean;
@@ -69,7 +69,7 @@ export default class User extends BaseEntity<User, UserDto> {
    * @param dto
    * @param user
    */
-   mapInstanceToDto(dto: Auditable & UserDto, user: User): void {
+   updateInstanceWithDto(dto: Auditable & UserDto, user: User): void {
     user.email = dto.email || user.email;
     user.firstName = dto.firstName || user.firstName;
     user.lastName = dto.lastName || user.lastName;
@@ -88,7 +88,7 @@ export default class User extends BaseEntity<User, UserDto> {
   }
 
   static async getUserByUid(uid:string): Promise<User>{
-    return await UserRepo.getRepo().get(uid)
+    return await UserRepo.getRepo().get('user-'+uid)
     .then(res=>{
       return new User(res.data as AuditableUserDto);
     })

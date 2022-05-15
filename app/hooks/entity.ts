@@ -6,8 +6,10 @@
  * @since 27/03/2022
  */
 
+import BaseEntity from "../data/entities/base.entity";
 import { Page } from "../types/pagable";
 import { getRepoFromEntityName } from "../utils/name-repo-mapper"
+import { useAuth } from "./auth.hooks";
 import { useFeedback } from "./feedback.hook";
 import { useLogger } from "./logger.hooks";
 
@@ -20,6 +22,7 @@ export function useEntity(entity: string) {
     const {show} = useFeedback();
     const logger = useLogger();
     const repo = getRepoFromEntityName(entity);
+    const {user} = useAuth();
     return {
         fetchEntity: (id:string)=>{
             return repo.get(id)
@@ -77,12 +80,12 @@ export function useEntity(entity: string) {
                 throw error;
             })
         },
-        checkEntityPerms: ()=> {
+        checkEntityPerms: (entity: BaseEntity<any,any>)=> {
             return {
-                isOwner: false,
-                canRead: false,
-                canUpdate: false,
-                canDelete: false, 
+                isOwner: entity.createdBy === user?.uid,
+                canRead: true, // Needs fixing.
+                canUpdate: entity.sharedWith?.includes(user?.uid) || entity.createdBy === user?.uid,
+                canDelete: entity.sharedWith?.includes(user?.uid) || entity.createdBy === user?.uid, 
             }
         }
 

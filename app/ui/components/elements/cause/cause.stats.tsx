@@ -1,17 +1,33 @@
 import { Stat, StatHelpText, StatLabel, StatNumber } from "@chakra-ui/react";
 interface CauseStatProps {
-  amount: number;
+  currentCollection: {
+    acknowledged: number,
+    pending: number
+};
+expenses: {
+  confirmed: number,
+  pending: number
+}
   target: number;
   currency: string;
 }
 export function CauseStats(props: CauseStatProps) {
   return (
     <Stat>
-      <StatLabel>Total Donations</StatLabel>
+      <StatLabel>Confirmed Donations</StatLabel>
       <StatNumber>
-        {props.currency} {props.amount}
+        {props.currency} {props.currentCollection.acknowledged }
       </StatNumber>
-      <StatHelpText>Confirmed Donations: {props.target}</StatHelpText>
-    </Stat>
+      <StatHelpText>Total Donations: {props.currency} {props.currentCollection.acknowledged + props.currentCollection.pending}</StatHelpText>
+      {props.expenses&&
+      <>
+      <StatLabel>Confirmed Expenses</StatLabel>
+      <StatNumber>
+        ({props.currency} {props.expenses.confirmed })
+      </StatNumber>
+      <StatHelpText>Total Expenses: ({props.currency} {props.expenses.confirmed + props.expenses.pending})</StatHelpText>
+      </>
+      }
+   </Stat>
   );
 }

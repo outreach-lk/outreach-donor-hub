@@ -4,6 +4,7 @@ import { HTTPMethod } from "../types/enums/api";
 
 export const devConfig: AppConfig = {
     title: "Outreach Donor Hub",
+    appUrl: 'http://localhost:3000',
     laguages: ['en','si','tam'],
     version: "1.0.0b",
     routes: [
@@ -116,6 +117,79 @@ export const devConfig: AppConfig = {
             isEntity: false,
             isProtected: true,
             apiMethod: HTTPMethod.POST,
-        }
+        },
+        {
+            id: 'api-donation-create-entity',
+            path: '/api/v1/donation',
+            isApi: true,
+            isEntity: true,
+            isProtected: true,
+            apiMethod: HTTPMethod.POST,
+            allowedRoles: [ UserRole.REGULAR, UserRole.ADMIN, UserRole.MODERATOR ]
+        },
+        {
+            id: 'api-donation-fetch-page',
+            path: '/api/v1/donation',
+            isApi: true,
+            isEntity: false,
+            isProtected: false,
+            apiMethod: HTTPMethod.GET
+        },
+        {
+            id: 'api-donation-update',
+            path: '/api/v1/donation/:id',
+            isApi: true,
+            isEntity: true,
+            isProtected: true,
+            apiMethod: HTTPMethod.PUT,
+            allowedRoles: [ UserRole.REGULAR, UserRole.ADMIN, UserRole.MODERATOR ]
+
+        },
+        {
+            id: 'api-use-create-entity',
+            path: '/api/v1/user',
+            isApi: true,
+            isEntity: true,
+            isProtected: true,
+            apiMethod: HTTPMethod.POST,
+            allowedRoles: [ UserRole.REGULAR, UserRole.ADMIN, UserRole.MODERATOR ]
+        },
+        {
+            id: 'api-milestone-create-entity',
+            path: '/api/v1/milestone',
+            isApi: true,
+            isEntity: true,
+            isProtected: true,
+            apiMethod: HTTPMethod.POST,
+            allowedRoles: [ UserRole.REGULAR, UserRole.ADMIN, UserRole.MODERATOR ]
+        },
+        {
+            id: 'api-expense-create-entity',
+            path: '/api/v1/expense',
+            isApi: true,
+            isEntity: true,
+            isProtected: true,
+            apiMethod: HTTPMethod.POST,
+            allowedRoles: [ UserRole.REGULAR, UserRole.ADMIN, UserRole.MODERATOR ]
+        },
+        {
+            id: 'api-expense-fetch-page',
+            path: '/api/v1/expense',
+            isApi: true,
+            isEntity: false,
+            isProtected: false,
+            apiMethod: HTTPMethod.GET
+        },
+        {
+            id: 'api-expense-update',
+            path: '/api/v1/expense/:id',
+            isApi: true,
+            isEntity: true,
+            isProtected: true,
+            apiMethod: HTTPMethod.PUT,
+            allowedRoles: [ UserRole.REGULAR, UserRole.ADMIN, UserRole.MODERATOR ]
+
+        },
+
     ]
 }

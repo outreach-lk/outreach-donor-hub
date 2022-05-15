@@ -23,7 +23,7 @@ export default class AppEvent
   extends BaseEntity<AppEvent, EventDto>
   implements IEventActions
 {
-  mapInstanceToDto(
+  updateInstanceWithDto(
     dto: Auditable &
       Ownable & {
         eventId: string;

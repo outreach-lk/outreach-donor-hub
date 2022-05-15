@@ -15,6 +15,7 @@ import { useEntity } from "../../../../../hooks/entity";
 import { Pagable, Page } from "../../../../../types/pagable";
 import { EntityListPageProps } from "../../../../../types/props/entity.props";
 import { Footer } from "../../../modules/Footer";
+import { FullScreenLoader } from "../../../modules/loader";
 import { Nav } from "../../../modules/Navigation";
 
 export function EntityListPage<T>(props: EntityListPageProps) {
@@ -70,22 +71,22 @@ export function EntityListPage<T>(props: EntityListPageProps) {
     console.log(_nxtPg);
     setPage(_nxtPg);
   };
+
   return (
     <>
       {/* Create Entity Control goes here */}
       {/* Child components are responsible for showing the entity items */}
       {!props.isEmbedded && <Nav />}
 
-      <Container paddingTop={"12"} alignItems="flex-start">
+      <Container paddingTop={"12"} alignItems="flex-start" minW={props.width || 'auto'}>
         <Flex direction={"column"}>
           {pageData.map((item, i) => {
             return <div key={i}>{props.children(item)}</div>;
           })}
         </Flex>
-
         <Center p="12">
           {/* Pagination Controls Go here */}
-          <Button onClick={loadNextPage}>Load More</Button>
+          <Button isLoading={isLoading} onClick={loadNextPage}>Load More</Button>
         </Center>
       </Container>
       {!props.isEmbedded && <Footer />}

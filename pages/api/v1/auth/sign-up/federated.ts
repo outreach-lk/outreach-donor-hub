@@ -26,8 +26,9 @@ export default function federatedSignUpHandler(
   res: NextApiResponse<ServerMessageDto<SessionDto | Error>>
 ) {
   if (req.method === "POST") {
+    let token = req.headers.authorization || '';
     auth
-      .createUser((req.body as body).email, (req.body as body).role)
+      .createUser((req.body as body).email, (req.body as body).role, token)
       .then(() => {
         auth
           .createSessionWithFederation(

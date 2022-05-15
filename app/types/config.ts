@@ -11,6 +11,7 @@ export type AppConfig = {
     laguages: string[],
     version: string,
     routes: AppRoutes[],
+    appUrl: string
 }
 
 export type AppRoutes = {

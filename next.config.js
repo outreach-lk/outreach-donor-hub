@@ -2,6 +2,12 @@
 /** @type {import('webpack')} */
 const webpack = require('webpack');
 const nextConfig = {
+  eslint: {
+    // Warning: This allows production builds to successfully complete even if
+    // your project has ESLint errors.
+    // FIXME: Remove
+    ignoreDuringBuilds: true,
+  },
   reactStrictMode: true,
   eslint: {
     dirs: ["app", "pages"],

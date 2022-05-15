@@ -12,12 +12,13 @@ export type EntityPageProps  = {
 
 export type SingleEntityPageProps<T> = EntityPageProps & {
     id: string,
-    entity: T
+    entity: T,
 }
 
 export type EntityListPageProps = EntityPageProps & {
     page?: Page,
     query?: Map<string, string|number>
-    isEmbedded? :boolean
+    isEmbedded? :boolean,
+    width?: string;
 }
 

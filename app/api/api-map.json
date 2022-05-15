@@ -20,7 +20,7 @@
         "root": "/api/v1/auth/sign-up",
         "index": {
           "path": "/api/v1/auth/sign-up/index",
-          "responseType": "NextApiResponse<ServerMessageDto<SessionDto | Error>",
+          "responseType": "NextApiResponse<ServerMessageDto<UserDto | Error>",
           "request": {
             "body": {}
           }

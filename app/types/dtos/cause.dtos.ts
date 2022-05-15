@@ -22,6 +22,14 @@ export type CauseDto = Ownable & {
     description: SerializableBlock[],
     attachments: FileDto[],
     donations?: DonationDto[],
+    currentCollection: {
+        acknowledged: number,
+        pending: number
+    }
+    expenses: {
+        confirmed: number,
+        pending: number,
+    }
     bankAccount: BankAccountDetails;
     target?: number;
     currency?: Currency;
