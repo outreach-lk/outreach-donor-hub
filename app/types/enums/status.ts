@@ -5,6 +5,11 @@ export enum DonationStatus {
   REJECTED = "rejected",
 }
 
+export enum MilestoneStatus {
+  CREATED = "created",
+  CONFIRMED = "confirmed_by_mods",
+}
+
 export enum ClaimStatus {
   PENDING_APPROVAL,
   APPROVED,

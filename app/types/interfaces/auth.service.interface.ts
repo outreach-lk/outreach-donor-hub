@@ -10,6 +10,7 @@ import IAPIService from "./api.service.interface";
 
 /** All auth provider clients must implement this interface */
 export interface IAuthService extends IAPIService {
+  authenticatedUser?: User;
   /**
    * creates a user session for valid user credentials
    * @param email user email.

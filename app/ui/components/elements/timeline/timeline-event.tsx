@@ -2,32 +2,120 @@ import { BellIcon } from "@chakra-ui/icons";
 import {
   Avatar,
   Box,
+  Button,
   Divider,
+  Flex,
   Heading,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  ModalProps,
   Stack,
   Stat,
   Text,
+  useColorModeValue,
+  useDisclosure,
 } from "@chakra-ui/react";
+import { useState } from "react";
+import { FaReadme } from "react-icons/fa";
+import { GoMilestone } from "react-icons/go";
+import { MdReadMore } from "react-icons/md";
 import { AuditableEventDto, EventDto } from "../../../../types/dtos/event.dtos";
 import { getDateFromFirebaseDateTimeObject } from "../../../../utils/date-time";
 import { eventHeadings } from "../../../../utils/timeline_event_headings";
+import { RichTextEditor, SerializableBlock } from "../../modules/wyswyg-editor";
 import { TimelineEventIcon } from "./timeline-event-icon";
 
 export function TimelineEvent(props: AuditableEventDto) {
+  const shouldShowRichTextEditor =
+    !!props.payload?.description && Array.isArray(props.payload.description);
+  const {
+    isOpen: isDonationOpen,
+    onOpen: onDonationOpen,
+    onClose: onDonationClose,
+  } = useDisclosure();
+  const [currentReadmoreBlocks, setCurrBlocks] = useState<SerializableBlock[]>(
+    []
+  );
+  const [currReadmoreTitle, setReadmoreTitle] = useState<string>("");
 
   return (
-    <Stack direction="row" h="100px" p={4}>
-      <Avatar icon={<TimelineEventIcon type={props.eventType} />} />
-      <Divider orientation="vertical" />
-      <Box overflow={"clip"}>
-        <Heading size={"sm"}>{eventHeadings(props.eventType)}</Heading>
-        <Text>
-          {getDateFromFirebaseDateTimeObject(
-            props.createdOn as any
-          )?.toLocaleDateString()}
-        </Text>
-        <Text>{props.message}</Text>
-      </Box>
-    </Stack>
+    <>
+      <Stack direction="row" h="120px" width={"full"} p={4}>
+        <Avatar
+          color={useColorModeValue("gold", "facebook.700")}
+          background={useColorModeValue("facebook.400", "gold")}
+          icon={<TimelineEventIcon type={props.eventType} />}
+        />
+        <Divider orientation="vertical" />
+        <Box overflow={"clip"}>
+          <Box>
+            <Heading size={"sm"}>{eventHeadings(props.eventType)}</Heading>
+            <Text>
+              {getDateFromFirebaseDateTimeObject(
+                props.createdOn as any
+              )?.toLocaleDateString()}
+            </Text>
+            <Text>
+              {props.message + " "}
+              {shouldShowRichTextEditor && (
+                <>
+                  <Button
+                    variant={"link"}
+                    rightIcon={<MdReadMore />}
+                    onClick={onDonationOpen}
+                  >
+                    {" "}
+                    Read More{" "}
+                  </Button>
+                  <TimelineEventReadMore
+                    blocks={props.payload.description}
+                    title={props.message}
+                    isOpen={isDonationOpen}
+                    onClose={onDonationClose}
+                  />
+                </>
+              )}
+            </Text>
+          </Box>
+        </Box>
+      </Stack>
+    </>
+  );
+}
+
+function TimelineEventReadMore(props: {
+  blocks: SerializableBlock[];
+  title: string;
+  isOpen: boolean;
+  onClose: () => void;
+}) {
+  return (
+    <Modal isOpen={props.isOpen} onClose={props.onClose} size="4xl">
+      <ModalOverlay />
+      <ModalContent>
+        <ModalHeader>
+          <GoMilestone /> {props.title}{" "}
+        </ModalHeader>
+        <ModalCloseButton />
+        <ModalBody>
+            <RichTextEditor
+                  treeGrabber={(tree) => {
+                    console.log(tree);
+                  }}
+                  blocklist={props.blocks}
+                  init={{
+                    hideMenu: true,
+                    readonly: true,
+                  }}
+                    />
+        </ModalBody>
+        <ModalFooter></ModalFooter>
+      </ModalContent>
+    </Modal>
   );
 }

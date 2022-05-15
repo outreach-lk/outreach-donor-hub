@@ -18,6 +18,7 @@ export type SingleEntityPageProps<T> = EntityPageProps & {
 export type EntityListPageProps = EntityPageProps & {
     page?: Page,
     query?: Map<string, string|number>
-    isEmbedded? :boolean
+    isEmbedded? :boolean,
+    width?: string;
 }
 

@@ -153,6 +153,15 @@ export const devConfig: AppConfig = {
             apiMethod: HTTPMethod.POST,
             allowedRoles: [ UserRole.REGULAR, UserRole.ADMIN, UserRole.MODERATOR ]
         },
+        {
+            id: 'api-milestone-create-entity',
+            path: '/api/v1/milestone',
+            isApi: true,
+            isEntity: true,
+            isProtected: true,
+            apiMethod: HTTPMethod.POST,
+            allowedRoles: [ UserRole.REGULAR, UserRole.ADMIN, UserRole.MODERATOR ]
+        },
 
     ]
 }

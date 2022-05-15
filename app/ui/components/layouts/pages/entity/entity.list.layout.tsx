@@ -76,7 +76,7 @@ export function EntityListPage<T>(props: EntityListPageProps) {
       {/* Child components are responsible for showing the entity items */}
       {!props.isEmbedded && <Nav />}
 
-      <Container paddingTop={"12"} alignItems="flex-start">
+      <Container paddingTop={"12"} alignItems="flex-start" minW={props.width || 'auto'}>
         <Flex direction={"column"}>
           {pageData.map((item, i) => {
             return <div key={i}>{props.children(item)}</div>;

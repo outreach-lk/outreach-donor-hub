@@ -27,6 +27,7 @@ export default class FirebaseAuthService implements IAuthService {
     // should only be initialized in the server.
     this.admin = init();
   }
+  authenticatedUser?: userEntity;
   /**
    * Signs in the user with a custom token.
    * The user must first sign in with the firebase client and obtain a valid token

@@ -15,11 +15,11 @@ export function CauseStats(props: CauseStatProps) {
         {props.currency} {props.currentCollection.acknowledged }
       </StatNumber>
       <StatHelpText>Total Donations: {props.currency} {props.currentCollection.acknowledged + props.currentCollection.pending}</StatHelpText>
-      <StatLabel>Confirmed Expenses</StatLabel>
+      {/* <StatLabel>Confirmed Expenses</StatLabel>
       <StatNumber>
         ({props.currency} {props.currentCollection.acknowledged })
-      </StatNumber>
-      <StatHelpText>Total Expenses: ({props.currency} {props.currentCollection.acknowledged + props.currentCollection.pending})</StatHelpText>
+      </StatNumber> */}
+      {/* <StatHelpText>Total Expenses: ({props.currency} {props.currentCollection.acknowledged + props.currentCollection.pending})</StatHelpText> */}
    </Stat>
   );
 }

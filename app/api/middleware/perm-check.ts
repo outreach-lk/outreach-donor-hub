@@ -7,7 +7,8 @@ import { tokenInterceptor } from "../../utils/token-interceptor";
 import { CallNextHandler } from "../../types/middleware";
 import User from "../../data/entities/user.entity";
 import databaseServiceFactory from "../database/service/db.service.factory";
-import { DatabaseProvider } from "../../types/enums/providers";
+import { AuthProvider, DatabaseProvider } from "../../types/enums/providers";
+import { authServiceFactory } from "../services";
 
 /**
  * Checks if access to
@@ -31,11 +32,15 @@ export async function permissionCheck(
      * Sets Database Service Authenticated User Property
      * for Auditing Purposes
      */
-    if (user)
+    if (user) {
       databaseServiceFactory.getService(
         DatabaseProvider.FIREBASE
       ).authenticatedUser = user;
-
+      
+      authServiceFactory.getService(
+        AuthProvider.FIREBASE
+      ).authenticatedUser = user;
+    }
     /**
      * Unless the route isProtected always set isAllowed to true.
      * If not, continue to the rest of the checks.

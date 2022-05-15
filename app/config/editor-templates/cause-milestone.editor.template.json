@@ -1,0 +1,31 @@
+{
+    "id": "02a21efd-7bf3-4893-ba23-9a2bdaf80cc6",
+    "blocks": [
+      {
+        "id": "cause.milestone.title",
+        "type": "h1",
+        "placeholder": "👋 Milestone Title <small>[edit]</small>",
+        "blockAlignment": "left",
+        "nextBlockId": "cause.milestone.desc.block.1",
+        "hideMenu": true,
+        "nonZeroRawValueRequired": true
+      },
+      {
+        "id": "cause.milestone.desc.block.1",
+        "type": "p",
+        "placeholder": "Lorem ipsum dolor sit amet consectetur adipiscing elit, urna consequat felis vehicula class ultricies mollis dictumst, aenean non a in donec nulla. Phasellus ante pellentesque erat cum risus consequat imperdiet aliquam, integer placerat et turpis mi eros nec lobortis taciti, vehicula nisl litora tellus ligula porttitor metus.",
+        "blockAlignment": "center",
+        "nextBlockId": "cause.milestone.desc.block.3",
+        "preventDeletion": true
+      },
+      {
+        "id": "cause.milestone.desc.block.2",
+        "type": "img",
+        "blockAlignment": "left",
+        "placeholder":"",
+        "media": {
+            "src": "/assets/images/cause/cause-default-image.jpg"
+        }
+      }
+    ]
+  }
