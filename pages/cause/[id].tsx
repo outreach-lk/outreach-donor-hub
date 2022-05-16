@@ -43,20 +43,27 @@ export default function CausePage() {
               <>
                 <Head>
                   <title>{cause.title}</title>
+                  {/* Twitter */}
+                  <meta name="twitter:card" content={data.description[0].rawValue} key="twcard" />
+                  <meta name="twitter:creator" content={'donorhublk'} key="twhandle" />
+
+                  {/* Open Graph */}
                   <meta
                     name="description"
                     content={data.description[0].rawValue}
                   />
                   <meta name="author" content={"Outreach DonorHub"} />
-                  <meta name="" content={data.description[0].rawValue} />
-                  <meta property="og:title" content={data.title} />
+                  <meta property="og:title" content={data.title}  key="ogtitle"/>
                   <meta
                     property="og:description"
                     content={data.description[0].rawValue}
+                    key="ogdesc"
+
                   />
                   <meta
                     property="og:image"
                     content={image?.path || 'http://localhost:3000/assets/images/cause/cause-default-image.jpg'}
+                    key="ogimage"
                   />
                 </Head>
                 <Container maxW={"7xl"} p="12">

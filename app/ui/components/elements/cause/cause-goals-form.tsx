@@ -37,14 +37,6 @@ export function CauseGoalsForm(props: CauseGoalsFormProps) {
     <form onSubmit={onFormSubmit}>
       <Flex direction={"column"}>
         <Box>
-          <FormControl>
-            <FormLabel htmlFor="target">Target Amount of Donations</FormLabel>
-            <Input id="target" type="number" defaultValue={props.init?.target} />
-            <FormHelperText>
-              This is an optional detail. Leave empty if there's no target
-              amount
-            </FormHelperText>
-          </FormControl>
           <FormControl isRequired>
             <FormLabel htmlFor="currency">Campaign Currency</FormLabel>
             <Select id="currency" placeholder="Select Target Currency" defaultValue={props.init?.currency}>
@@ -54,6 +46,14 @@ export function CauseGoalsForm(props: CauseGoalsFormProps) {
             </Select>
             <FormHelperText>
               Currency with which donations are collected / to which are converted.
+            </FormHelperText>
+          </FormControl>
+          <FormControl>
+            <FormLabel htmlFor="target">Target Amount of Donations</FormLabel>
+            <Input id="target" type="number" defaultValue={props.init?.target} />
+            <FormHelperText>
+              This is an optional detail. Leave empty if there's no target
+              amount
             </FormHelperText>
           </FormControl>
           <FormControl>

@@ -85,8 +85,9 @@ export function BankAccountDetailForm(props: BankAccountDetailFormProps) {
           </Select>
         </FormControl>
         <FormControl isRequired>
-          <FormLabel htmlFor="branch">Branch</FormLabel>
           {branches && (
+            <>
+            <FormLabel htmlFor="branch">Branch</FormLabel>
             <Select
               id="branch"
               placeholder="Select Branch"
@@ -98,6 +99,7 @@ export function BankAccountDetailForm(props: BankAccountDetailFormProps) {
                 </option>
               ))}
             </Select>
+            </>
           )}
         </FormControl>
         <FormControl isRequired>
