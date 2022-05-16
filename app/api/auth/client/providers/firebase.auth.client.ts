@@ -97,13 +97,13 @@ export default class FirebaseAuthClient implements IAuthClient {
       ).data as ServerMessageDto<SessionDto>;
       if (data) {
         return signInWithCustomToken(this.auth, data?.accessToken).then(
-          (res) => {
+          async (res) => {
             if (res.user) {
               this.accessToken = data.accessToken;
               this.refreshToken = res.user.refreshToken;
               // Persist Session in Local storage
               this.persistSession({
-                accessToken: data.accessToken,
+                accessToken: await res.user.getIdToken(),
                 refreshToken: data.refreshToken,
                 isAuthorized: true,
                 user: data.user

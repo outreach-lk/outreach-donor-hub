@@ -7,6 +7,7 @@ export type AccessTokenPayload = {
     permissions: Permissions[],
     serverTime: number,
     expiresIn: number,
+    user: UserDto
 }
 
 export type SessionDto = {

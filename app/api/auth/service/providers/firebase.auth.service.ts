@@ -44,6 +44,7 @@ export default class FirebaseAuthService implements IAuthService {
         expiresIn: 0, // not configurable
         uid: user.uid,
         permissions: user.customPermissions,
+        user: User.map2Dto(user)
       } as AccessTokenPayload);
       return {
         accessToken: customToken,
