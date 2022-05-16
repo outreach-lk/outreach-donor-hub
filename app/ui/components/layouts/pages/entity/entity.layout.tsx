@@ -36,7 +36,7 @@ export function EntityPage<T>(props: SingleEntityPageProps<T>) {
    * Loads entity data upon initial render & subsequent updates.
    */
   useEffect(() => {
-    if (props.id) {
+    if (props.id && !props.serverFetchedData) {
       setIsLoading(true);
       fetchEntity(props.entity + "-" + props.id)
         .then((d) => {
@@ -50,6 +50,9 @@ export function EntityPage<T>(props: SingleEntityPageProps<T>) {
         .finally(() => {
           setIsLoading(false)
         });
+    }else {
+      setEntityData(props.serverFetchedData as T)
+      setIsLoading(false)
     }
   }, [props,shouldForceRefresh]);
 

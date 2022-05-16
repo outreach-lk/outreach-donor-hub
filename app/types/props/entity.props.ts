@@ -12,7 +12,7 @@ export type EntityPageProps  = {
 
 export type SingleEntityPageProps<T> = EntityPageProps & {
     id: string,
-    entity: T,
+    serverFetchedData?: T
 }
 
 export type EntityListPageProps = EntityPageProps & {
