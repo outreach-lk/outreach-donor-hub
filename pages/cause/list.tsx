@@ -25,8 +25,10 @@ export default function CauseListPage() {
   query.set("isVerified", "true");
   return (
     <>
-      <Nav/>
-      <Container minW={"full"} py="4">
+      <Nav />
+      <Container minW={"full"} py="4"
+       bg={useColorModeValue("gray.200", "auto")}
+      >
 
         <Breadcrumb paddingBottom={"4"}>
           <BreadcrumbItem>
@@ -52,7 +54,7 @@ export default function CauseListPage() {
               my="4"
               shadow={"lg"}
               rounded="md"
-              bg={useColorModeValue("azure.100", "linkedin.900")}
+              bg={useColorModeValue("white", "linkedin.900")}
               maxH="lg"
               display={"flex"}
               alignItems="flex-end"

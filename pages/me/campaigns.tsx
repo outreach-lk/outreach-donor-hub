@@ -28,7 +28,10 @@ export default function CauseListPage() {
   return (
       <>
       <Nav/>
-    <Container minW="full" p="4">
+    <Container minW="full" p="4"
+       bg={useColorModeValue("gray.200", "auto")}
+    
+    >
         <Breadcrumb paddingBottom={"4"}>
             <BreadcrumbItem>
                 <BreadcrumbLink href="/me">Profile ({user.email})</BreadcrumbLink>
@@ -48,7 +51,7 @@ export default function CauseListPage() {
               my="4"
               shadow={"lg"}
               rounded="md"
-              bg={useColorModeValue("azure.100", "linkedin.900")}
+              bg={useColorModeValue("white", "linkedin.900")}
               maxH="lg"
               display={"flex"}
               alignItems="flex-end"

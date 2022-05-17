@@ -30,7 +30,7 @@ export function Nav() {
   return (
     <>
       <Box
-        bg={useColorModeValue("gray.100", "gray.900")}
+        bg={useColorModeValue("white", "gray.900")}
         px={4}
         shadow="md"
       >
@@ -70,7 +70,7 @@ export function Nav() {
                     <Avatar
                       size={"sm"}
                       src={
-                        "https://avatars.dicebear.com/api/adventurer-neutral/" + user.uid + '.svg'
+                        "https://avatars.dicebear.com/api/adventurer-neutral/" + user.uid + '.svg?mouth=variant02&eyes=variant13'
                       }
                     />
                   </MenuButton>
@@ -80,7 +80,7 @@ export function Nav() {
                       <Avatar
                         size={"2xl"}
                         src={
-                          "https://avatars.dicebear.com/api/adventurer-neutral/" + user.uid + '.svg'
+                          "https://avatars.dicebear.com/api/adventurer-neutral/" + user.uid + '.svg?mouth=variant02&eyes=variant13'
                         }
                       />
                     </Center>

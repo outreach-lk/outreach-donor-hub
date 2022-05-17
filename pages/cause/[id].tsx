@@ -10,6 +10,7 @@ import {
   HStack,
   Text,
   Tooltip,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { NextPageContext } from "next";
 import Head from "next/head";
@@ -67,7 +68,9 @@ export default function CausePage(props: { cause: CauseDto }) {
         />
       </Head>
       <Nav />
-      <Container minW={"full"}>
+      <Container minW={"full"}
+       bg={useColorModeValue("gray.200", "auto")}
+      >
         <EntityPage
           entity="cause"
           id={query.id as string}
