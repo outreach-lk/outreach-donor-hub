@@ -95,7 +95,9 @@ export function EntityListPage<T>(props: EntityListPageProps) {
           </Center>
         </>:
           <>
-            {!isLoading&&<NoItemsCallForAction/>}
+            {!isLoading&&<NoItemsCallForAction>
+                {props.emptyListScreen}
+              </NoItemsCallForAction>}
           </>
         }
       </Container>

@@ -37,6 +37,7 @@ a {
 }
 .loader:before,
 .loader:after {
+  display: inline;
   position: absolute;
   top: 0;
   content: '';

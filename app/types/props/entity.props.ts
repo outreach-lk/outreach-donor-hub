@@ -21,5 +21,6 @@ export type EntityListPageProps = EntityPageProps & {
     isEmbedded? :boolean,
     width?: string;
     showFullScreenLoader?: boolean,
+    emptyListScreen?: Renderable
 }
 

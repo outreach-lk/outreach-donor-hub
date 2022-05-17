@@ -28,7 +28,7 @@ export const Footer = () => (
   >
     <Stack>
       <Wrap
-        direction={{ base: "row", xs: "column" }}
+        direction={{ base: "column", md: "row" }}
         spacing="4"
         align="flex-start"
         justify="space-between"

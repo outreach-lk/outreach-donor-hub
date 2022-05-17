@@ -88,7 +88,18 @@ export default function CauseDonations() {
             Back to Campaign
           </Button>
         </Wrap>
-        <EntityListPage entity="donation" query={map} isEmbedded={true}>
+        <EntityListPage
+          entity="donation"
+          query={map}
+          isEmbedded={true}
+          showFullScreenLoader={true}
+          emptyListScreen={
+            <Box>
+              <Heading>No Donations, Yet!</Heading>
+              <Text>This campaign does not have donation claims</Text>
+            </Box>
+          }
+        >
           {(_data: DonationDto) => {
             const data = new Donation(_data);
             const isDisputed = data.status === DonationStatus.DISPUTED;
@@ -98,7 +109,12 @@ export default function CauseDonations() {
             const isConfirmed = data.status === DonationStatus.ACKNOWLEDGED;
             // FIXME: Move to own component
             return (
-              <Box mb="4" p="4" shadow={"md"} bg={useColorModeValue("azure.100", "linkedin.900")}>
+              <Box
+                mb="4"
+                p="4"
+                shadow={"md"}
+                bg={useColorModeValue("azure.100", "linkedin.900")}
+              >
                 {data.owner === user?.uid && (
                   <Badge colorScheme={"blue"}>Your Donation</Badge>
                 )}

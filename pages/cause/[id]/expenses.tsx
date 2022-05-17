@@ -88,7 +88,18 @@ export default function CauseExpenses() {
             Back to Campaign
           </Button>
         </Wrap>
-        <EntityListPage entity="expense" query={map} isEmbedded={true}>
+        <EntityListPage
+          entity="expense"
+          query={map}
+          isEmbedded={true}
+          showFullScreenLoader={true}
+          emptyListScreen={
+            <Box>
+              <Heading>No Expenses, Yet!</Heading>
+              <Text>This campaign does not have expense claims</Text>
+            </Box>
+          }
+        >
           {(_data: ExpenseDto) => {
             const data = new Expense(_data);
             const isDisputed = data.status === ExpenseStatus.DISPUTED;
@@ -98,7 +109,12 @@ export default function CauseExpenses() {
             const isConfirmed = data.status === ExpenseStatus.ACKNOWLEDGED;
             // FIXME: Move to own component
             return (
-              <Box mb="4" p="4" shadow={"md"} bg={useColorModeValue("azure.100", "linkedin.900")}>
+              <Box
+                mb="4"
+                p="4"
+                shadow={"md"}
+                bg={useColorModeValue("azure.100", "linkedin.900")}
+              >
                 {data.owner === user?.uid && (
                   <Badge colorScheme={"blue"}>Your Expense</Badge>
                 )}
