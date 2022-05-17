@@ -1,5 +1,8 @@
 import {
   Box,
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
   Button,
   Container,
   Heading,
@@ -23,7 +26,15 @@ export default function NewCausePage() {
   return (
     <>
       <Nav />
-      <Container maxW={"full"} py="12">
+      <Container maxW={"full"} py="4">
+      <Breadcrumb>
+          <BreadcrumbItem paddingBottom={"4"}>
+            <BreadcrumbLink href="/cause">Campaigns</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbItem isCurrentPage>
+            <BreadcrumbLink>New Campaign</BreadcrumbLink>
+          </BreadcrumbItem>
+        </Breadcrumb>
         <HStack>
           <Stack>
           <Heading size={"md"}>Create a new Donation Campaign</Heading>

@@ -28,8 +28,8 @@ export default function CauseListPage() {
   return (
       <>
       <Nav/>
-    <Container minW="full" p="5">
-        <Breadcrumb>
+    <Container minW="full" p="4">
+        <Breadcrumb paddingBottom={"4"}>
             <BreadcrumbItem>
                 <BreadcrumbLink href="/me">Profile ({user.email})</BreadcrumbLink>
             </BreadcrumbItem>
@@ -37,7 +37,9 @@ export default function CauseListPage() {
                 <BreadcrumbLink>My Campaigns</BreadcrumbLink>
             </BreadcrumbItem>
         </Breadcrumb>
-        <Heading size={"sm"}>My Campaigns</Heading>
+        <Heading size={"md"}>My Campaigns</Heading>
+        <Heading size={"sm"}>Campaigns created by You</Heading>
+
         <EntityListPage entity="cause" query={query} isEmbedded={true}>
           {(data: CauseDto) => (
             // Should be in own component element file.
