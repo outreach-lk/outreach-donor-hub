@@ -82,7 +82,7 @@ export function EntityListPage<T>(props: EntityListPageProps) {
       <FullScreenLoader/>
       }
       <Container paddingY={"12"} alignItems="flex-start" minW={props.width || 'auto'}>
-        {(!isLoading&&pageData.length)?
+        {(pageData.length)?
         <>
           <Flex direction={"column"}>
             {pageData.map((item, i) => {
@@ -95,7 +95,7 @@ export function EntityListPage<T>(props: EntityListPageProps) {
           </Center>
         </>:
           <>
-            <NoItemsCallForAction/>
+            {!isLoading&&<NoItemsCallForAction/>}
           </>
         }
       </Container>
