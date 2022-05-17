@@ -14,6 +14,7 @@ import { PropsWithChildren, useEffect, useState } from "react";
 import { useEntity } from "../../../../../hooks/entity";
 import { Pagable, Page } from "../../../../../types/pagable";
 import { EntityListPageProps } from "../../../../../types/props/entity.props";
+import { NoItemsCallForAction } from "../../../elements/no-items";
 import { Footer } from "../../../modules/Footer";
 import { FullScreenLoader } from "../../../modules/loader";
 import { Nav } from "../../../modules/Navigation";
@@ -80,16 +81,23 @@ export function EntityListPage<T>(props: EntityListPageProps) {
       {isLoading&&
       <FullScreenLoader/>
       }
-      <Container paddingTop={"12"} alignItems="flex-start" minW={props.width || 'auto'}>
-        <Flex direction={"column"}>
-          {pageData.map((item, i) => {
-            return <div key={i}>{props.children(item)}</div>;
-          })}
-        </Flex>
-        <Center p="12">
-          {/* Pagination Controls Go here */}
-          <Button isLoading={isLoading} onClick={loadNextPage}>Load More</Button>
-        </Center>
+      <Container paddingY={"12"} alignItems="flex-start" minW={props.width || 'auto'}>
+        {pageData.length?
+        <>
+          <Flex direction={"column"}>
+            {pageData.map((item, i) => {
+              return <div key={i}>{props.children(item)}</div>;
+            })}
+          </Flex>
+          <Center p="12">
+            {/* Pagination Controls Go here */}
+            <Button isLoading={isLoading} onClick={loadNextPage}>Load More</Button>
+          </Center>
+        </>:
+          <>
+            <NoItemsCallForAction/>
+          </>
+        }
       </Container>
       {!props.isEmbedded && <Footer />}
     </>
