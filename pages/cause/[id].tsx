@@ -81,7 +81,7 @@ export default function CausePage(props: { cause: CauseDto }) {
             const cause = new Cause(data);
             return (
               <>
-                <Container maxW={"7xl"} p="12">
+                <Container maxW={"7xl"} p="4">
                   <HStack align={"baseline"}>
                     <Heading marginTop="1">{data.title}</Heading>
                     {/* TODO: make own element */}
@@ -151,7 +151,7 @@ export default function CausePage(props: { cause: CauseDto }) {
                   </Box>
                   {/* Cause Activity */}
                   <Box
-                    marginTop={{ base: "1", sm: "5" }}
+                    marginTop={{ base: "10", md: "1" }}
                     display="flex"
                     flexDirection={{ base: "column", sm: "row" }}
                     justifyContent="space-between"

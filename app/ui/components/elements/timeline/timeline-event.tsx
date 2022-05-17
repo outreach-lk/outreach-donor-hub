@@ -41,7 +41,7 @@ export function TimelineEvent(props: AuditableEventDto) {
 
   return (
     <>
-      <Stack direction="row" h="120px" width={"full"} p={4}>
+      <Stack direction="row" h={{base:'auto', sm:"120px"}} width={"full"} p={4}>
         <Avatar
           color={'gold'}
           background={useColorModeValue("facebook.400", "facebook.800")}
