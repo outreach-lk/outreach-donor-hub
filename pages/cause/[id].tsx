@@ -29,41 +29,50 @@ import { Footer } from "../../app/ui/components/modules/Footer";
 import { Nav } from "../../app/ui/components/modules/Navigation";
 import { RichTextEditor } from "../../app/ui/components/modules/wyswyg-editor";
 
-export default function CausePage(props:{cause:CauseDto}) {
+export default function CausePage(props: { cause: CauseDto }) {
   const { query } = useRouter();
-  const {cause} = props;
-  const image = cause.attachments.find(file=>file?.path && file.path.match('http'));
+  const { cause } = props;
+  const image = cause.attachments.find(
+    (file) => file?.path && file.path.match("http")
+  );
 
   return (
     <>
       <Head>
-                  <title>{cause.title}</title>
-                  {/* Twitter */}
-                  <meta name="twitter:card" content={cause.description[0].rawValue} key="twcard" />
-                  <meta name="twitter:creator" content={'donorhublk'} key="twhandle" />
+        <title>{cause.title}</title>
+        {/* Twitter */}
+        <meta
+          name="twitter:card"
+          content={cause.description[0].rawValue}
+          key="twcard"
+        />
+        <meta name="twitter:creator" content={"donorhublk"} key="twhandle" />
 
-                  {/* Open Graph */}
-                  <meta
-                    name="description"
-                    content={cause.description[0].rawValue}
-                  />
-                  <meta name="author" content={"Outreach DonorHub"} />
-                  <meta property="og:title" content={cause.title}  key="ogtitle"/>
-                  <meta
-                    property="og:description"
-                    content={cause.description[0].rawValue}
-                    key="ogdesc"
-
-                  />
-                  <meta
-                    property="og:image"
-                    content={image?.path || 'http://localhost:3000/assets/images/cause/cause-default-image.jpg'}
-                    key="ogimage"
-                  />
-                </Head>
+        {/* Open Graph */}
+        <meta name="description" content={cause.description[0].rawValue} />
+        <meta name="author" content={"Outreach DonorHub"} />
+        <meta property="og:title" content={cause.title} key="ogtitle" />
+        <meta
+          property="og:description"
+          content={cause.description[0].rawValue}
+          key="ogdesc"
+        />
+        <meta
+          property="og:image"
+          content={
+            image?.path ||
+            "http://localhost:3000/assets/images/cause/cause-default-image.jpg"
+          }
+          key="ogimage"
+        />
+      </Head>
       <Nav />
       <Container minW={"full"}>
-        <EntityPage entity="cause" id={query.id as string} serverFetchedData={props.cause}>
+        <EntityPage
+          entity="cause"
+          id={query.id as string}
+          serverFetchedData={props.cause}
+        >
           {(props) => {
             const data: CauseDto = props.data;
             const cause = new Cause(data);
@@ -164,20 +173,20 @@ export default function CausePage(props:{cause:CauseDto}) {
 
 export async function getServerSideProps(context: NextPageContext) {
   try {
-    const {id} = context.query;
-    const {data} = await CauseRepo.getRepo().get("cause-"+id as string)
-    console.log(data)
+    const { id } = context.query;
+    const { data } = await CauseRepo.getRepo().get(("cause-" + id) as string);
+    console.log(data);
     return {
       props: {
-        cause: JSON.parse(JSON.stringify(data))
-      }
-    }
+        cause: JSON.parse(JSON.stringify(data)),
+      },
+    };
   } catch (error) {
     return {
       redirect: {
-        destination: '/404',
+        destination: "/404",
         permanent: true,
       },
-    }
+    };
   }
 }
