@@ -93,6 +93,9 @@ export function Nav() {
                     </Center>
                     <br />
                     <MenuDivider />
+                    <NxtLink href={"/cause/new"} passHref>
+                      <MenuItem as="a">Create Campaign</MenuItem>
+                    </NxtLink>
                     <NxtLink href={"/me/campaigns"} passHref>
                       <MenuItem as="a">My Campaigns</MenuItem>
                     </NxtLink>
