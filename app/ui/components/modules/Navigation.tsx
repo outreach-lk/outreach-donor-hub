@@ -44,7 +44,6 @@ export function Nav() {
             <Wrap as="a" align={"center"} spacing="20px">
               <Logo />
               <Heading 
-              display={{base:'none', sm:'flex'}}
               color="linkedin.700">DonorHub</Heading>
             </Wrap>
           </NxtLink>
@@ -52,7 +51,9 @@ export function Nav() {
           <Flex alignItems={"center"}>
             <Stack direction={"row"} spacing={7}>
               {isAuthorized&&<NxtLink href={"/cause/new"} passHref>
-                <Button as="a" colorScheme={"blue"} >
+                <Button 
+                  display={{base:'none', sm:'flex'}}
+                  as="a" colorScheme={"blue"} >
                   Create Campaign
                 </Button>
               </NxtLink>}
