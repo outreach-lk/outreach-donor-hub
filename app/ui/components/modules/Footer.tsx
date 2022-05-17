@@ -33,7 +33,7 @@ export const Footer = () => (
         align="flex-start"
         justify="space-between"
       >
-        <Stack direction={"column"}>
+        <Stack direction={"column"} minW={{base:"full",md:'auto'}} align="center">
           <Wrap align={"center"}>
             <Logo /> <Heading size="lg">DonorHub</Heading>
           </Wrap>
