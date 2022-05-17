@@ -20,5 +20,6 @@ export type EntityListPageProps = EntityPageProps & {
     query?: Map<string, string|number>
     isEmbedded? :boolean,
     width?: string;
+    showFullScreenLoader?: boolean,
 }
 

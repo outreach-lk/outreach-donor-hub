@@ -18,7 +18,7 @@ export default function CauseListPage() {
   const query = new Map<string, string>();
   query.set("isVerified", "true");
   return (
-    <EntityListPage entity="cause" query={query}>
+    <EntityListPage entity="cause" query={query} showFullScreenLoader={true}>
       {(data: CauseDto) => (
         // Should be in own component element file.
         <Box
