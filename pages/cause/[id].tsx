@@ -11,6 +11,7 @@ import {
   Text,
   Tooltip,
   useColorModeValue,
+  VStack,
 } from "@chakra-ui/react";
 import { NextPageContext } from "next";
 import Head from "next/head";
@@ -24,6 +25,7 @@ import { CauseDto } from "../../app/types/dtos/cause.dtos";
 import { AttachmentCarousel } from "../../app/ui/components/elements/carousel";
 import { CauseActions } from "../../app/ui/components/elements/cause/cause.actions";
 import { CauseStats } from "../../app/ui/components/elements/cause/cause.stats";
+import { EntityVerifiedBanner } from "../../app/ui/components/elements/entity-verified-banner";
 import { EntityPage } from "../../app/ui/components/layouts/pages/entity/entity.layout";
 import { EventTimeline } from "../../app/ui/components/modules/activity-timeline/timeline.module";
 import { Footer } from "../../app/ui/components/modules/Footer";
@@ -82,21 +84,17 @@ export default function CausePage(props: { cause: CauseDto }) {
             return (
               <>
                 <Container maxW={"7xl"} p="4">
-                  <HStack align={"baseline"}>
+                  <VStack align={"baseline"}>
                     <Heading marginTop="1">{data.title}</Heading>
-                    {/* TODO: make own element */}
-                    <Tooltip
-                      label={
-                        data.isVerified
-                          ? "This campaign has been verified by DonorHub mods"
-                          : "This campaign is not verified"
-                      }
-                    >
-                      <CheckCircleIcon
-                        color={data.isVerified ? "linkedin.600" : "grey"}
-                      />
-                    </Tooltip>
-                  </HStack>
+                    <EntityVerifiedBanner
+                       isVerified={Boolean(data.isVerified)} 
+                       entity="Campaign" 
+                       tooltip={{
+                         verified: "This campaign has been Verified by DonorHub Mods.",
+                         unverified: "This campaign has not been verified by DonorHub Mods."
+                       }}
+                    />
+                  </VStack>
                   <Box
                     marginTop={{ base: "1", sm: "5" }}
                     display="flex"
