@@ -3,6 +3,10 @@ import { BlockAlignment, BlockType, SerializableBlock } from ".";
 import { EditorBlock } from "./editor-block";
 import { v4 as uuidv4 } from "uuid";
 import sanitize from "sanitize-html";
+import FireStorageClient from "../../../../api/storage/client/providers/firebase.storage.client";
+import { storageClientFactory } from "../../../../api/clients";
+import { FileStorageProvider } from "../../../../types/enums/providers";
+import { IFileStorageClient } from "../../../../types/interfaces/storage.client.interface";
 
 export class EditorTree {
   root: null | EditorBlock;
@@ -12,6 +16,7 @@ export class EditorTree {
   serializableBlocks: SerializableBlock[] = [];
   id: string;
   readOnly: boolean;
+  private storageClient: IFileStorageClient;
   dispatchSetCurrBlock: Dispatch<SetStateAction<EditorBlock | null>>;
   static createFromMap(
     sBlocks: SerializableBlock[],
@@ -20,7 +25,7 @@ export class EditorTree {
     setCurrBlock: Dispatch<SetStateAction<EditorBlock | null>>,
     readOnly: boolean = false
   ): EditorTree {
-    const _tree = new EditorTree(editorRef, menuRef, setCurrBlock,readOnly);
+    const _tree = new EditorTree(editorRef, menuRef, setCurrBlock, readOnly);
     const _blocks: Map<string, EditorBlock> = new Map<string, EditorBlock>();
     sBlocks.forEach((sBlock) => {
       _blocks.set(
@@ -74,6 +79,9 @@ export class EditorTree {
     this.menu = menuRef;
     this.dispatchSetCurrBlock = setCurrBlock;
     this.readOnly = readOnly;
+    this.storageClient = storageClientFactory.getClient(
+      FileStorageProvider.FIRESTORAGE
+    );
   }
 
   /**
@@ -84,17 +92,18 @@ export class EditorTree {
    * @param prev if linking to the middle, prev. block
    * @returns
    */
-  append(
+  async append(
     type: BlockType,
     block?: EditorBlock,
     next?: EditorBlock,
-    prev?: EditorBlock
+    prev?: EditorBlock,
+    data?: any
   ) {
     let _elem: HTMLElement;
     let media: any;
     let href: string | null;
     const _block = block || new EditorBlock(type, null, this);
-    _block.isLocked = this.readOnly
+    _block.isLocked = this.readOnly;
     switch (_block.type) {
       default:
       case "p":
@@ -113,12 +122,14 @@ export class EditorTree {
         _elem = document.createElement("img");
         _elem.classList.add("block", "editor-img");
         if (!_block?.media?.src) {
-          const url = prompt("Image URL");
+          const url = data;
+          const src = (await this.storageClient.fetchFile(data)).path;
           _block.media = {
-            src: url || "",
+            src: src || "",
           };
         }
         (_elem as HTMLImageElement).src = _block.media?.src || "";
+        (_elem as HTMLImageElement).setAttribute("data--storage-path", data);
         (_elem as HTMLImageElement).style.width = "50%";
         break;
       case "a":

@@ -27,6 +27,7 @@
   top: auto;
   padding: 10px 0 0 0;
   margin-left: 50%;
+  transform: translateX(-50%) translateY(50%);
   z-index: 99;
 }
 .editor-popover-toolbar {
@@ -57,6 +58,6 @@
 @media screen and (max-width: 480px) {
   .editor-popover {
     margin-left: -10%;
-    margin-top: -30%
+    margin-top: -30%;
   }
 }

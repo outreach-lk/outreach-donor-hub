@@ -24,7 +24,7 @@ interface RichTextEditorProps {
   debug?: boolean;
   blocklist?: SerializableBlock[];
   treeGrabber: (tree: EditorTree) => void;
-  init?: RichTextEditorInit
+  init?: RichTextEditorInit;
 }
 
 interface RichTextEditorInit {
@@ -37,7 +37,7 @@ export function RichTextEditor(props: RichTextEditorProps) {
   const menuRef = useRef<HTMLDivElement>(null);
   const [currBlock, setCurrBlock] = useState<EditorBlock | null>(null);
   const [tree, setTree] = useState<EditorTree>(
-    new EditorTree(editorRef, menuRef, setCurrBlock,props.init?.readonly)
+    new EditorTree(editorRef, menuRef, setCurrBlock, props.init?.readonly)
   );
   const [showMenu, setShowMenu] = useState(false);
   const handleInitClick: MouseEventHandler<HTMLDivElement> = (e) => {
@@ -53,7 +53,7 @@ export function RichTextEditor(props: RichTextEditorProps) {
       tree.clearTree();
       setTree(
         EditorTree.createFromMap(
-          props.blocklist ,
+          props.blocklist,
           editorRef,
           menuRef,
           setCurrBlock,
@@ -118,21 +118,24 @@ export function RichTextEditor(props: RichTextEditorProps) {
         className="wysiwyg-editor-container"
       ></div>
 
-      {!props.init?.hideMenu&&<BlockTypeSel
-        menuRef={menuRef}
-        isOpen={showMenu}
-        addCallback={(tag) =>
-          tree.append(
-            tag,
-            undefined,
-            currBlock?.next || undefined,
-            currBlock || undefined
-          )
-        }
-        removeCallback={tree.removeBlock.bind(tree)}
-        alignmentCallback={tree.setBlockAlignment.bind(tree)}
-        currentBlock={currBlock || undefined}
-      />}
+      {!props.init?.hideMenu && (
+        <BlockTypeSel
+          menuRef={menuRef}
+          isOpen={showMenu}
+          addCallback={(tag, data: any) =>
+            tree.append(
+              tag,
+              undefined,
+              currBlock?.next || undefined,
+              currBlock || undefined,
+              data
+            )
+          }
+          removeCallback={tree.removeBlock.bind(tree)}
+          alignmentCallback={tree.setBlockAlignment.bind(tree)}
+          currentBlock={currBlock || undefined}
+        />
+      )}
     </>
   );
 }
