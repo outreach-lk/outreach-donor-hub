@@ -112,12 +112,12 @@ export class EditorTree {
       case "img":
         _elem = document.createElement("img");
         _elem.classList.add("block", "editor-img");
-        if (!_block?.media) {
+        if (!_block?.media?.src) {
           const url = prompt("Image URL");
           _block.media = {
             src: url || "",
           };
-        } else
+        }
         (_elem as HTMLImageElement).src = _block.media?.src || "";
         (_elem as HTMLImageElement).style.width = "50%";
         break;
