@@ -24,6 +24,7 @@ import { Ownable } from "../../types/ownable";
 import { CauseDto } from "../../types/dtos/cause.dtos";
 import { ClaimEvidenceDto } from "../../types/dtos/claim-evidence";
 import CauseRepo from "../repos/cause.repo";
+import { FileDto } from "../../types/dtos/remote-file.dtos";
 
 export default class Expense
   extends BaseEntity<Expense, ExpenseDto>
@@ -34,6 +35,7 @@ export default class Expense
   note: string;
   link?: string;
   status?: ExpenseStatus;
+  evidence?: FileDto;
   constructor(expenseDto: AuditableExpenseDto) {
     super(expenseRepo.getRepo(), Expense.map2Dto);
     this._id = expenseDto.id;
@@ -42,6 +44,7 @@ export default class Expense
     this.note = expenseDto.note;
     this.link = expenseDto.link;
     this.status = expenseDto.status || ExpenseStatus.CLAIMED;
+    this.evidence = expenseDto.evidence;
     this.owner = expenseDto.owner;
     this.createdOn = expenseDto.createdOn ? expenseDto.createdOn : null;
     this.createdBy = expenseDto.createdBy;
@@ -124,6 +127,7 @@ export default class Expense
       amount: expense.amount,
       causeId: expense.causeId,
       link: expense.link,
+      evidence: expense.evidence,
       note: expense.note,
       owner: expense.owner,
       permissions: expense.permissions,

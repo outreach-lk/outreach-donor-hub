@@ -30,6 +30,7 @@ import { useFeedback } from "../../../app/hooks/feedback.hook";
 import { ExpenseDto } from "../../../app/types/dtos/expense.dtos";
 import { ExpenseStatus } from "../../../app/types/enums/status";
 import { EntityListPage } from "../../../app/ui/components/layouts/pages/entity/entity.list.layout";
+import { ExpenseCard } from "../../../app/ui/components/modules/expense/expense-card.module";
 import { Footer } from "../../../app/ui/components/modules/Footer";
 import { Nav } from "../../../app/ui/components/modules/Navigation";
 import { getDateFromFirebaseDateTimeObject } from "../../../app/utils/date-time";
@@ -51,29 +52,7 @@ export default function CauseExpenses() {
 
   const map = new Map<string, string>();
   map.set("causeId", "cause-" + query.id);
-  const { show } = useFeedback();
-  const handleExpenseStatusChange = (
-    status: ExpenseStatus,
-    expense: Expense
-  ) => {
-    let task: Promise<any>;
-    if (status === ExpenseStatus.ACKNOWLEDGED) {
-      task = expense.confirmexpenseClaim();
-    } else {
-      task = expense.disputeexpenseClaim();
-    }
-    task
-      .then(() => {
-        show("Expense Claim Acknowledged.", {
-          type: "success",
-        });
-      })
-      .catch(() => {
-        show("Error updating claim status", {
-          type: "error",
-        });
-      });
-  };
+  
   return (
     <>
       <Nav />
@@ -100,78 +79,10 @@ export default function CauseExpenses() {
             </Box>
           }
         >
-          {(_data: ExpenseDto) => {
-            const data = new Expense(_data);
-            const isDisputed = data.status === ExpenseStatus.DISPUTED;
-            const isPending =
-              data.status === ExpenseStatus.CLAIMED ||
-              data.status === undefined;
-            const isConfirmed = data.status === ExpenseStatus.ACKNOWLEDGED;
+          {(_data: ExpenseDto) => {           
             // FIXME: Move to own component
             return (
-              <Box
-                mb="4"
-                p="4"
-                shadow={"md"}
-                bg={useColorModeValue("white", "linkedin.900")}
-              >
-                {data.owner === user?.uid && (
-                  <Badge colorScheme={"blue"}>Your Expense</Badge>
-                )}
-                {isDisputed && <Badge colorScheme={"red"}>Disputed</Badge>}
-                {isPending && (
-                  <Badge colorScheme={"yellow"}>Pending Confirmation</Badge>
-                )}
-                {isConfirmed && <Badge colorScheme={"green"}>Confirmed</Badge>}
-                <Flex
-                  textDecoration={isDisputed ? "line-through" : ""}
-                  align={"baseline"}
-                  justify="space-between"
-                >
-                  <Box>
-                    <Text>
-                      {getDateFromFirebaseDateTimeObject(
-                        (data as any).createdOn
-                      ).toLocaleDateString()}
-                    </Text>
-                    <Stat>
-                      <StatLabel>Amount</StatLabel>
-                      <StatNumber>{data.amount.toFixed(2)}</StatNumber>
-                    </Stat>
-                  </Box>
-                  <Box>
-                    Particulars
-                    <Text>{data.note}</Text>
-                    {/* FIXME:  Remove Expense Creator Permission to Review in the Backend. */}
-                    {data.status === ExpenseStatus.CLAIMED && canReview && data.owner !== user?.uid && (
-                      <Wrap py="2">
-                        <Button
-                          colorScheme={"blue"}
-                          onClick={() =>
-                            handleExpenseStatusChange(
-                              ExpenseStatus.ACKNOWLEDGED,
-                              data
-                            )
-                          }
-                        >
-                          Confirm Claim
-                        </Button>
-                        <Button
-                          colorScheme={"red"}
-                          onClick={() =>
-                            handleExpenseStatusChange(
-                              ExpenseStatus.DISPUTED,
-                              data
-                            )
-                          }
-                        >
-                          Dispute Claim
-                        </Button>
-                      </Wrap>
-                    )}
-                  </Box>
-                </Flex>
-              </Box>
+              <ExpenseCard data={_data} canReview={canReview} isOwner={_data.owner === user?.uid}/>
             );
           }}
         </EntityListPage>

@@ -11,6 +11,7 @@ import type { EntityUpdatedDto } from "./server-message.dtos";
 import type { ExpenseStatus } from "../enums/status";
 import type { CauseDto } from "./cause.dtos";
 import type { ClaimEvidenceDto } from "./claim-evidence";
+import { FileDto } from "./remote-file.dtos";
 
 export type ExpenseDto = Ownable & {
     causeId: string,
@@ -18,6 +19,7 @@ export type ExpenseDto = Ownable & {
     note: string
     link?: string
     status?: ExpenseStatus
+    evidence?: FileDto
 }
 
 export type ExpensePage = Pagable<ExpenseDto>
