@@ -26,7 +26,7 @@ export function generateUniqueDonorRefId(
   causeId: string,
   userId: string
 ): string {
-  return shortHash(`${causeId}++${userId}`);
+  return "DH"+shortHash(`${causeId}++${userId}`);
 }
 
 export function generateUniqueFileId(fileName: string): string {
