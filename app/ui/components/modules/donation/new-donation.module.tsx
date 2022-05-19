@@ -107,6 +107,7 @@ export default function NewDonation(props: NewDonationProps) {
             onClick={handleSubmitClaim}
             colorScheme={"blue"}
             isLoading={isSubmitting}
+            disabled={!amount || !proof}
           >
             Submit Donation Claim
           </Button>

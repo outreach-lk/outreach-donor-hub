@@ -51,16 +51,16 @@ export function FileUploader(props: FileUploaderProps){
         <FilePicker
           onFileLoad={(file) => {
               // Allow room for other file types
-            if(props.preventUpload){
-              props.callback(file)
-            }else {
+
               if (isFileValidImage(file)) {
                 setPickerFile(file);
                 setInvalidFile(false);
+                if(props.preventUpload){
+                  props.callback(file)
+                }
               } else {
                 setInvalidFile(true);
               }
-            }
           }}
         />
        {!props.preventUpload&&<Wrap>
