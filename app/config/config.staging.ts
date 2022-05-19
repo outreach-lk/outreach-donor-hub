@@ -3,8 +3,8 @@ import { UserRole } from "../types/dtos/user.dtos";
 import { HTTPMethod } from "../types/enums/api";
 
 export const stagingConfig: AppConfig = {
-    title: "Outreach DonorHub",
-    appUrl: 'https://outreach-donor-hub-vercel-deployment-repo.vercel.app',
+    title: "DonorHub",
+    appUrl: 'https://donorhub-staging.outreach.lk',
     laguages: ['en','si','tam'],
     version: "1.0.0b",
     routes: [
@@ -188,7 +188,14 @@ export const stagingConfig: AppConfig = {
             isProtected: true,
             apiMethod: HTTPMethod.PUT,
             allowedRoles: [ UserRole.REGULAR, UserRole.ADMIN, UserRole.MODERATOR ]
-
+        },
+        {
+            id: 'api-user-get-user',
+            path: '/api/v1/user/:id',
+            isApi: true,
+            isEntity: false,
+            isProtected: false,
+            apiMethod: HTTPMethod.GET
         },
 
     ]

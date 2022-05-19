@@ -29,11 +29,7 @@ export function Nav() {
   };
   return (
     <>
-      <Box
-        bg={useColorModeValue("white", "gray.900")}
-        px={4}
-        shadow="md"
-      >
+      <Box bg={useColorModeValue("white", "gray.900")} px={4} shadow="md">
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
           <NxtLink
             href={{
@@ -42,21 +38,23 @@ export function Nav() {
             passHref
           >
             <Wrap as="a" align={"center"} spacing="20px">
-              <Logo />
-              <Heading 
-              color="linkedin.700">DonorHub</Heading>
+              <Logo withTitle={true} />
             </Wrap>
           </NxtLink>
 
           <Flex alignItems={"center"}>
             <Stack direction={"row"} spacing={7}>
-              {isAuthorized&&<NxtLink href={"/cause/new"} passHref>
-                <Button 
-                  display={{base:'none', sm:'flex'}}
-                  as="a" colorScheme={"blue"} >
-                  Create Campaign
-                </Button>
-              </NxtLink>}
+              {isAuthorized && (
+                <NxtLink href={"/cause/new"} passHref>
+                  <Button
+                    display={{ base: "none", sm: "flex" }}
+                    as="a"
+                    colorScheme={"blue"}
+                  >
+                    Create Campaign
+                  </Button>
+                </NxtLink>
+              )}
               <Button onClick={toggleColorMode}>
                 {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
               </Button>
@@ -73,7 +71,9 @@ export function Nav() {
                     <Avatar
                       size={"sm"}
                       src={
-                        "https://avatars.dicebear.com/api/adventurer-neutral/" + user.uid + '.svg?mouth=variant02&eyes=variant13'
+                        "https://avatars.dicebear.com/api/adventurer-neutral/" +
+                        user.uid +
+                        ".svg?mouth=variant02&eyes=variant13"
                       }
                     />
                   </MenuButton>
@@ -83,7 +83,9 @@ export function Nav() {
                       <Avatar
                         size={"2xl"}
                         src={
-                          "https://avatars.dicebear.com/api/adventurer-neutral/" + user.uid + '.svg?mouth=variant02&eyes=variant13'
+                          "https://avatars.dicebear.com/api/adventurer-neutral/" +
+                          user.uid +
+                          ".svg?mouth=variant02&eyes=variant13"
                         }
                       />
                     </Center>

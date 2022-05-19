@@ -75,11 +75,6 @@ export default function NewDonationClaimContainer(props: NewDonationClaimProps) 
               Thank you for your consideration to donate to this campaign.
             </ListItem>
             <ListItem>
-              <ListIcon as={GoAlert} color="yellow.600" />
-              Please note that <strong>Outreach DonorHub</strong> does not
-              collect any of your funds.
-            </ListItem>
-            <ListItem>
               <ListIcon as={FaCircle} color="green.500" />
               You can make your donations to the following Bank Account,
               provided by campaign owner. Use the following unique reference id
@@ -95,6 +90,11 @@ export default function NewDonationClaimContainer(props: NewDonationClaimProps) 
               <ListIcon as={FaCircle} color="green.500" />
               Once the transfer is complete, click on{" "}
               <Badge colorScheme="blue">I've Donated</Badge> button and submit the amount donated.
+            </ListItem>
+            <ListItem color={"red"}>
+              <ListIcon as={GoAlert} color="yellow.600" />
+              Please note that <strong>Outreach DonorHub</strong> does not
+              collect any of your funds.
             </ListItem>
           </List>}
         </ModalBody>

@@ -25,12 +25,14 @@ const Signup: NextPage = () => (
     <Nav />
     <Container
       maxW="lg"
-      py={{ base: "0", md: "8" }}
+      py={{ base: "4", md: "8" }}
       px={{ base: "0", sm: "8" }}
     >
       <Stack spacing="8">
         <Stack spacing="6">
-          <Logo />
+          <HStack justify={"center"}>
+            <Logo withTitle={true}/>
+          </HStack>
           <Stack spacing={{ base: "2", md: "3" }} textAlign="center">
             <Heading size={useBreakpointValue({ base: "xs", md: "sm" })}>
               Create a new Account

@@ -116,7 +116,7 @@ export function AuthProvider<P>(props: PropsWithChildren<P>) {
   useEffect(() => {
     if( session && session.sessionId ){
       client.persistSession( session );
-      if (session.isAuthorized && postSignInPath) {
+      if (session.isAuthorized && postSignInPath && postSignInPath !== "/") {
         push({
           pathname: postSignInPath,
           query: postSignInQuery
@@ -124,7 +124,7 @@ export function AuthProvider<P>(props: PropsWithChildren<P>) {
       } else if ( session.isAuthorized && session.user ) {
         if( session.user.role === UserRole.REGULAR ){
           push({
-            pathname: '/'
+            pathname: '/cause/list'
           })
         } else if ( session.user.role === UserRole.ADMIN || session.user.role === UserRole.MODERATOR ){
           push({

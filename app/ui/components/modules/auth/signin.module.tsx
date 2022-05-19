@@ -79,6 +79,17 @@ export const SignInCard = () => {
     >
       <form onSubmit={handleSignInWithEmail}>
         <Stack spacing="6">
+          <HStack>
+            <Text fontSize="sm" whiteSpace="nowrap">
+              Continue with
+            </Text>
+          </HStack>
+          <OAuthButtonGroup handlers={oAuthBtnGroupProps.handlers} />
+          <HStack>
+          <Divider />
+          <Text fontSize="sm" whiteSpace="nowrap">Or use your email</Text>
+          <Divider />
+          </HStack>
           <Stack spacing="5">
             <FormControl>
               <FormLabel htmlFor="email">Email</FormLabel>
@@ -89,33 +100,25 @@ export const SignInCard = () => {
           <HStack justify="space-between">
             <Checkbox defaultIsChecked>Remember me</Checkbox>
             <Link href={"/auth/reset"} passHref>
-            <Button variant="link" colorScheme="blue" size="sm">
-              Forgot password?
-            </Button>
+              <Button variant="link" colorScheme="blue" size="sm">
+                Forgot password?
+              </Button>
             </Link>
           </HStack>
           <Stack spacing="6">
-            <Button 
-             loadingText="Submitting"
-             size="lg"
-             bg={"blue.400"}
-             color={"white"}
-             _hover={{
-               bg: "blue.500",
-             }}
-             type="submit"
-             variant="primary"
+            <Button
+              loadingText="Submitting"
+              size="lg"
+              bg={"blue.400"}
+              color={"white"}
+              _hover={{
+                bg: "blue.500",
+              }}
+              type="submit"
+              variant="primary"
             >
               Sign in
             </Button>
-            <HStack>
-              <Divider />
-              <Text fontSize="sm" whiteSpace="nowrap">
-                or continue with
-              </Text>
-              <Divider />
-            </HStack>
-            <OAuthButtonGroup handlers={oAuthBtnGroupProps.handlers} />
           </Stack>
         </Stack>
       </form>

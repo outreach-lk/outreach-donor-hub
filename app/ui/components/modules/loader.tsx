@@ -12,10 +12,7 @@ export const FullScreenLoader = () => {
   return <CenteredLayout>
     <VStack opacity={"0.8"}>
     <Flex>
-    <Heading 
-    color={useColorModeValue('blue.500', 'blue.200')}
-    >DonorHub</Heading>
-    <Logo />
+    <Logo withTitle={true} />
     </Flex>
     <div className="loader" style={{color}}></div>
     </VStack>
