@@ -47,6 +47,8 @@ export function BlockTypeSel(props: BlockTypeSelProps) {
     FileStorageProvider.FIRESTORAGE
   );
   const uploadFile = client.uploadFile.bind(client);
+  const fetchFile = client.fetchFile.bind(client);
+
 
   if (props.currentBlock?.hideMenu) return null;
   const [picker, showPicker] = useState(false);
@@ -87,12 +89,13 @@ export function BlockTypeSel(props: BlockTypeSelProps) {
                   if (pickerFile && !uploaded) {
                     setIsUploading(true);
                     uploadFile(pickerFile)
-                      .then((res) => {
+                      .then(async (res) => {
                         setIsUploading(false);
                         setUploaded(true);
+
                         props.addCallback(
                           BlockType.img,
-                          (res.data as FileDto).path
+                          (await fetchFile((res.data as FileDto).path)).path
                         );
                       })
                       .catch((error) => {

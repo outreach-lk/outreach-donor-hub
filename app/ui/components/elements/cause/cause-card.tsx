@@ -46,7 +46,7 @@ export function CauseCard(props: CauseCardProps) {
       justifyContent="center"
     >
       <Box
-        bg={useColorModeValue("white", "gray.800")}
+        bg={useColorModeValue("white", "facebook.800")}
         mx={{ lg: 8 }}
         display={{ lg: "flex" }}
         w={{ base: "full", md: "4xl" }}
@@ -107,9 +107,10 @@ export function CauseCard(props: CauseCardProps) {
               py={3}
               fontWeight="semibold"
               rounded="lg"
-              colorScheme={"blue"}
+              colorScheme={"linkedin"}
               onClick={navigateToCause}
               isLoading={isNavigating}
+              textColor={useColorModeValue("white","linkedin.900")}
             >
               Read More
             </Button>

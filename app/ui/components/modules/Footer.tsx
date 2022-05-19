@@ -25,6 +25,12 @@ export const Footer = () => (
     px={{ base: "4", md: "8" }}
     pb={"4"}
     bg={useColorModeValue("gray.100", "gray.900")}
+    bgSize="cover"
+    bgPos={"center"}
+    bgBlendMode="soft-light"
+    style={{
+      backgroundImage:"url('/assets/images/svgs/v911-a-01-b.svg')"
+    }}
   >
     <Stack>
       <Wrap
@@ -33,7 +39,11 @@ export const Footer = () => (
         align="flex-start"
         justify="space-between"
       >
-        <Stack direction={"column"} minW={{base:"full",md:'auto'}} align="center">
+        <Stack
+          direction={"column"}
+          minW={{ base: "full", md: "auto" }}
+          align="center"
+        >
           <Wrap align={"center"}>
             <Logo /> <Heading size="lg">DonorHub</Heading>
           </Wrap>
@@ -83,8 +93,31 @@ export const Footer = () => (
         </Stack> */}
         <NewsLetterSubscribe />
       </Wrap>
-      <Stack direction={"row"} justify="center">
-        <Copyright alignSelf={{ base: "center", sm: "start" }} />
+      <Stack
+        py="4"
+        direction="row"
+        justify={"space-evenly"}
+        align={{base:"start",md:"center"}}
+        fontSize={"xs"}
+      >
+        {/* Site Copyright */}
+        <Stack>
+          <Copyright fontWeight={"bold"} alignSelf={{ base: "center", sm: "start" }} />
+        </Stack>
+        {/* Image Attributions Column */}
+        <Stack >
+          <Heading size="xs">Freebie Attributions:</Heading>
+          <a href="https://www.freepik.com/vectors/monotone">
+            Monotone vector created by rawpixel.com - www.freepik.com
+          </a>
+          <a href="https://www.freepik.com/vectors/monotone">
+            Monotone vector created by rawpixel.com - www.freepik.com
+          </a>
+          <Heading size="xs">Image Copyright Disclaimer</Heading>
+          <Text>
+            If user submitted images violate your copyrights or privacy, inform us <Link>here</Link>.
+          </Text>
+        </Stack>
       </Stack>
     </Stack>
   </Box>

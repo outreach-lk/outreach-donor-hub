@@ -92,7 +92,7 @@ export class EditorTree {
    * @param prev if linking to the middle, prev. block
    * @returns
    */
-  async append(
+  append(
     type: BlockType,
     block?: EditorBlock,
     next?: EditorBlock,
@@ -122,8 +122,7 @@ export class EditorTree {
         _elem = document.createElement("img");
         _elem.classList.add("block", "editor-img");
         if (!_block?.media?.src) {
-          const url = data;
-          const src = (await this.storageClient.fetchFile(data)).path;
+          const src = data
           _block.media = {
             src: src || "",
           };

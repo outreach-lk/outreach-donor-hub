@@ -61,9 +61,13 @@ export default class MilestoneRepo extends BaseRepo implements ICRUDREPO<Milesto
           ).data as EntityCreatedDto<Auditable & Ownable & MilestoneDto>;
           return causeData;
         }else{
+          // if the environment is NODE
           const {data:cause} = await CauseRepo.getRepo().get(data.causeId);
           const user = await authServiceFactory.getService('',AuthProvider.FIREBASE).authenticatedUser;
-          if(user && cause?.sharedWith?.includes(user.uid)){
+          // check if the current user either the cause owner, or someone with whom the cause has been shared.
+          if(user && (cause?.owner===user.uid || cause?.sharedWith?.includes(user.uid))){
+            // assign the same share persmissions as the cause.
+            data.sharedWith = cause.sharedWith;
             return (this.db as IDatabaseService).save(data,this.entity)
             .then(res=>{
               AppEvent.create({
