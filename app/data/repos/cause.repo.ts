@@ -167,6 +167,10 @@ export default class CauseRepo extends BaseRepo implements ICRUDREPO<CauseDto> {
       ) {
         allowUpdate = true;
       }
+      /**
+       * additional checks may take place here changing the allowUpdate flag
+       * accordingly.
+       */
       if(allowUpdate){
         return (this.db as IDatabaseService).update(
           identifier,
