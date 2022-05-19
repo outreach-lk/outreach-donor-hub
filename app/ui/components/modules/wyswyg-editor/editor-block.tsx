@@ -103,9 +103,11 @@ export class EditorBlock {
     this.handlePlaceholder(false);
     this.tree.dispatchSetCurrBlock(this)
     switch (e.key) {
+      case "Tab":
       case "Enter":
         this.onEnter();
         break;
+      
     }
   }
 

@@ -140,9 +140,7 @@ export class EditorTree {
           (_elem as HTMLAnchorElement).target = "_blank";
           (_elem as HTMLAnchorElement).innerHTML = href;
 
-        } else {
-          return ;
-        }
+        } 
 
         break;
     }
