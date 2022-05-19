@@ -24,10 +24,17 @@ export enum ClaimStatus {
 }
 
 export enum VerificationStatus {
+  /**
+   * @deprecated
+   */
   QUEUED,
+  /**
+   * @deprecated
+   */
   LOCKED_BY_MOD,
   INPROGRESS,
   VERIFIED,
   REJECTED,
+  /** synonymous with pending */
   UNKNOWN,
 }

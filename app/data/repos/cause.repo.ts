@@ -125,12 +125,22 @@ export default class CauseRepo extends BaseRepo implements ICRUDREPO<CauseDto> {
         });
     }
   }
-  update(
+  async update(
     identifier: string,
     data: CauseDto
   ): Promise<EntityUpdatedDto<Auditable & Ownable & CauseDto>> {
     if (this.isBrowser) {
-      throw new Error("Method not implemented");
+      const path = apiMap.v1["[entity]"]["[id]"].root
+      .replace("[entity]", this.entity)
+      .replace("[id]", identifier);
+      const token = authClientFactory.getClient(
+        AuthProvider.FIREBASE
+      ).accessToken;
+      return (await axios.put(path,data,{
+        headers:{
+          authorization: `Bearer ${token}`
+        }
+      })).data
     } else {
       return (this.db as IDatabaseService).update(
         identifier,

@@ -1,72 +1,167 @@
 import {
+  Box,
   Button,
   Center,
+  Heading,
+  Tab,
   Table,
   TableCaption,
   TableContainer,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
   Tbody,
   Td,
   Tfoot,
   Th,
   Thead,
+  Tooltip,
   Tr,
+  useColorModeValue,
   Wrap,
 } from "@chakra-ui/react";
 import { useState } from "react";
+import { FaCheckCircle, FaCross, FaStop, FaUndo } from "react-icons/fa";
+import Cause from "../../app/data/entities/cause.entity";
+import { useFeedback } from "../../app/hooks/feedback.hook";
 import { AuditableCauseDto, CauseDto } from "../../app/types/dtos/cause.dtos";
+import { VerificationStatus } from "../../app/types/enums/status";
 import { Page } from "../../app/types/pagable";
 import { CauseCard } from "../../app/ui/components/elements/cause/cause-card";
 import { DashboardLayout } from "../../app/ui/components/layouts/pages/dashboard";
 import { EntityListPage } from "../../app/ui/components/layouts/pages/entity/entity.list.layout";
+import ModCampaignList from "../../app/ui/components/modules/mod/campaign/table/mod-campaign-list.module";
 import { getDateFromFirebaseDateTimeObject } from "../../app/utils/date-time";
 
 export default function ModeratorDashboard() {
-  const [page, setPage] = useState<Page>({ start: 0, limit: 8 });
-  let lastId: string = '';
+  const boxBg = useColorModeValue("white","facebook.800");
+  const {show} = useFeedback();
+  const [tabIndex, setTabIndex] = useState(0);
+
+  /**
+   * makes a request to change the 
+   * verification status to inprogress
+   */
+  const handleVerificationUpdate = (data: CauseDto,newStatus:VerificationStatus) => {
+    const cause = new Cause(data);
+    cause.status = newStatus;
+    cause.isVerified = newStatus===VerificationStatus.VERIFIED;
+    cause.update()
+    .then(()=>{
+      show("",{
+        type:"success",
+        title: "Campaign Verification"
+      })
+      handleTabChange(newStatus);
+    })
+    .catch(error=>{
+      show(error,{
+        type:"error",
+        title: "Campaign Verification Error"
+      })
+    })
+  }
+
+  const handleTabChange = (status:VerificationStatus) => {
+    switch(status){
+      case VerificationStatus.UNKNOWN:
+        setTabIndex(0);
+        break;
+      case VerificationStatus.INPROGRESS:
+        setTabIndex(1);
+        break;
+      case VerificationStatus.VERIFIED:
+        setTabIndex(2);
+        break;
+      case VerificationStatus.REJECTED:
+        setTabIndex(3);
+        break;
+    }
+
+  }
+  
   return (
     <DashboardLayout>
-      <TableContainer>
-        <Table variant={"striped"} colorScheme="linkedin">
-          <Thead>
-            <Th>Title</Th>
-            <Th>Created On</Th>
-            <Th>Created By</Th>
-          </Thead>
-          <Tbody>
-            <EntityListPage entity="cause" raw={true} page={page} replace={true}>
-              {(data: AuditableCauseDto) => {
-                lastId = data.id as string;
-                return (
-                  <Tr>
-                    <Td>{data.title}</Td>
-                    <Td>
-                      {getDateFromFirebaseDateTimeObject(
-                        data.createdOn as any
-                      ).toDateString()}
-                    </Td>
-                    <Td>{data.createdBy}</Td>
-                  </Tr>
-                );
-              }}
-            </EntityListPage>
-          </Tbody>
-        </Table>
+      <Tabs isLazy index={tabIndex} onChange={(index)=>setTabIndex(index)}>
+      <TabList>
+        <Tab>Pending</Tab>
+        <Tab>In Progress</Tab>
+        <Tab>Verified</Tab>
+        <Tab>Rejected</Tab>
+      </TabList>
+      <TabPanels>
+        <TabPanel>
+          <Box px="6" pt={"6"} bg={boxBg} rounded={"md"}>
+            <Heading size={"md"}>Pending Campaigns</Heading>
+            <Box p="4">
+              <ModCampaignList 
+                status={VerificationStatus.UNKNOWN} 
+                action={(data)=>{
+                  return <Button onClick={()=>handleVerificationUpdate(data, VerificationStatus.INPROGRESS)}>Begin Verification</Button>
+                }}
+              />
+            </Box>
+          </Box>
+        </TabPanel>
+        <TabPanel>
+          <Box px="6" pt={"6"} bg={boxBg} rounded={"md"}>
+            <Heading size={"md"}>Verification In Progress Campaigns</Heading>
+            <Box p="4">
+              <ModCampaignList status={VerificationStatus.INPROGRESS} 
+               action={(data)=>{
+                return <>
+                  <Button 
+                    colorScheme={"whatsapp"}
+                    leftIcon={<FaCheckCircle/>}
+                    onClick={()=>handleVerificationUpdate(data, VerificationStatus.VERIFIED)}>Verify</Button>
+                  <Button 
+                  colorScheme={"red"}
+                  leftIcon={<FaStop/>}
+                  onClick={()=>handleVerificationUpdate(data, VerificationStatus.REJECTED)}>Reject</Button>
+                  <Tooltip label="Adds campaign back to In Progress">
+                  <Button onClick={()=>handleVerificationUpdate(data, VerificationStatus.UNKNOWN)}>Dequeue</Button>
+                  </Tooltip>
 
-        <Wrap py={"12"} justify="center" minW="full">
-        <Button onClick={()=>{
-              setPage({
-                  limit: page.limit,  
-                  start: 0
-              })
-          }}>Prev Page</Button>
-          <Button onClick={()=>{
-              setPage({
-                  limit: page.limit,  
-                  start: lastId
-              })
-          }}>Next Page</Button>
-        </Wrap>
-      </TableContainer>
+                </>
+              }}
+              />
+            </Box>
+          </Box>
+        </TabPanel>
+        <TabPanel>
+          <Box px="6" pt={"6"} bg={boxBg} rounded={"md"}>
+            <Heading size={"md"}>Verified Campaigns</Heading>
+            <Box p="4">
+              <ModCampaignList status={VerificationStatus.VERIFIED} 
+               action={(data)=>{
+                return <>
+                  <Button leftIcon={<FaUndo/>} onClick={()=>handleVerificationUpdate(data, VerificationStatus.INPROGRESS)}>Undo</Button>
+                </>
+              }}
+              />
+            </Box>
+          </Box>
+        </TabPanel>
+        <TabPanel>
+          <Box px="6" pt={"6"} bg={boxBg} rounded={"md"}>
+            <Heading size={"md"}>Rejected Campaigns</Heading>
+            <Box p="4">
+              <ModCampaignList status={VerificationStatus.REJECTED} 
+               action={(data)=>{
+                return <>
+                  <Button 
+                    leftIcon={<FaUndo/>}
+                    onClick={()=>handleVerificationUpdate(data, VerificationStatus.INPROGRESS)}
+                    >Undo</Button>
+                </>
+              }}
+              />
+            </Box>
+          </Box>
+        </TabPanel>
+      </TabPanels>
+      </Tabs>
     </DashboardLayout>
   );
 }

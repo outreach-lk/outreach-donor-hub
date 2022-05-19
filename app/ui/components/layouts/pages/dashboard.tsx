@@ -112,7 +112,7 @@ export function DashboardLayout(props: PropsWithChildren<any>) {
   return (
     <Box
       as="section"
-      bg={useColorModeValue("gray.50", "gray.700")}
+      bg={useColorModeValue("gray.100", "gray.700")}
       minH="100vh"
     >
       <SidebarContent display={{ base: "none", md: "unset" }} />

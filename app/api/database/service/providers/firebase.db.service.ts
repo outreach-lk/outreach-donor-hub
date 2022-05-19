@@ -67,6 +67,8 @@ export default class FirebaseDatabaseService implements IDatabaseService {
           _value = true;
         } else if (value === "false") {
           _value == false;
+        } else if (parseFloat(value as string) !== NaN){
+          _value = Number(_value);
         }
         query = query.where(key, "==", _value);
       });
