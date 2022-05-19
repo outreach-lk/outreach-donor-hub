@@ -48,9 +48,12 @@ export function EntityListPage<T>(props: EntityListPageProps) {
     setIsLoading(true);
     fetchEntityPage(page, props.query)
       .then((data) => {
-        console.log(data);
         if (data.data?.data.length) {
-          setPageData([...pageData, ...(data.data?.data as T[])]);
+          if(props.replace){
+            setPageData([...(data.data?.data as T[])]);
+          }else{
+            setPageData([...pageData, ...(data.data?.data as T[])]);
+          }
         } else {
           setPageData([...pageData]);
         }
@@ -60,6 +63,12 @@ export function EntityListPage<T>(props: EntityListPageProps) {
       })
       .finally(() => setIsLoading(false));
   }, [page]);
+
+  useEffect(()=>{
+    if(props.page){
+      setPage(props.page);
+    }
+  },[props.page])
 
   /**
    * sets page to load next page
@@ -72,7 +81,15 @@ export function EntityListPage<T>(props: EntityListPageProps) {
     console.log(_nxtPg);
     setPage(_nxtPg);
   };
-
+  if(props.raw){
+    return (
+      <>
+        {pageData.map((item, i) => {
+              return props.children(item);
+        })}            
+      </>
+    )
+  }
   return (
     <>
       {/* Create Entity Control goes here */}

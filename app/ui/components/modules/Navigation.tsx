@@ -15,13 +15,20 @@ import {
   Center,
   Wrap,
   Heading,
+  InputGroup,
+  InputLeftElement,
+  Input,
 } from "@chakra-ui/react";
 import NxtLink from "next/link";
-import { MoonIcon, SunIcon } from "@chakra-ui/icons";
+import { HamburgerIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
 import { Logo } from "../elements/branding/Logo";
 import { useAuth } from "../../../hooks/auth.hooks";
+import { FiSearch } from "react-icons/fi";
 
-export function Nav() {
+export function Nav(props: {
+  dashboardMode?: boolean;
+  drawerToggle?: () => void;
+}) {
   const { colorMode, toggleColorMode } = useColorMode();
   const { isAuthorized, client, user } = useAuth();
   const handleLogout = () => {
@@ -31,20 +38,30 @@ export function Nav() {
     <>
       <Box bg={useColorModeValue("white", "gray.900")} px={4} shadow="md">
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
-          <NxtLink
-            href={{
-              pathname: "/cause/list",
-            }}
-            passHref
-          >
-            <Wrap as="a" align={"center"} spacing="20px">
-              <Logo withTitle={true} />
-            </Wrap>
-          </NxtLink>
+          {!props.dashboardMode && (
+            <NxtLink
+              href={{
+                pathname: "/cause/list",
+              }}
+              passHref
+            >
+              <Wrap as="a" align={"center"} spacing="20px">
+                <Logo withTitle={true} />
+              </Wrap>
+            </NxtLink>
+          )}
+          {props.dashboardMode && (
+            <InputGroup w="96" display={{ base: "none", md: "flex" }}>
+              <InputLeftElement color="gray.500">
+                <FiSearch />
+              </InputLeftElement>
+              <Input placeholder="Search DonorHub" />
+            </InputGroup>
+          )}
 
           <Flex alignItems={"center"}>
             <Stack direction={"row"} spacing={7}>
-              {isAuthorized && (
+              {isAuthorized && !props.dashboardMode && (
                 <NxtLink href={"/cause/new"} passHref>
                   <Button
                     display={{ base: "none", sm: "flex" }}
@@ -55,7 +72,10 @@ export function Nav() {
                   </Button>
                 </NxtLink>
               )}
-              <Button onClick={toggleColorMode}>
+             {props.dashboardMode && <Button onClick={props.drawerToggle} display={{base:'block',sm:'none'}}>
+                <HamburgerIcon/>
+              </Button>}
+               <Button onClick={toggleColorMode} >
                 {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
               </Button>
 

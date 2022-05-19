@@ -22,5 +22,13 @@ export type EntityListPageProps = EntityPageProps & {
     width?: string;
     showFullScreenLoader?: boolean,
     emptyListScreen?: Renderable
+    /*
+     * return the data only with no enclosing elements
+     */
+    raw?:boolean;
+    /**
+     * do not append data to existing list
+     */
+    replace?:boolean;
 }
 
