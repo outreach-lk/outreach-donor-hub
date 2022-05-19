@@ -163,7 +163,8 @@ export default class CauseRepo extends BaseRepo implements ICRUDREPO<CauseDto> {
        * */
       if (
        ( verificationStatusChanged || verificationChanged) &&
-        (user?.role === UserRole.ADMIN || user?.role === UserRole.MODERATOR)
+        (user?.role === UserRole.ADMIN || user?.role === UserRole.MODERATOR) &&
+        cause?.owner !== user.uid
       ) {
         allowUpdate = true;
       }
