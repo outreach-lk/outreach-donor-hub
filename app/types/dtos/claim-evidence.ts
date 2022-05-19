@@ -13,7 +13,7 @@ import { ClaimStatus } from "../enums/status";
 
 export type ClaimEvidenceDto = Ownable & {
     attachments: FileDto
-    status: ClaimStatus
+    status?: ClaimStatus
 }
 
 export type ClaimEvidencePage = Pagable<ClaimEvidenceDto>

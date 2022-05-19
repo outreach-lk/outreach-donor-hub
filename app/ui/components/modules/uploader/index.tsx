@@ -7,7 +7,8 @@ import { isFileValidImage } from "../../../../utils/file-type-validation";
 import FilePicker from "./picker";
 
 interface FileUploaderProps {
-    postUploadCallback: (file: FileDto) => void,
+    callback: (file: FileDto | File) => void,
+    preventUpload?: boolean
 }
 
 export function FileUploader(props: FileUploaderProps){
@@ -21,50 +22,59 @@ export function FileUploader(props: FileUploaderProps){
     //TODO: use a custom hook instead
     const uploadFile = client.uploadFile.bind(client);
     const fetchFile = client.fetchFile.bind(client);
+    const handleUpload = () => {
+      if (pickerFile && !uploaded) {
+        setIsUploading(true);
+        setUploaded(false);
+        uploadFile(pickerFile)
+          .then(async (res) => {
+            setIsUploading(false);
+            setUploaded(true);
+            props.callback({
+              path: (await fetchFile((res.data as FileDto).path)).path,
+              provider: FileStorageProvider.FIRESTORAGE,
+              metadata: {
+                  size: pickerFile.size,
+                  type: pickerFile.type,
+              }
+            })
+          })
+          .catch((error) => {
+            setIsUploading(false);
+            setUploaded(false);
+            setUploadError(error);
+          });
+      }
+    }
     return (
         <Wrap direction={"column"} spacing="4">
         <FilePicker
           onFileLoad={(file) => {
               // Allow room for other file types
-            if (isFileValidImage(file)) {
-              setPickerFile(file);
-              setInvalidFile(false);
-            } else {
-              setInvalidFile(true);
+            if(props.preventUpload){
+              props.callback(file)
+            }else {
+              if (isFileValidImage(file)) {
+                setPickerFile(file);
+                setInvalidFile(false);
+              } else {
+                setInvalidFile(true);
+              }
             }
           }}
         />
-        <Wrap>
+       {!props.preventUpload&&<Wrap>
           <Button
             disabled={!!!pickerFile || uploaded}
             isLoading={isUploading}
-            onClick={() => {
-              if (pickerFile && !uploaded) {
-                setIsUploading(true);
-                uploadFile(pickerFile)
-                  .then(async (res) => {
-                    setIsUploading(false);
-                    setUploaded(true);
-                    props.postUploadCallback({
-                      path: (await fetchFile((res.data as FileDto).path)).path,
-                      provider: FileStorageProvider.FIRESTORAGE,
-                      metadata: {
-                          size: pickerFile.size,
-                          type: pickerFile.type,
-                      }
-                    })
-                  })
-                  .catch((error) => {
-                    setIsUploading(false);
-                    setUploaded(false);
-                    setUploadError(error);
-                  });
-              }
-            }}
+            onClick={handleUpload}
           >
             Upload
           </Button>
-        </Wrap>
+        </Wrap>}
+        {isUploading && (
+          <Badge colorScheme={"green"}>Uploading...</Badge>
+        )}
         {invalidFile && (
           <Badge colorScheme={"red"}>Unsupported File or Too Large</Badge>
         )}

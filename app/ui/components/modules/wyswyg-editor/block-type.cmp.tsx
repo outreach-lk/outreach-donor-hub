@@ -66,7 +66,7 @@ export function BlockTypeSel(props: BlockTypeSelProps) {
             <Button onClick={()=>showUploader(false)}>X</Button>
             </Flex>
             <FileUploader 
-              postUploadCallback={(file)=>{
+              callback={(file)=>{
                 props.addCallback(BlockType.img,file.path)
               }}
               />

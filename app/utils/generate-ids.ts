@@ -30,5 +30,5 @@ export function generateUniqueDonorRefId(
 }
 
 export function generateUniqueFileId(fileName: string): string {
-  return shortHash(fileName);
+  return shortHash(fileName + Date.now() + Math.random());
 }
