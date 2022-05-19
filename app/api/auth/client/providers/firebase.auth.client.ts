@@ -13,13 +13,14 @@ import {
   createUserWithEmailAndPassword,
   sendPasswordResetEmail,
   onAuthStateChanged,
-  signOut
+  signOut,
 } from "firebase/auth";
 import axios from "axios";
 import apis from "../../../api-map.json";
 import app from "../../../../libs/firebase.client.sdk";
 import UserRepo from "../../../../data/repos/user.repo";
 import { Observable } from "rxjs";
+import User from "../../../../data/entities/user.entity";
 
 
 /** Authentication Client for Provider Firebase */
@@ -146,7 +147,30 @@ export default class FirebaseAuthClient implements IAuthClient {
   signInWithGoogle(): Promise<SessionDto> {
     const provider = new GoogleAuthProvider();
     return signInWithPopup(this.auth, provider)
-      .then((res) => {
+      .then(async (res) => {
+
+        // check if the user has a profile
+        try{
+          await UserRepo.getRepo().get("user-"+res.user.uid)
+        } catch(error) {
+          console.log(error);
+            return UserRepo.getRepo()
+            .create({
+              uid: res.user.uid,
+              email: res.user.email,
+              role: UserRole.REGULAR,
+            } as UserDto)
+            .then(() => {
+              return res.user
+              .getIdToken()
+              .then((token) => {
+                return this.firebaseSignInWithCustomToken(token);
+              })
+              .catch((error) => {
+                throw error as Error;
+              });
+            })
+        }
         return res.user
           .getIdToken()
           .then((token) => {

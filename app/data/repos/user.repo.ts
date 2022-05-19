@@ -35,9 +35,12 @@ export default class UserRepo extends BaseRepo implements ICRUDREPO<UserDto> {
    * Find user by userid.
    * @param {string} userid 
    */
-  get(identifier: string): Promise<EntityFetchedDto<Auditable & UserDto>> {
+  async get(identifier: string): Promise<EntityFetchedDto<Auditable & UserDto>> {
       if(this.isBrowser) {
-        throw new Error('Method not implemented');
+        const path = apiMap.v1["[entity]"]["[id]"].root
+        .replace("[entity]", this.entity)
+        .replace("[id]", identifier);
+      return (await axios.get(path)).data as EntityFetchedDto<Auditable & UserDto>
       } else {
         return (this.db as IDatabaseService).find(identifier,this.entity);
       }

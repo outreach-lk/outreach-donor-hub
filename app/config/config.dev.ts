@@ -188,7 +188,14 @@ export const devConfig: AppConfig = {
             isProtected: true,
             apiMethod: HTTPMethod.PUT,
             allowedRoles: [ UserRole.REGULAR, UserRole.ADMIN, UserRole.MODERATOR ]
-
+        },
+        {
+            id: 'api-user-get-user',
+            path: '/api/v1/user/:id',
+            isApi: true,
+            isEntity: false,
+            isProtected: false,
+            apiMethod: HTTPMethod.GET
         },
 
     ]
