@@ -44,7 +44,7 @@ export default function CauseListPage() {
         <Heading size={"md"}>My Campaigns</Heading>
         <Heading size={"sm"}>Campaigns created by You</Heading>
 
-        <EntityListPage entity="cause" query={query} isEmbedded={true} width="full">
+        <EntityListPage entity="cause" query={query} isEmbedded={true} width="full" showFullScreenLoader={true}>
           {(data: CauseDto) => (
             // Should be in own component element file.
             <CauseCard cause={data}/>

@@ -10,7 +10,7 @@ import { CenteredLayout } from "../layouts/pages/centred.layout";
 export const FullScreenLoader = () => {
   const color = useColorModeValue('#0077B5','#90cdf4');
   return <CenteredLayout>
-    <VStack>
+    <VStack opacity={"0.8"}>
     <Flex>
     <Heading 
     color={useColorModeValue('blue.500', 'blue.200')}

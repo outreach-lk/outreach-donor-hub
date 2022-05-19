@@ -26,10 +26,10 @@ interface TimelineProps {
 export function EventTimeline(props: TimelineProps) {
   const [hideDonations, setHideDonations] = useState(true);
   const [hideExpenses, setHideExpenses] = useState(false);
-
   const _map = new Map<string, string>();
   _map.set("topic", props.topic);
 
+  const [map,setMap] = useState(_map);
   return (
     <Box minW={"full"}>
       <Flex>
@@ -62,16 +62,13 @@ export function EventTimeline(props: TimelineProps) {
       <VStack alignItems={"center"}>
         <EntityListPage
           entity="event"
-          query={_map}
+          query={map}
           isEmbedded={true}
           width="full"
         >
           {(data: EventDto) => {
-            if (data.eventType.match("donation") && hideDonations) {
-              return null;
-            }
-            if (data.eventType.match("expense") && hideExpenses) {
-              return null;
+            if( (data.eventType.match("donation") && hideDonations) || (data.eventType.match("expense") && hideExpenses) ){
+            return <TimelineEvent key={data.id} {...data} minimized={true}/>;
             }
             return <TimelineEvent key={data.id} {...data} />;
           }}

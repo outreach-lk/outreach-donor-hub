@@ -113,7 +113,7 @@ export default function CauseDonations() {
                 mb="4"
                 p="4"
                 shadow={"md"}
-                bg={useColorModeValue("azure.100", "linkedin.900")}
+                bg={useColorModeValue("white", "linkedin.900")}
               >
                 {data.owner === user?.uid && (
                   <Badge colorScheme={"blue"}>Your Donation</Badge>

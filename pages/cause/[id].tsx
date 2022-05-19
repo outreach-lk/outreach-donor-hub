@@ -78,8 +78,8 @@ export default function CausePage(props: { cause: CauseDto }) {
           id={query.id as string}
           serverFetchedData={props.cause}
         >
-          {(props) => {
-            const data: CauseDto = props.data;
+          {(entityProps) => {
+            const data: CauseDto = entityProps.data;
             const cause = new Cause(data);
             return (
               <>
@@ -143,7 +143,7 @@ export default function CausePage(props: { cause: CauseDto }) {
                       />
                       <CauseActions
                         cause={cause}
-                        forceRefresh={props.forceRefresh}
+                        forceRefresh={entityProps.forceRefresh}
                       />
                     </Box>
                   </Box>

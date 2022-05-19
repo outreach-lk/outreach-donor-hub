@@ -18,6 +18,7 @@ import {
   } from "@chakra-ui/react";
 import { useState } from "react";
 import { useEntity } from "../../../../hooks/entity";
+import { useFeedback } from "../../../../hooks/feedback.hook";
 import { ExpenseDto } from "../../../../types/dtos/expense.dtos";
   import { MilestoneDto } from "../../../../types/dtos/milestone.dtos";
   
@@ -37,10 +38,14 @@ import { ExpenseDto } from "../../../../types/dtos/expense.dtos";
       const [note,setNote] = useState('');
       const [amount, setAmount] = useState(0);
       const [link,setLink] = useState('');
+      const [isSubmitting,setIsSubmitting] = useState(false);
+      const {show} = useFeedback();
+      
       const onSubmit = () => {
         if(props.init){
             // is editing.
       }else{
+            setIsSubmitting(true);
             createEntity<ExpenseDto>({
                 causeId: props.causeId,
                 note,
@@ -49,6 +54,20 @@ import { ExpenseDto } from "../../../../types/dtos/expense.dtos";
             })
             .then(()=>{
               props.forceRefresh();
+              props.onClose();
+              show("New Expense Claim Created",{
+                type: 'success',
+                title: "New Expense Claim"
+              })
+            })
+            .catch(error=>{
+              show("Error Creating Expense Claim",{
+                type: 'success',
+                title: "New Expense Claim Error"
+              })
+            })
+            .finally(()=>{
+              setIsSubmitting(false);
             })
         }
       }
@@ -75,7 +94,7 @@ import { ExpenseDto } from "../../../../types/dtos/expense.dtos";
             </Box>
           </ModalBody>
           <ModalFooter>
-              <Button onClick={onSubmit} colorScheme={"blue"}>Add Expense</Button>
+              <Button onClick={onSubmit} colorScheme={"blue"} isLoading={isSubmitting}>Add Expense</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

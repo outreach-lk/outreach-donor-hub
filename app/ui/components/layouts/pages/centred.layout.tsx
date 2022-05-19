@@ -1,4 +1,4 @@
-import { Center } from "@chakra-ui/react"
+import { Center, Container } from "@chakra-ui/react"
 import { PropsWithChildren } from "react"
 
 /**
@@ -6,8 +6,10 @@ import { PropsWithChildren } from "react"
  */
 export function CenteredLayout<T>( props: PropsWithChildren<T> ) {
     return (
-        <Center h='100vh' w='100vw'>
-            {props.children}
-        </Center>
+        <Container justifyContent="center" alignItems={"center"}>
+            <Center  minH={'md'} >
+                {props.children}
+            </Center>
+        </Container>
     )
 }

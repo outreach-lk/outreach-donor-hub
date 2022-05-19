@@ -113,7 +113,7 @@ export default function CauseExpenses() {
                 mb="4"
                 p="4"
                 shadow={"md"}
-                bg={useColorModeValue("azure.100", "linkedin.900")}
+                bg={useColorModeValue("white", "linkedin.900")}
               >
                 {data.owner === user?.uid && (
                   <Badge colorScheme={"blue"}>Your Expense</Badge>
@@ -142,7 +142,8 @@ export default function CauseExpenses() {
                   <Box>
                     Particulars
                     <Text>{data.note}</Text>
-                    {data.status === ExpenseStatus.CLAIMED && canReview && (
+                    {/* FIXME:  Remove Expense Creator Permission to Review in the Backend. */}
+                    {data.status === ExpenseStatus.CLAIMED && canReview && data.owner !== user?.uid && (
                       <Wrap py="2">
                         <Button
                           colorScheme={"blue"}

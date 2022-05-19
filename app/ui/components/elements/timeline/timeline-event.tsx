@@ -30,7 +30,7 @@ import { eventHeadings } from "../../../../utils/timeline_event_headings";
 import { RichTextEditor, SerializableBlock } from "../../modules/wyswyg-editor";
 import { TimelineEventIcon } from "./timeline-event-icon";
 
-export function TimelineEvent(props: AuditableEventDto) {
+export function TimelineEvent(props: AuditableEventDto & {minimized?:boolean}) {
   const shouldShowRichTextEditor =
     !!props.payload?.description && Array.isArray(props.payload.description);
   const {
@@ -41,14 +41,16 @@ export function TimelineEvent(props: AuditableEventDto) {
 
   return (
     <>
-      <Stack direction="row" h={{base:'auto', sm:"120px"}} width={"full"} p={4}>
+      <Stack direction="row" h={{base:'auto', sm:props.minimized?"80px":"120px"}} width={"full"} p={4}
+        opacity={props.minimized?"0.3":'auto'}
+      >
         <Avatar
           color={'gold'}
           background={useColorModeValue("facebook.400", "facebook.800")}
           icon={<TimelineEventIcon type={props.eventType} />}
         />
         <Divider orientation="vertical" />
-        <Box overflow={"clip"}>
+      <Box overflow={"clip"}>
           <Box>
             <Heading size={"sm"}>{eventHeadings(props.eventType)}</Heading>
             <Text>
