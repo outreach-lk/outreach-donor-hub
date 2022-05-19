@@ -5,13 +5,17 @@ import {
   BreadcrumbItem,
   BreadcrumbLink,
   Button,
+  Center,
   Container,
   Divider,
   Heading,
   HStack,
   Spacer,
+  Stack,
+  Text,
   Tooltip,
   useColorModeValue,
+  Wrap,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { useAuth } from "../../app/hooks/auth.hooks";
@@ -33,6 +37,7 @@ export default function CauseListPage() {
        bg={useColorModeValue("gray.200", "auto")}
     
     >
+      <Wrap direction={"column"}>
         <Breadcrumb paddingBottom={"4"}>
             <BreadcrumbItem>
                 <BreadcrumbLink href="/me">Profile ({user.email})</BreadcrumbLink>
@@ -43,8 +48,25 @@ export default function CauseListPage() {
         </Breadcrumb>
         <Heading size={"md"}>My Campaigns</Heading>
         <Heading size={"sm"}>Campaigns created by You</Heading>
+      </Wrap>
 
-        <EntityListPage entity="cause" query={query} isEmbedded={true} width="full" showFullScreenLoader={true}>
+        <EntityListPage 
+          entity="cause" 
+          query={query} 
+          isEmbedded={true} 
+          width="full" 
+          showFullScreenLoader={true}
+          emptyListScreen={
+            <Stack>
+              <Heading>No Campaigns, Yet!</Heading>
+              <Text >You don't have any campaign under your name.</Text>
+              <Center>
+                <Link href={"/cause/new"} passHref>
+                  <Button as="a" colorScheme={"blue"}>Create Campaign</Button>
+                </Link>
+              </Center>
+            </Stack>
+          }>
           {(data: CauseDto) => (
             // Should be in own component element file.
             <CauseCard cause={data}/>
