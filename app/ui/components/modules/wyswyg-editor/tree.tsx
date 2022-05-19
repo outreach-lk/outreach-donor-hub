@@ -133,13 +133,21 @@ export class EditorTree {
         break;
       case "a":
         _elem = document.createElement("a");
+        _elem.classList.add("block", "editor-a");
         href = prompt("URL");
-        (_elem as HTMLAnchorElement).href = href || "";
-        (_elem as HTMLAnchorElement).target = "_blank";
+        if(href){
+          (_elem as HTMLAnchorElement).href = href || "";
+          (_elem as HTMLAnchorElement).target = "_blank";
+          (_elem as HTMLAnchorElement).innerHTML = href;
+
+        } else {
+          return ;
+        }
+
         break;
     }
     _block.bindDOMElement(_elem);
-    _elem.innerHTML = sanitize(block?.rawValue || block?.placeholder || "");
+    _elem.innerHTML = _elem.innerHTML || sanitize(block?.rawValue || block?.placeholder || "");
     /**
      * if appended in the middle.
      */

@@ -9,6 +9,8 @@ import {
   Wrap,
   Flex,
   Badge,
+  Heading,
+  Kbd,
 } from "@chakra-ui/react";
 import { RefObject, useEffect, useState } from "react";
 import {
@@ -26,7 +28,8 @@ import { storageClientFactory } from "../../../../api/clients";
 import { FileDto } from "../../../../types/dtos/remote-file.dtos";
 import { FileStorageProvider } from "../../../../types/enums/providers";
 import { isFileValidImage } from "../../../../utils/file-type-validation";
-import FilePicker from "../file-picker";
+import { FileUploader } from "../uploader";
+import FilePicker from "../uploader/picker";
 import { EditorBlock } from "./editor-block";
 
 interface BlockTypeSelProps {
@@ -51,99 +54,31 @@ export function BlockTypeSel(props: BlockTypeSelProps) {
 
 
   if (props.currentBlock?.hideMenu) return null;
-  const [picker, showPicker] = useState(false);
-  const [pickerFile, setPickerFile] = useState<File | null>(null);
-  const [isUploading, setIsUploading] = useState(false);
-  const [uploaded, setUploaded] = useState(false);
-  const [invalidFile, setInvalidFile] = useState(false);
-  const [uploadError, setUploadError] = useState<string | null>(null);
+  const [uploader, showUploader] = useState(false);
 
-  useEffect(() => {
-    setPickerFile(null);
-    setIsUploading(false);
-    setInvalidFile(false);
-    setUploadError(null);
-  }, [picker]);
   return (
     <Box ref={props.menuRef} className="editor-popover">
       <Stack className="editor-popover-toolbar">
-        {picker ? (
-          // Should go in its own component
-          <Wrap direction={"column"} spacing="4">
-            <FilePicker
-              onFileLoad={(file) => {
-                if (isFileValidImage(file)) {
-                  setPickerFile(file);
-                  setInvalidFile(false);
-                } else {
-                  setInvalidFile(true);
-                }
+        {uploader ? (
+          <Wrap>
+            <Flex align={"baseline"} justify="space-between" w="100%">
+            <Heading size={"sm"}>Upload Image</Heading>
+            <Button onClick={()=>showUploader(false)}>X</Button>
+            </Flex>
+            <FileUploader 
+              postUploadCallback={(file)=>{
+                props.addCallback(BlockType.img,file.path)
               }}
-            />
-            <Wrap>
-              <Button onClick={() => showPicker(false)}>Close</Button>
-              <Button
-                disabled={!!!pickerFile || uploaded}
-                isLoading={isUploading}
-                onClick={() => {
-                  if (pickerFile && !uploaded) {
-                    setIsUploading(true);
-                    uploadFile(pickerFile)
-                      .then(async (res) => {
-                        setIsUploading(false);
-                        setUploaded(true);
-
-                        props.addCallback(
-                          BlockType.img,
-                          (await fetchFile((res.data as FileDto).path)).path
-                        );
-                      })
-                      .catch((error) => {
-                        setIsUploading(false);
-                        setUploaded(false);
-                        setUploadError(error);
-                      });
-                  }
-                }}
-              >
-                Upload
-              </Button>
+              />
             </Wrap>
-            {invalidFile && (
-              <Badge colorScheme={"red"}>Unsupported File or Too Large</Badge>
-            )}
-            {uploadError && (
-              <Badge colorScheme={"red"}>Unable to Upload File</Badge>
-            )}
-          </Wrap>
         ) : (
           <>
-            <Stack direction={"row"} align="center" justify={"center"}>
-              <FaPlusCircle />
-              <Button onClick={() => props.addCallback(BlockType.p)}>p</Button>
-              <Button onClick={() => props.addCallback(BlockType.h1)}>
-                h1
-              </Button>
-              <Button onClick={() => props.addCallback(BlockType.h2)}>
-                h2
-              </Button>
-              <Button onClick={() => props.addCallback(BlockType.h3)}>
-                h3
-              </Button>
-              <IconButton
-                onClick={() => props.addCallback(BlockType.a)}
-                aria-label="Add Link"
-                icon={<FaLink />}
-              />
-              <IconButton
-                onClick={() => showPicker(true)}
-                aria-label="Add Image"
-                icon={<FaCameraRetro />}
-              />
-            </Stack>
             {props.currentBlock && (
-              <Stack direction={"row"}>
+              <Stack direction={"row"} align="center" >
                 <FaDotCircle />
+      <Kbd>{props.currentBlock?.type}</Kbd>
+                {(props.currentBlock.type !== BlockType.img && props.currentBlock.type !== BlockType.a)&&
+                <>
                 <IconButton
                   icon={<FaAlignLeft />}
                   aria-label="align-left"
@@ -174,6 +109,8 @@ export function BlockTypeSel(props: BlockTypeSelProps) {
                     )
                   }
                 />
+                </>
+                }
                 {!props.currentBlock.preventDeletion && (
                   <IconButton
                     onClick={() => {
@@ -186,6 +123,30 @@ export function BlockTypeSel(props: BlockTypeSelProps) {
                 )}
               </Stack>
             )}
+            <Stack direction={"row"} align="center" justify={"center"}>
+              <FaPlusCircle />
+              <Button onClick={() => props.addCallback(BlockType.p)}>p</Button>
+              <Button onClick={() => props.addCallback(BlockType.h1)}>
+                h1
+              </Button>
+              <Button onClick={() => props.addCallback(BlockType.h2)}>
+                h2
+              </Button>
+              <Button onClick={() => props.addCallback(BlockType.h3)}>
+                h3
+              </Button>
+              <IconButton
+                onClick={() => props.addCallback(BlockType.a)}
+                aria-label="Add Link"
+                icon={<FaLink />}
+              />
+              <IconButton
+                onClick={() => showUploader(true)}
+                aria-label="Add Image"
+                icon={<FaCameraRetro />}
+              />
+            </Stack>
+
           </>
         )}
       </Stack>

@@ -21,7 +21,7 @@ export type FileDto = {
  */
  export type FileMetadata = {
     size: number,
-    type: 'image' | 'pdf' | 'zip',
+    type: 'image' | 'pdf' | 'zip' | string,
 }
 
 /**
