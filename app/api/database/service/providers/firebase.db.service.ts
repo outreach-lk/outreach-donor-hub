@@ -67,13 +67,13 @@ export default class FirebaseDatabaseService implements IDatabaseService {
           _value = true;
         } else if (value === "false") {
           _value == false;
-        } else if (parseFloat(value as string) !== NaN){
+        } else if (!isNaN(Number(_value as string))){
           _value = Number(_value);
         }
         query = query.where(key, "==", _value);
       });
     }
-    console.log(queryMap);
+
     query = query.orderBy("isDeleted").orderBy("createdOn", "desc");
     if (page.start) {
       /**
@@ -117,7 +117,6 @@ export default class FirebaseDatabaseService implements IDatabaseService {
     if ((data as any).permissions) {
       delete (data as any).permissions;
     }
-    console.log(data);
     return this.firestore
       .collection(entity)
       .doc(id)

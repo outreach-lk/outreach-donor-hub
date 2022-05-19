@@ -28,6 +28,9 @@ import { VerificationStatus } from "../../types/enums/status";
 import AppEvent from "../entities/event.entity";
 import { EventType } from "../../types/enums/events";
 import { queryMap2string } from "../../utils/parse-querystring";
+import { authServiceFactory } from "../../api/services";
+import { UserRole } from "../../types/dtos/user.dtos";
+import { eventHeadings } from "../../utils/timeline_event_headings";
 
 /**
  * Cause Data Access Repository
@@ -131,22 +134,72 @@ export default class CauseRepo extends BaseRepo implements ICRUDREPO<CauseDto> {
   ): Promise<EntityUpdatedDto<Auditable & Ownable & CauseDto>> {
     if (this.isBrowser) {
       const path = apiMap.v1["[entity]"]["[id]"].root
-      .replace("[entity]", this.entity)
-      .replace("[id]", identifier);
+        .replace("[entity]", this.entity)
+        .replace("[id]", identifier);
       const token = authClientFactory.getClient(
         AuthProvider.FIREBASE
       ).accessToken;
-      return (await axios.put(path,data,{
-        headers:{
-          authorization: `Bearer ${token}`
-        }
-      })).data
+      return (
+        await axios.put(path, data, {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        })
+      ).data;
     } else {
-      return (this.db as IDatabaseService).update(
-        identifier,
-        data,
-        this.entity
-      );
+      const { data: cause } = await this.get(identifier);
+      const user = authServiceFactory.getService(
+        AuthProvider.FIREBASE
+      ).authenticatedUser;
+
+      let allowUpdate = false;
+      let verificationStatusChanged = cause?.verificationStatus !== data.verificationStatus;
+      let verificationChanged = cause?.isVerified !== data.isVerified;
+      /**
+       * perm check 1
+       * check if verification status and/or isVerified is being updated
+       * in such cases the current user MUST have MOD or ADMIN privileges.
+       * also create a Campaign Verification Change event.
+       * */
+      if (
+       ( verificationStatusChanged || verificationChanged) &&
+        (user?.role === UserRole.ADMIN || user?.role === UserRole.MODERATOR)
+      ) {
+        allowUpdate = true;
+      }
+      if(allowUpdate){
+        return (this.db as IDatabaseService).update(
+          identifier,
+          data,
+          this.entity
+        )
+        .then((res)=>{
+          if(verificationStatusChanged){
+            const wasRejected = data.verificationStatus === VerificationStatus.REJECTED;
+            const wasApproved = data.verificationStatus === VerificationStatus.VERIFIED;
+            let eventType: EventType;
+
+            if(wasApproved || wasRejected){
+              if(wasRejected) {
+                eventType = EventType.CAUSE_DECLINED
+              } else {
+                eventType = EventType.CAUSE_VERIFIED
+              }
+              AppEvent.create({
+                eventType,
+                topic: cause?.id as string,
+                message: eventHeadings(eventType)
+              })
+  
+            } else {
+              // TODO: Create Event for InProgress 
+            }
+          }
+          return res;
+        })
+      }else {
+        throw new Error('unauthorized');
+      }
     }
   }
   delete(

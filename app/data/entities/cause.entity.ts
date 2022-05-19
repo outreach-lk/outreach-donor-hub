@@ -63,7 +63,7 @@ export default class Cause
     this.permissions = causeDto.permissions;
     this.sharedWith = causeDto.sharedWith;
     this.bankAccount = causeDto.bankAccount
-    this.status = causeDto.verificationStatus || VerificationStatus.UNKNOWN
+    this.status = causeDto.verificationStatus || VerificationStatus.PENDING
     this.isVerified = causeDto.isVerified || false
 
   }

@@ -36,5 +36,5 @@ export enum VerificationStatus {
   VERIFIED,
   REJECTED,
   /** synonymous with pending */
-  UNKNOWN,
+  PENDING,
 }

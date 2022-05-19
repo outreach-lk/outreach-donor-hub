@@ -49,7 +49,8 @@ export default function ModeratorDashboard() {
     cause.isVerified = newStatus===VerificationStatus.VERIFIED;
     cause.update()
     .then(()=>{
-      show("",{
+      const labels = Object.values(VerificationStatus)
+      show(labels[newStatus].toLocaleString(),{
         type:"success",
         title: "Campaign Verification"
       })
@@ -65,7 +66,7 @@ export default function ModeratorDashboard() {
 
   const handleTabChange = (status:VerificationStatus) => {
     switch(status){
-      case VerificationStatus.UNKNOWN:
+      case VerificationStatus.PENDING:
         setTabIndex(0);
         break;
       case VerificationStatus.INPROGRESS:
@@ -96,7 +97,7 @@ export default function ModeratorDashboard() {
             <Heading size={"md"}>Pending Campaigns</Heading>
             <Box p="4">
               <ModCampaignList 
-                status={VerificationStatus.UNKNOWN} 
+                status={VerificationStatus.PENDING} 
                 action={(data)=>{
                   return <Button onClick={()=>handleVerificationUpdate(data, VerificationStatus.INPROGRESS)}>Begin Verification</Button>
                 }}
@@ -120,7 +121,7 @@ export default function ModeratorDashboard() {
                   leftIcon={<FaStop/>}
                   onClick={()=>handleVerificationUpdate(data, VerificationStatus.REJECTED)}>Reject</Button>
                   <Tooltip label="Adds campaign back to In Progress">
-                  <Button onClick={()=>handleVerificationUpdate(data, VerificationStatus.UNKNOWN)}>Dequeue</Button>
+                  <Button onClick={()=>handleVerificationUpdate(data, VerificationStatus.PENDING)}>Dequeue</Button>
                   </Tooltip>
 
                 </>
