@@ -31,7 +31,7 @@ import { FaExternalLinkSquareAlt } from "react-icons/fa";
 import Link from "next/link";
 import { getConfig } from "../../../../../config";
 import { Renderable } from "../../../../../types/props/common";
-import { ModTableUserButton } from "../../../elements/mod-table-user-btn";
+import { ModTableUserButton } from "../../../elements/user/mod-table-user-btn";
 import { EntityIDButton } from "../../../elements/mod-table-campaign-btn";
 
 export default function ModCampaignList(props: {

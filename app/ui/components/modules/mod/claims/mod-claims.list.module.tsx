@@ -70,7 +70,7 @@ import {
 import { stringify } from "querystring";
 import { RemoteImage } from "../../remote-image";
 import { FileDto } from "../../../../../types/dtos/remote-file.dtos";
-import { ModTableUserButton } from "../../../elements/mod-table-user-btn";
+import { ModTableUserButton } from "../../../elements/user/mod-table-user-btn";
 import { EntityIDButton } from "../../../elements/mod-table-campaign-btn";
 type ProofModalData = {
   file: FileDto;
