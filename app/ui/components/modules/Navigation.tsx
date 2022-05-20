@@ -24,6 +24,8 @@ import { HamburgerIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
 import { Logo } from "../elements/branding/Logo";
 import { useAuth } from "../../../hooks/auth.hooks";
 import { FiSearch } from "react-icons/fi";
+import { UserRole } from "../../../types/dtos/user.dtos";
+import { GoDashboard } from "react-icons/go";
 
 export function Nav(props: {
   dashboardMode?: boolean;
@@ -115,6 +117,11 @@ export function Nav(props: {
                     </Center>
                     <br />
                     <MenuDivider />
+                    {(user.role === UserRole.ADMIN || user.role === UserRole.MODERATOR) &&
+                    <NxtLink href={"/mod/dashboard"} passHref>
+                    <MenuItem icon={<GoDashboard/>} as="a">Dashboard</MenuItem>
+                  </NxtLink>    
+                    }
                     <NxtLink href={"/cause/new"} passHref>
                       <MenuItem as="a">Create Campaign</MenuItem>
                     </NxtLink>
