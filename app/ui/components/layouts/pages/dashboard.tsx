@@ -65,7 +65,7 @@ export function DashboardLayout(props: PropsWithChildren<any>) {
         <NavItem route="dashboard" icon={MdHome}>Home</NavItem>
         <NavItem route="campaigns" icon={FaDonate}>Campaigns</NavItem>
         <NavItem route="claims" icon={HiCollection}>Claims</NavItem>
-        <NavItem route="disputes" icon={FaExclamationCircle}>Disputes</NavItem>
+        {/* <NavItem route="disputes" icon={FaExclamationCircle}>Disputes</NavItem> */}
         <NavItem route="users" icon={FaUsers}>Users</NavItem>
         <NavItem route="settings" icon={BsGearFill}>Settings</NavItem>
       </Flex>

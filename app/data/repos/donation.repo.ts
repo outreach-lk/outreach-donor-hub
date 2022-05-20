@@ -31,8 +31,13 @@ import CauseRepo from "./cause.repo";
 import Cause from "../entities/cause.entity";
 import { CauseDto } from "../../types/dtos/cause.dtos";
 import { queryMap2string } from "../../utils/parse-querystring";
-import { donationStatusToEventMapping, donationStatusToEventMessageMapping } from "../../utils/donation-status-to-event-mapping";
+import {
+  donationStatusToEventMapping,
+  donationStatusToEventMessageMapping,
+} from "../../utils/donation-status-to-event-mapping";
 import { DonationStatus } from "../../types/enums/status";
+import { authServiceFactory } from "../../api/services";
+import { UserRole } from "../../types/dtos/user.dtos";
 
 export default class DonationRepo
   extends BaseRepo
@@ -155,29 +160,56 @@ export default class DonationRepo
         })
       ).data;
     } else {
-      let allowUpdate: boolean  = true;
-      if (data.status) {
-        const donation =  await this.get(identifier);
-        //Prevent updating if the claim has already been reviewed.
-        // FIXME: Let admins & mods bypass this though!
-        allowUpdate = donation.data?.status === DonationStatus.CLAIMED || donation.data?.status === undefined
-      }
-      if(allowUpdate){
-          if(data.status) {
-            AppEvent.create({
-                eventType: donationStatusToEventMapping(data.status),
-                message: donationStatusToEventMessageMapping(data),
-                topic: data.causeId,
-                payload: data,
-              });
-          }
-          return (this.db as IDatabaseService).update(
-            identifier,
-            data,
-            this.entity
+      let allowUpdate = false;
+      const { data: donation } = await this.get(identifier);
+      const { data: cause } = await CauseRepo.getRepo().get(data.causeId);
+      const user = authServiceFactory.getService(
+        AuthProvider.FIREBASE
+      ).authenticatedUser;
+
+      //changes
+      const statusChanged = data.status !== donation?.status;
+      //Prevent updating if the claim has already been reviewed.
+      if (statusChanged) {
+        allowUpdate =
+          donation?.status === DonationStatus.CLAIMED ||
+          donation?.status === undefined ||
+          // also allo moderators to bypass the above rules.
+          (user?.role === UserRole.ADMIN || user?.role === UserRole.MODERATOR)
+        // only the cause owner or with whom the campaign has been shared can
+        // update the status to Acknowledged.
+        if (
+          donation?.status === DonationStatus.ACKNOWLEDGED
+        ) {
+          // FIXME: should trigger verbose error messages
+          console.log(
+            "only campaign maintainers can set donation to acknowledged"
           );
-      }else{
-          throw new Error('illeagal update')
+          allowUpdate = !!(cause?.owner === user?.uid )|| !!(cause?.sharedWith?.includes(user?.uid as string))
+        }
+
+        // do not let the donation owner make any changes to the state
+        if (donation?.owner === user?.uid) {
+          console.log("donation owner cannot update");
+          allowUpdate = false;
+        }
+      }
+      if (allowUpdate) {
+        if (data.status) {
+          AppEvent.create({
+            eventType: donationStatusToEventMapping(data.status),
+            message: donationStatusToEventMessageMapping(data),
+            topic: data.causeId,
+            payload: data,
+          });
+        }
+        return (this.db as IDatabaseService).update(
+          identifier,
+          data,
+          this.entity
+        );
+      } else {
+        throw new Error("illeagal update");
       }
     }
   }

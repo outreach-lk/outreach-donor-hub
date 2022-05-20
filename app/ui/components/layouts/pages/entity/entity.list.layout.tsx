@@ -25,6 +25,7 @@ export function EntityListPage<T>(props: EntityListPageProps) {
     start: 0,
   };
   const [page, setPage] = useState<Page>(props.page || initPage);
+  const [queryChanged,setQueryChanged] = useState(false);
   const [next, setNext] = useState<Page | null>(null);
   const [prev, setPrev] = useState<Page | null>(null);
   const [pageData, setPageData] = useState<T[]>([]);
@@ -49,11 +50,13 @@ export function EntityListPage<T>(props: EntityListPageProps) {
     fetchEntityPage(page, props.query)
       .then((data) => {
         if (data.data?.data.length) {
-          if(props.replace){
+          if(props.replace || queryChanged){
             setPageData([...(data.data?.data as T[])]);
           }else{
             setPageData([...pageData, ...(data.data?.data as T[])]);
           }
+        } else if(queryChanged){
+          setPageData([]);
         } else {
           setPageData([...pageData]);
         }
@@ -61,7 +64,10 @@ export function EntityListPage<T>(props: EntityListPageProps) {
       .catch((error: Error) => {
         setError(error);
       })
-      .finally(() => setIsLoading(false));
+      .finally(() => {
+        setIsLoading(false)
+        setQueryChanged(false);
+      });
   }, [page]);
 
   useEffect(()=>{
@@ -69,6 +75,10 @@ export function EntityListPage<T>(props: EntityListPageProps) {
       setPage(props.page);
     }
   },[props.page])
+
+  useEffect(()=>{
+    setQueryChanged(true);
+  },[props.query])
 
   /**
    * sets page to load next page

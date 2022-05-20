@@ -13,7 +13,7 @@ import { requestLogger } from "./server-logger";
 export function withCustomMiddleware(handler: NextApiHandler): NextApiHandler {
   return (req: NextApiRequest, res: NextApiResponse) => {
     void new NextRequestMiddlewareChain(handler)
-      .use(attachAppEventListeners)
+      // .use(attachAppEventListeners)
       .use(requestLogger as ApiMiddleware)
       .use(permissionCheck)
       .call(req, res);

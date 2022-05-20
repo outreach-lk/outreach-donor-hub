@@ -31,8 +31,13 @@ import CauseRepo from "./cause.repo";
 import Cause from "../entities/cause.entity";
 import { CauseDto } from "../../types/dtos/cause.dtos";
 import { queryMap2string } from "../../utils/parse-querystring";
-import { ExpenseStatusToEventMapping, ExpenseStatusToEventMessageMapping } from "../../utils/expense-status-to-event-mapping";
+import {
+  ExpenseStatusToEventMapping,
+  ExpenseStatusToEventMessageMapping,
+} from "../../utils/expense-status-to-event-mapping";
 import { ExpenseStatus } from "../../types/enums/status";
+import { authServiceFactory } from "../../api/services";
+import { UserRole } from "../../types/dtos/user.dtos";
 
 export default class ExpenseRepo
   extends BaseRepo
@@ -155,29 +160,48 @@ export default class ExpenseRepo
         })
       ).data;
     } else {
-      let allowUpdate: boolean  = true;
-      if (data.status) {
-        const Expense =  await this.get(identifier);
+      const {data: expense} = await this.get(identifier);
+      // const {data: cause} = await CauseRepo.getRepo().get(data.causeId);
+      const user = authServiceFactory.getService(
+        AuthProvider.FIREBASE
+      ).authenticatedUser;
+      let allowUpdate: boolean = true;
+
+      // changes
+      const statusChanged  = data.status !== expense?.status;
+
+      // All other gatekeeping (allowUpdate changes) should have lesser
+      // priority, ie. be handled before the following.
+      if (statusChanged) {
         //Prevent updating if the claim has already been reviewed.
-        // FIXME: Let admins & mods bypass this though!
-        allowUpdate = Expense.data?.status === ExpenseStatus.CLAIMED || Expense.data?.status === undefined
+        allowUpdate =
+          expense?.status === ExpenseStatus.CLAIMED ||
+          expense?.status === undefined ||
+          // also allo moderators to bypass the above rules.
+          (user?.role === UserRole.ADMIN || user?.role === UserRole.MODERATOR)
+
+        if(expense?.owner === user?.uid){
+          // FIXME: should trigger verbose error messages
+          console.log("expense owner cannot update expense status")
+          allowUpdate = false;
+        }
       }
-      if(allowUpdate){
-          if(data.status) {
-            AppEvent.create({
-                eventType: ExpenseStatusToEventMapping(data.status),
-                message: ExpenseStatusToEventMessageMapping(data),
-                topic: data.causeId,
-                payload: data,
-              });
-          }
-          return (this.db as IDatabaseService).update(
-            identifier,
-            data,
-            this.entity
-          );
-      }else{
-          throw new Error('illeagal update')
+      if (allowUpdate) {
+        if (data.status) {
+          AppEvent.create({
+            eventType: ExpenseStatusToEventMapping(data.status),
+            message: ExpenseStatusToEventMessageMapping(data),
+            topic: data.causeId,
+            payload: data,
+          });
+        }
+        return (this.db as IDatabaseService).update(
+          identifier,
+          data,
+          this.entity
+        );
+      } else {
+        throw new Error("illeagal update");
       }
     }
   }

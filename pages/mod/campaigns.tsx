@@ -32,7 +32,7 @@ import { Page } from "../../app/types/pagable";
 import { CauseCard } from "../../app/ui/components/elements/cause/cause-card";
 import { DashboardLayout } from "../../app/ui/components/layouts/pages/dashboard";
 import { EntityListPage } from "../../app/ui/components/layouts/pages/entity/entity.list.layout";
-import ModCampaignList from "../../app/ui/components/modules/mod/campaign/table/mod-campaign-list.module";
+import ModCampaignList from "../../app/ui/components/modules/mod/campaign/mod-campaign-list.module";
 import { getDateFromFirebaseDateTimeObject } from "../../app/utils/date-time";
 
 export default function ModeratorDashboard() {

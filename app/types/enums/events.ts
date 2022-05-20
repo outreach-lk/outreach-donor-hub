@@ -7,7 +7,11 @@ export enum EventType {
     DONATION_CLAIM_CREATED = "donation_claim_created",
     DONATION_CLAIM_ACKNOWLEDGED = "donation_claim_acknowledged",
     DONATION_CLAIM_DECLINED = "donation_claim_declined",
+    DONATION_CLAIM_REJECTED = "donation_claim_rejected",
+    DONATION_CLAIM_REQUEUED = "donation_claim_requeued",
     EXPENSE_CLAIM_CREATED = "expense_claim_created",
     EXPENSE_CLAIM_APPROVED = "expense_claim_approved",
     EXPENSE_CLAIM_DECLINED = "expense_claim_declined",
+    EXPENSE_CLAIM_REJECTED = "expense_claim_rejected",
+    EXPENSE_CLAIM_REQUEUED = "expense_claim_requeued",
 }
