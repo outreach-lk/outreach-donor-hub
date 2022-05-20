@@ -100,6 +100,14 @@ export function AuthProvider<P>(props: PropsWithChildren<P>) {
       push({
         pathname: "/auth/sign-in",
       });
+    } else if(route && route.isProtected && route.allowedRoles && session.user.role && !route.allowedRoles.includes(session.user.role)) {
+      show("You are not authorized view this section", {
+        type: "error",
+        title: "Access Denied",
+      });
+      push({
+        pathname: "/auth/sign-in",
+      });
     } else {
         setShowContent(true);
     }
@@ -128,7 +136,7 @@ export function AuthProvider<P>(props: PropsWithChildren<P>) {
           })
         } else if ( session.user.role === UserRole.ADMIN || session.user.role === UserRole.MODERATOR ){
           push({
-            pathname: '/mod'
+            pathname: '/mod/dashboard'
           })
         }
       }

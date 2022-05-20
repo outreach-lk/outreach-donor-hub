@@ -25,46 +25,10 @@ import React, { PropsWithChildren } from "react";
 import { Logo } from "../../elements/branding/Logo";
 import { Nav } from "../../modules/Navigation";
 import { GoChecklist } from "react-icons/go";
+import { NavItem } from "../../elements/dashboard/nav-item";
 
 export function DashboardLayout(props: PropsWithChildren<any>) {
   const sidebar = useDisclosure();
-
-  const NavItem = (props: any) => {
-    const { icon, children, ...rest } = props;
-    return (
-      <Flex
-        align="center"
-        px="4"
-        mx="2"
-        rounded="md"
-        py="3"
-        cursor="pointer"
-        _hover={{
-          bg: "linkedin.100",
-          color: "linkedin.900",
-        }}
-        role="group"
-        fontWeight="semibold"
-        transition=".15s ease"
-        bg={props.isActive?"linkedin.300":"auto"}
-        color={props.isActive?"linkedin.900":"auto"}
-
-        {...rest}
-      >
-        {icon && (
-          <Icon
-            mr="2"
-            boxSize="4"
-            _groupHover={{
-              color: "linkedin.800",
-            }}
-            as={icon}
-          />
-        )}
-        {children}
-      </Flex>
-    );
-  };
 
   const SidebarContent = (props: any) => (
     <Box
@@ -98,13 +62,12 @@ export function DashboardLayout(props: PropsWithChildren<any>) {
         color={useColorModeValue("gray.600","white")}
         aria-label="Main Navigation"
       >
-        <NavItem icon={MdHome}>Home</NavItem>
-        <NavItem isActive={true} icon={FaDonate}>Campaigns</NavItem>
-        <NavItem icon={HiCollection}>Pending Claims</NavItem>
-        <NavItem icon={FaExclamationCircle}>Disputes</NavItem>
-        <NavItem icon={FaUsers}>Users</NavItem>
-        <NavItem icon={FaExternalLinkAlt}>Use Site</NavItem>
-        <NavItem icon={BsGearFill}>Settings</NavItem>
+        <NavItem route="dashboard" icon={MdHome}>Home</NavItem>
+        <NavItem route="campaigns" icon={FaDonate}>Campaigns</NavItem>
+        <NavItem route="claims" icon={HiCollection}>Claims</NavItem>
+        <NavItem route="disputes" icon={FaExclamationCircle}>Disputes</NavItem>
+        <NavItem route="users" icon={FaUsers}>Users</NavItem>
+        <NavItem route="settings" icon={BsGearFill}>Settings</NavItem>
       </Flex>
     </Box>
   );

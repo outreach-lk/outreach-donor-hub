@@ -55,6 +55,20 @@ export const devConfig: AppConfig = {
       isProtected: true,
       allowedRoles: [UserRole.ADMIN, UserRole.MODERATOR, UserRole.REGULAR],
     },
+    {
+      id: "dashboard-moderator",
+      path: "/mod/dashboard",
+      isEntity: false,
+      isProtected: true,
+      allowedRoles: [UserRole.ADMIN, UserRole.MODERATOR],
+    },
+    {
+      id: "camapaign-moderator",
+      path: "/mod/campaigns",
+      isEntity: false,
+      isProtected: true,
+      allowedRoles: [UserRole.ADMIN, UserRole.MODERATOR],
+    },
     /**
      * API Routes
      */
