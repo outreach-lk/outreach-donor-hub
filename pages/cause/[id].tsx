@@ -40,7 +40,6 @@ export default function CausePage(props: {
     description: string
   }
 }) {
-  const { query } = useRouter();
   const { cause } = props;
   return (
     <div>
