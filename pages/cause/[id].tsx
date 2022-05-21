@@ -32,28 +32,29 @@ import { Footer } from "../../app/ui/components/modules/Footer";
 import { Nav } from "../../app/ui/components/modules/Navigation";
 import { RichTextEditor } from "../../app/ui/components/modules/wyswyg-editor";
 
-export default function CausePage(props: { cause: CauseDto }) {
+export default function CausePage(props: { 
+  cause: CauseDto
+  og: {
+    title: string,
+    image: string,
+    description: string
+  }
+}) {
   const { query } = useRouter();
   const { cause } = props;
-  const image = cause.attachments.find(
-    (file) => file?.path && file.path.match("http")
-  );
-  const description = cause.description.at(0)?.rawValue
-  || "Support this donation campaign on Outreach DonorHub."
-
   return (
     <div>
       <Head>
         <title>{cause.title}</title>
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@Outreachlka" />
-        <meta name="twitter:title" content={cause.title + "on DonorHub"} />
-        <meta name="twitter:description" content={ description} />
-        <meta name="twitter:image" content={image?.path} />
-        <meta name="description" content={ description} />
-        <meta property="og:title" content={cause.title + "on DonorHub"} />
+        <meta name="twitter:title" content={props.og.title} />
+        <meta name="twitter:description" content={props.og.description} />
+        <meta name="twitter:image" content={props.og.image} />
+        <meta name="description" content={props.og.description} />
+        <meta property="og:title" content={props.og.title} />
         <meta property="og:type" content="article" />
-        <meta property="og:image" content={image?.path} />
+        <meta property="og:image" content={props.og.image} />
       </Head>
       <Nav />
       <Container minW={"full"}
@@ -61,7 +62,7 @@ export default function CausePage(props: { cause: CauseDto }) {
       >
         <EntityPage
           entity="cause"
-          id={query.id as string}
+          id={cause.id as string}
           serverFetchedData={props.cause}
         >
           {(entityProps) => {
@@ -166,9 +167,15 @@ export async function getServerSideProps(context: NextPageContext) {
     return {
       props: {
         cause: JSON.parse(JSON.stringify(data)),
+        og: {
+          title: data?.title,
+          description: data?.title,
+          image: data?.attachments.find(at=>at?.path)
+        }
       },
     };
   } catch (error) {
+    console.log(error);
     return {
       redirect: {
         destination: "/404",

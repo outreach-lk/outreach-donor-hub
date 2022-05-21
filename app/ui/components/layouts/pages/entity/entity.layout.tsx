@@ -38,7 +38,7 @@ export function EntityPage<T>(props: SingleEntityPageProps<T>) {
   useEffect(() => {
     if (props.id && !props.serverFetchedData) {
       setIsLoading(true);
-      fetchEntity(props.entity + "-" + props.id)
+      fetchEntity( props.id)
         .then((d) => {
           if (d && d.data && d.data.data) {
             setEntityData(d.data.data as T);
