@@ -215,5 +215,14 @@ export const devConfig: AppConfig = {
       isProtected: false,
       apiMethod: HTTPMethod.GET,
     },
+    {
+      id: "api-donation-create-entity",
+      path: "/api/v1/rpc/user/elevate",
+      isApi: true,
+      isEntity: false,
+      isProtected: true,
+      apiMethod: HTTPMethod.PUT,
+      allowedRoles: [UserRole.ADMIN, UserRole.MODERATOR],
+    },
   ],
 };

@@ -55,6 +55,20 @@ export const prodConfig: AppConfig = {
       isProtected: true,
       allowedRoles: [UserRole.ADMIN, UserRole.MODERATOR, UserRole.REGULAR],
     },
+    {
+      id: "dashboard-moderator",
+      path: "/mod/dashboard",
+      isEntity: false,
+      isProtected: true,
+      allowedRoles: [UserRole.ADMIN, UserRole.MODERATOR],
+    },
+    {
+      id: "camapaign-moderator",
+      path: "/mod/campaigns",
+      isEntity: false,
+      isProtected: true,
+      allowedRoles: [UserRole.ADMIN, UserRole.MODERATOR],
+    },
     /**
      * API Routes
      */
@@ -200,6 +214,15 @@ export const prodConfig: AppConfig = {
       isEntity: false,
       isProtected: false,
       apiMethod: HTTPMethod.GET,
+    },
+    {
+      id: "api-donation-create-entity",
+      path: "/api/v1/rpc/user/elevate",
+      isApi: true,
+      isEntity: false,
+      isProtected: true,
+      apiMethod: HTTPMethod.PUT,
+      allowedRoles: [UserRole.ADMIN, UserRole.MODERATOR],
     },
   ],
 };

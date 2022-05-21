@@ -83,6 +83,10 @@ export default class UserRepo extends BaseRepo implements ICRUDREPO<UserDto> {
     throw new Error("Method not implemented.");
   }
 
+  async $serverfindUserByEmail(email:string){
+
+  }
+
   /** Returns the repo instance. */
   static getRepo(): UserRepo {
     if (this._instance) {

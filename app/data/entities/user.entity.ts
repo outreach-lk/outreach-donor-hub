@@ -96,6 +96,16 @@ export default class User extends BaseEntity<User, UserDto> {
       throw error;
     })
   }
+
+  /**
+   * changes a user's role
+   * only to be used by mods and admins
+   * @param uid 
+   * @param role 
+   */
+  static async $browserElevateUser(uid:string,role:UserRole): Promise<any>{
+
+  }
   /**
    * adds a list of custom permisssions to this user.
    * $server only method
