@@ -17,5 +17,5 @@ export function formatDate(date: string | Date) {
  * @param object 
  */
 export function getDateFromFirebaseDateTimeObject(object: {_seconds:number, _nanoseconds: number}):Date {
-   return new Date(object._seconds*1000);
+   return new Date(object?._seconds*1000);
 }   

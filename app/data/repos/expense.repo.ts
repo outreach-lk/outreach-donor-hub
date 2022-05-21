@@ -39,6 +39,7 @@ import { ExpenseStatus } from "../../types/enums/status";
 import { authServiceFactory } from "../../api/services";
 import { UserRole } from "../../types/dtos/user.dtos";
 import { simpleLogger } from "../../api/middleware/server-logger";
+import Expense from "../entities/expense.entity";
 
 export default class ExpenseRepo
   extends BaseRepo
@@ -115,6 +116,7 @@ export default class ExpenseRepo
         try {
           const _cause = await CauseRepo.getRepo().get(data.causeId);
           const cause = new Cause(_cause.data as CauseDto);
+          data.status = ExpenseStatus.CLAIMED;
           data.sharedWith = [];
           data.sharedWith.push(
             cause.owner as string,

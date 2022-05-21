@@ -80,6 +80,7 @@ export default function ModClaimList(props: {
   status: DonationStatus | ExpenseStatus;
   claimType: string;
   campaign?: string;
+  id?: string;
   action?: (data: any) => Renderable;
 }) {
   const [page, setPage] = useState<Page>({ start: 0, limit: 8 });
@@ -103,6 +104,16 @@ export default function ModClaimList(props: {
     setQuery(map);
     setPage({ start: 0, limit: page.limit });
   }, [props.campaign]);
+
+  useEffect(() => {
+    if (props.id) {
+      map.set("id", props.id);
+    } else {
+      map.delete("id");
+    }
+    setQuery(map);
+    setPage({ start: 0, limit: page.limit });
+  }, [props.id]);
 
   const {
     isOpen: isProofOpen,
@@ -187,7 +198,7 @@ export default function ModClaimList(props: {
                           </Tooltip>
                         )}
                         {data.status === "rejected" && (
-                          <Tooltip label="Disputed Claim">
+                          <Tooltip label="Rejected Claim">
                             <Icon>
                               <FaStopCircle color="red" />
                             </Icon>
@@ -252,12 +263,15 @@ export default function ModClaimList(props: {
                       <ModTableUserButton uid={data.createdBy as string} />
                     </Td>
                     <Td>
-                      {getDateFromFirebaseDateTimeObject(
-                        data.updatedOn as any
-                      ).toLocaleString()}
+                     {data.updatedOn?
+                      <>
+                        {getDateFromFirebaseDateTimeObject(data.updatedOn as any).toLocaleString()}
+                      </>:
+                      <p>-</p>
+                    }
                     </Td>
                     <Td>
-                      <ModTableUserButton uid={data.updatedBy as string} />
+                      {data.updatedBy?<ModTableUserButton uid={data.updatedBy as string} />:<p>-</p>}
                     </Td>
                   </Tr>
                 );

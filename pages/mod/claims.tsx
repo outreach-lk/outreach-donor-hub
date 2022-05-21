@@ -1,5 +1,6 @@
 import { SearchIcon } from "@chakra-ui/icons";
 import {
+ chakra,
   Box,
   Button,
   Heading,
@@ -36,6 +37,7 @@ import { Renderable } from "../../app/types/props/common";
 import { ClaimStatusDropDown } from "../../app/ui/components/elements/claim-status-dropdown";
 import { DashboardLayout } from "../../app/ui/components/layouts/pages/dashboard";
 import ModClaimList from "../../app/ui/components/modules/mod/claims/mod-claims.list.module";
+import { ModClaimsToolbar } from "../../app/ui/components/modules/mod/claims/mod-claims.toolbar.module";
 
 export default function DashboardClaims() {
   const boxBg = useColorModeValue("white", "facebook.800");
@@ -45,6 +47,10 @@ export default function DashboardClaims() {
   const [_campaign, _setCampaign] = useState<string>();
   // value to be used to query data
   const [campaign, setCampaign] = useState<string>();
+    // Temporary placeholder to store the id value as user types
+    const [_id, _setId] = useState<string>();
+    // value to be used to query data
+    const [id, setId] = useState<string>();
     const {user} = useAuth(); 
   const [donationStatus, setDonationStatus] = useState<DonationStatus>(
     DonationStatus.CLAIMED
@@ -133,12 +139,20 @@ export default function DashboardClaims() {
       case DonationStatus.CLAIMED:
         buttons.push(AcknowledgeBtn(data), DisputeBtn(data), RejectBtn(data));
         break;
-      case DonationStatus.ACKNOWLEDGED:
       case DonationStatus.DISPUTED:
+        buttons.push(AcknowledgeBtn(data),RejectBtn(data),UndoBtn(data));
+        break;
+      case DonationStatus.ACKNOWLEDGED:
       case DonationStatus.REJECTED:
         buttons.push(UndoBtn(data));
     }
-    return <>{buttons}</>;
+    if(user?.uid === data.owner){
+      return <>
+        <chakra.small>You cannot modify your own claims</chakra.small>
+      </>
+    }else{
+      return <>{buttons}</>
+    }
   };
 
   /**
@@ -197,43 +211,18 @@ export default function DashboardClaims() {
               <Heading size={"md"}>Donation Claims</Heading>
               <Box p="4">
                 {/* Tools */}
-                <Stack maxW="full" direction={"row"} justify="space-between">
-                  <HStack maxW={"sm"}>
-                    <Heading size={"xs"}>Status</Heading>
-                    <ClaimStatusDropDown
-                      onChange={(v) => setDonationStatus(v)}
-                      current={donationStatus}
-                    />
-                  </HStack>
-                  <HStack minW={"md"}>
-                    {/* Search by Campaign */}
-                    <InputGroup>
-                      <InputRightElement
-                        children={
-                          <IconButton
-                            icon={<SearchIcon />}
-                            color="gray.300"
-                            aria-label={""}
-                            onClick={() => {
-                              console.log(_campaign);
-                              setCampaign(_campaign);
-                            }}
-                          />
-                        }
-                      />
-                      <Input
-                        type="text"
-                        placeholder="Search by Campaign"
-                        onChange={(e) => _setCampaign(e.target.value)}
-                      />
-                    </InputGroup>
-                  </HStack>
-                </Stack>
+                <ModClaimsToolbar 
+                  setCampaign={setCampaign}
+                  setId={setId}
+                  setStatus={(d:DonationStatus)=>setDonationStatus(d)}
+                  status={donationStatus}
+                />
                 <ModClaimList
                   claimType="donation"
                   status={donationStatus}
                   action={getActions}
                   campaign={campaign}
+                  id={id}
                 />
               </Box>
             </Box>
@@ -246,42 +235,18 @@ export default function DashboardClaims() {
             <Box px="6" pt={"6"} bg={boxBg} rounded={"md"}>
               <Heading size={"md"}>Expense Claims</Heading>
               <Box p="4">
-                <Stack maxW="full" direction={"row"} justify="space-between">
-                  <HStack maxW={"sm"}>
-                    <Heading size={"xs"}>Status</Heading>
-                    <ClaimStatusDropDown
-                      onChange={(v) => setExpenseStatus(v)}
-                      current={expenseStatus}
-                    />
-                  </HStack>
-                  <HStack minW={"md"}>
-                    {/* Search by Campaign */}
-                    <InputGroup>
-                      <InputRightElement
-                        children={
-                          <IconButton
-                            icon={<SearchIcon />}
-                            color="gray.300"
-                            aria-label={""}
-                            onClick={() => {
-                              console.log(_campaign);
-                              setCampaign(_campaign);
-                            }}
-                          />
-                        }
-                      />
-                      <Input
-                        type="text"
-                        placeholder="Search by Campaign"
-                        onChange={(e) => _setCampaign(e.target.value)}
-                      />
-                    </InputGroup>
-                  </HStack>
-                </Stack>
+                {/* Tools */}
+                <ModClaimsToolbar 
+                  setCampaign={setCampaign}
+                  setId={setId}
+                  setStatus={(d:ExpenseStatus)=>setExpenseStatus(d)}
+                  status={expenseStatus}
+                />
                 <ModClaimList
                   claimType="expense"
                   status={expenseStatus}
                   action={getActions}
+                  id={id}
                 />
               </Box>
             </Box>

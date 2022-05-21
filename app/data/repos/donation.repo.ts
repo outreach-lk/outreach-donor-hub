@@ -115,6 +115,7 @@ export default class DonationRepo
         try {
           const _cause = await CauseRepo.getRepo().get(data.causeId);
           const cause = new Cause(_cause.data as CauseDto);
+          data.status = DonationStatus.CLAIMED;
           data.sharedWith = [];
           data.sharedWith.push(
             cause.owner as string,
