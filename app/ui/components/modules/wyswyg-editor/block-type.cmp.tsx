@@ -67,7 +67,7 @@ export function BlockTypeSel(props: BlockTypeSelProps) {
             </Flex>
             <FileUploader 
               callback={(file)=>{
-                props.addCallback(BlockType.img,file.path)
+                props.addCallback(BlockType.img,(file as FileDto).path)
               }}
               />
             </Wrap>

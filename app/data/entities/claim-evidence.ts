@@ -18,7 +18,7 @@ export default class ClaimEvidence extends BaseEntity<ClaimEvidence,ClaimEvidenc
 
     // Define properties;
     attachments: FileDto
-    status: ClaimStatus
+    status?: ClaimStatus
     constructor(ClaimEvidenceDto:AuditableClaimEvidenceDto){
         super(ClaimEvidenceRepo.getRepo(),ClaimEvidence.map2Dto);
         this._id = ClaimEvidenceDto.id;
