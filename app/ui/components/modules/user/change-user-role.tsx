@@ -1,16 +1,39 @@
 import { Alert, AlertDescription, AlertIcon, Box, Button, FormControl, FormLabel, Heading, HStack, Input, InputAddon, InputGroup, InputLeftElement, InputRightElement, useColorModeValue } from "@chakra-ui/react";
+import { useState } from "react";
 import { FaUserAstronaut } from "react-icons/fa";
 import { GoInfo, GoMail } from "react-icons/go";
 import User from "../../../../data/entities/user.entity";
+import UserRepo from "../../../../data/repos/user.repo";
 import { useAuth } from "../../../../hooks/auth.hooks";
+import { useFeedback } from "../../../../hooks/feedback.hook";
 import { UserRole } from "../../../../types/dtos/user.dtos";
 
 export default function ChangeUserRole(props:{
     role: UserRole
 }){
     const boxBg = useColorModeValue("white", "facebook.800");
+    const [uid,setUid] = useState<string>()
     const {user} = useAuth();
-    const isAllowed = user?.role === props.role || user?.role === UserRole.ADMIN
+    const {show} = useFeedback();
+    const isAllowed = user?.role === props.role || user?.role === UserRole.ADMIN;
+
+    const handleElevate = () => {
+        if(uid && uid.match('user-')){
+            UserRepo.getRepo().$browserElevateUser(uid,props.role)
+            .then(res=>{
+                show('Changed User Role',{
+                    type:'success'
+                })
+            })
+            .catch(error=>{
+                show(error,{
+                    type:'error'
+                })
+            })
+        }else{
+            show('Provide a valid user id.',{type:'error'})
+        }
+    }
     return (
         <Box px="6" py={"6"} bg={boxBg} rounded={"md"} maxW="md">
             <HStack>
@@ -25,9 +48,9 @@ export default function ChangeUserRole(props:{
             <InputAddon
                 children="User ID"
             />
-            <Input/>
+            <Input onChange={(e)=>setUid(e.target.value)}/>
             </InputGroup>
-            <Button>Submit</Button>
+            <Button onClick={handleElevate}>Submit</Button>
         </HStack>
         <Alert status="warning" size={"sm"}>
             <AlertIcon/>

@@ -3,6 +3,16 @@
     "root": "./api/v1",
     "rpc": {
       "root": "/api/v1/rpc",
+      "user": {
+        "root": "/api/v1/rpc/user",
+        "elevate": {
+          "path": "/api/v1/rpc/user/elevate",
+          "responseType": null,
+          "request": {
+            "body": {}
+          }
+        }
+      },
       "donation": {
         "root": "/api/v1/rpc/donation",
         "ref": {

@@ -15,7 +15,7 @@ import { Page } from "../../types/pagable";
 import BaseRepo from "./base.repo";
 import apiMap from "../../api/api-map.json";
 import { authClientFactory } from "../../api/clients";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 
 /**
@@ -40,9 +40,14 @@ export default class UserRepo extends BaseRepo implements ICRUDREPO<UserDto> {
         const path = apiMap.v1["[entity]"]["[id]"].root
         .replace("[entity]", this.entity)
         .replace("[id]", identifier);
+      
       return (await axios.get(path)).data as EntityFetchedDto<Auditable & UserDto>
       } else {
-        return (this.db as IDatabaseService).find(identifier,this.entity);
+        try{
+          return (this.db as IDatabaseService).find(identifier,this.entity);
+        }catch{
+          throw new Error('Error fetching user')
+        }
       }
   }
   getAll(): Promise<EntityFetchedPageDto<Auditable & UserDto[]>> {
@@ -77,14 +82,46 @@ export default class UserRepo extends BaseRepo implements ICRUDREPO<UserDto> {
     identifier: string,
     data: UserDto
   ): Promise<EntityUpdatedDto<Auditable & UserDto>> {
-    throw new Error("Method not implemented.");
+    if(this.isBrowser){
+      throw new Error("Method not implemented.");
+    }else{
+      return (this.db as IDatabaseService).update(
+        identifier,
+        data,
+        this.entity
+      ).catch(error=>{
+        throw error;
+      })
+    }
   }
   delete(identifier: string): Promise<EntityDeletedDto<Auditable & UserDto>> {
     throw new Error("Method not implemented.");
   }
 
-  async $serverfindUserByEmail(email:string){
-
+  /**
+   * changes a user's role
+   * only to be used by mods and admins
+   * @param uid 
+   * @param role 
+   */
+  async $browserElevateUser(uid:string,targetRole:UserRole): Promise<any>{
+    let path = apiMap.v1.rpc.user.elevate.path;
+    const token = authClientFactory.getClient(AuthProvider.FIREBASE).accessToken
+    try{
+      return (await axios.put(path,{uid,targetRole},{
+        headers:{
+          authorization: `Bearer ${token}`
+        }
+      })).data
+    }catch(error){
+      let message;
+      try{
+        message  = JSON.parse((error as AxiosError).request?.response).error;
+      }catch{
+        message = error
+      }
+      throw message
+    }
   }
 
   /** Returns the repo instance. */
