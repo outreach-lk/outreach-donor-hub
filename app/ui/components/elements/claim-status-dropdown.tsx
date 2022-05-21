@@ -6,7 +6,7 @@ export function ClaimStatusDropDown(props: {
   current: any;
 }) {
   return (
-    <Select placeholder="Select Claim Status" onChange={(e)=>props.onChange(e.target.value)} value={props.current}>
+    <Select size={"sm"} placeholder="Select Claim Status" onChange={(e)=>props.onChange(e.target.value)} value={props.current}>
       <option value="claimed">Claimed (Pending) </option>
       <option value="acknowledged">Acknowledged</option>
       <option value="disputed">Disputed</option>

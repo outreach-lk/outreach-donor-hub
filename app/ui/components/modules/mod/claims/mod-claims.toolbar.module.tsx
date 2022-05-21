@@ -1,6 +1,8 @@
 import { SearchIcon } from "@chakra-ui/icons";
 import {
+  Box,
   Button,
+  Flex,
   Heading,
   HStack,
   IconButton,
@@ -8,6 +10,7 @@ import {
   InputGroup,
   InputRightElement,
   Stack,
+  Wrap,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import {
@@ -25,15 +28,15 @@ export function ModClaimsToolbar(props: {
   const [query, setQuery] = useState<string>();
   const [err, setErr] = useState(false);
   return (
-    <Stack maxW="full" direction={"row"} justify="space-between">
-      <HStack maxW={"sm"}>
+    <Box>
+    <Flex  direction={"row"} justify="space-between">
+      <Stack w={"full"} direction={{base:'column',sm:'row'}} align="baseline" justify={"space-evenly"}>
         <Heading size={"xs"}>Status</Heading>
         <ClaimStatusDropDown
           onChange={(v) => props.setStatus(v)}
           current={props.status}
         />
-      </HStack>
-      <HStack minW={"xl"}>
+        <Wrap>
         {/* Search by Campaign */}
         <Input
           size="sm"
@@ -78,7 +81,9 @@ export function ModClaimsToolbar(props: {
         >
           Clear Search
         </Button>
-      </HStack>
-    </Stack>
+        </Wrap>
+      </Stack>
+    </Flex>
+    </Box>
   );
 }
