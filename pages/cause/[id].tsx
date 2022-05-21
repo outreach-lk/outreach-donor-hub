@@ -38,6 +38,8 @@ export default function CausePage(props: { cause: CauseDto }) {
   const image = cause.attachments.find(
     (file) => file?.path && file.path.match("http")
   );
+  const description = cause.description.at(0)?.rawValue
+  || "Support this donation campaign on Outreach DonorHub."
 
   return (
     <div>
@@ -46,11 +48,12 @@ export default function CausePage(props: { cause: CauseDto }) {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@Outreachlka" />
         <meta name="twitter:title" content={cause.title + "on DonorHub"} />
-        <meta name="twitter:description" content={
-          cause.description.at(0)?.rawValue
-          || "Support this donation campaign on Outreach DonorHub."
-          } />
+        <meta name="twitter:description" content={ description} />
         <meta name="twitter:image" content={image?.path} />
+        <meta name="description" content={ description} />
+        <meta property="og:title" content={cause.title + "on DonorHub"} />
+        <meta property="og:type" content="article" />
+        <meta property="og:image" content={image?.path} />
       </Head>
       <Nav />
       <Container minW={"full"}
