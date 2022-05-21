@@ -20,3 +20,23 @@ export function requestLogger(req: NextApiRequest, res: NextApiResponse, next: C
     console.log(log)
     next();
 }
+
+export function simpleLogger(message:string, data?:any){
+    const current_datetime = new Date();
+    const formatted_date =
+        current_datetime.getFullYear() +
+        "-" +
+        (current_datetime.getMonth() + 1) +
+        "-" +
+        current_datetime.getDate() +
+        " " +
+        current_datetime.getHours() +
+        ":" +
+        current_datetime.getMinutes() +
+        ":" +
+        current_datetime.getSeconds();
+    const log = `[${formatted_date}] ${message}`
+    console.log(log);
+    console.log(data)
+    console.log("***")
+}

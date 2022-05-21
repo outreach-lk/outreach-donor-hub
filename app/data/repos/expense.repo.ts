@@ -38,6 +38,7 @@ import {
 import { ExpenseStatus } from "../../types/enums/status";
 import { authServiceFactory } from "../../api/services";
 import { UserRole } from "../../types/dtos/user.dtos";
+import { simpleLogger } from "../../api/middleware/server-logger";
 
 export default class ExpenseRepo
   extends BaseRepo
@@ -182,7 +183,7 @@ export default class ExpenseRepo
 
         if(expense?.owner === user?.uid){
           // FIXME: should trigger verbose error messages
-          console.log("expense owner cannot update expense status")
+          simpleLogger("expense owner cannot update expense status")
           allowUpdate = false;
         }
       }
@@ -192,7 +193,10 @@ export default class ExpenseRepo
             eventType: ExpenseStatusToEventMapping(data.status),
             message: ExpenseStatusToEventMessageMapping(data),
             topic: data.causeId,
-            payload: data,
+            payload: {
+              before: expense,
+              after: data
+            },
           });
         }
         return (this.db as IDatabaseService).update(

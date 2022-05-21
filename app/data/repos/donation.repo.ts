@@ -38,6 +38,7 @@ import {
 import { DonationStatus } from "../../types/enums/status";
 import { authServiceFactory } from "../../api/services";
 import { UserRole } from "../../types/dtos/user.dtos";
+import { requestLogger, simpleLogger } from "../../api/middleware/server-logger";
 
 export default class DonationRepo
   extends BaseRepo
@@ -181,16 +182,18 @@ export default class DonationRepo
         if (
           donation?.status === DonationStatus.ACKNOWLEDGED
         ) {
-          // FIXME: should trigger verbose error messages
-          console.log(
-            "only campaign maintainers can set donation to acknowledged"
-          );
           allowUpdate = !!(cause?.owner === user?.uid )|| !!(cause?.sharedWith?.includes(user?.uid as string))
+          if(!allowUpdate){
+            // FIXME: should return verbose error messages in the response
+            simpleLogger(
+              "only campaign maintainers can set donation to acknowledged"
+            );
+          }
         }
 
         // do not let the donation owner make any changes to the state
         if (donation?.owner === user?.uid) {
-          console.log("donation owner cannot update");
+          simpleLogger("donation owner cannot update")
           allowUpdate = false;
         }
       }
@@ -200,7 +203,10 @@ export default class DonationRepo
             eventType: donationStatusToEventMapping(data.status),
             message: donationStatusToEventMessageMapping(data),
             topic: data.causeId,
-            payload: data,
+            payload: {
+              before: donation,
+              after: data
+            },
           });
         }
         return (this.db as IDatabaseService).update(

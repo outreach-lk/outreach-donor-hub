@@ -172,6 +172,17 @@ export default class CauseRepo extends BaseRepo implements ICRUDREPO<CauseDto> {
        * additional checks may take place here changing the allowUpdate flag
        * accordingly.
        */
+
+      /**
+       * Perm check 2
+       * allow all updates if curr user is MOD or admin
+       * TODO: may need revision
+       */
+      if (user?.role === UserRole.ADMIN || user?.role === UserRole.MODERATOR) {
+        allowUpdate = true;
+      }
+
+      
       if(allowUpdate){
         return (this.db as IDatabaseService).update(
           identifier,
