@@ -40,34 +40,17 @@ export default function CausePage(props: { cause: CauseDto }) {
   );
 
   return (
-    <>
+    <div>
       <Head>
         <title>{cause.title}</title>
-        {/* Twitter */}
-        <meta
-          name="twitter:card"
-          content={cause.description[0].rawValue}
-          key="twcard"
-        />
-        <meta name="twitter:creator" content={"donorhublk"} key="twhandle" />
-
-        {/* Open Graph */}
-        <meta name="description" content={cause.description[0].rawValue} />
-        <meta name="author" content={"Outreach DonorHub"} />
-        <meta property="og:title" content={cause.title} key="ogtitle" />
-        <meta
-          property="og:description"
-          content={cause.description[0].rawValue}
-          key="ogdesc"
-        />
-        <meta
-          property="og:image"
-          content={
-            image?.path ||
-            "http://localhost:3000/assets/images/cause/cause-default-image.jpg"
-          }
-          key="ogimage"
-        />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@Outreachlka" />
+        <meta name="twitter:title" content={cause.title + "on DonorHub"} />
+        <meta name="twitter:description" content={
+          cause.description.at(0)?.rawValue
+          || "Support this donation campaign on Outreach DonorHub."
+          } />
+        <meta name="twitter:image" content={image?.path} />
       </Head>
       <Nav />
       <Container minW={"full"}
@@ -168,7 +151,7 @@ export default function CausePage(props: { cause: CauseDto }) {
         </EntityPage>
       </Container>
       <Footer />
-    </>
+    </div>
   );
 }
 
