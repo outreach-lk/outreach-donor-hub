@@ -34,11 +34,6 @@ export function UserCard(props: UserDto) {
       >
         <Box py={5} textAlign="center">
           <Avatar
-            src={
-              "https://avatars.dicebear.com/api/adventurer-neutral/" +
-              props.uid +
-              ".svg?mouth=variant02&eyes=variant13"
-            }
             size="lg"
           />
           <Link

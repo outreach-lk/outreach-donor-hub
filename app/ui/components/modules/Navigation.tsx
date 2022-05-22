@@ -110,11 +110,6 @@ export function Nav(props: {
                   >
                     <Avatar
                       size={"md"}
-                      src={
-                        "https://avatars.dicebear.com/api/adventurer-neutral/" +
-                        user.uid +
-                        ".svg?mouth=variant02&eyes=variant13"
-                      }
                     />
                   </MenuButton>
                   <MenuList alignItems={"center"} zIndex="modal">
@@ -122,11 +117,6 @@ export function Nav(props: {
                     <Center>
                       <Avatar
                         size={"2xl"}
-                        src={
-                          "https://avatars.dicebear.com/api/adventurer-neutral/" +
-                          user.uid +
-                          ".svg?mouth=variant02&eyes=variant13"
-                        }
                       />
                     </Center>
                     <br />
