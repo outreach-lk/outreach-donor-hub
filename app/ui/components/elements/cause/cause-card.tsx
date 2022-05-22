@@ -86,9 +86,7 @@ export function CauseCard(props: CauseCardProps) {
             mt={4}
             color={useColorModeValue("gray.600", "gray.400")}
             maxH="xs"
-            overflow={"clip"}
-            textOverflow={"ellipsis"}
-            whiteSpace={"normal"}
+            overflow={"hidden"}
           >
             <RichTextEditor
               blocklist={data.description.slice(0, 2)}

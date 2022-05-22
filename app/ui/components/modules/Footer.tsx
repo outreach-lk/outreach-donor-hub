@@ -29,7 +29,7 @@ export const Footer = () => (
     bgPos={"center"}
     bgBlendMode="soft-light"
     style={{
-      backgroundImage:"url('/assets/images/svgs/v911-a-01-b.svg')"
+      backgroundImage:useColorModeValue("url('/assets/images/svgs/v911-a-01-b.svg')","none")
     }}
   >
     <Stack>
@@ -45,7 +45,7 @@ export const Footer = () => (
           align="center"
         >
           <Wrap align={"center"}>
-            <Logo /> <Heading size="lg">DonorHub</Heading>
+            <Logo width={"10em"} withTitle={true} isCenterd={true}/>
           </Wrap>
           <SocialMediaLinks />
         </Stack>

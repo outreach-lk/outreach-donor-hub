@@ -49,7 +49,7 @@ export function DashboardLayout(props: PropsWithChildren<any>) {
     >
       <Flex px="4" py="5" align="center">
         <Stack>
-          <Logo withTitle={true} />
+          <Logo withTitle={true} isWhite={useColorModeValue(false,true)}/>
           <Text fontSize="sm" ml="2" color={useColorModeValue("linkedin.800","white")} fontWeight="semibold">
             Moderator Mode
           </Text>

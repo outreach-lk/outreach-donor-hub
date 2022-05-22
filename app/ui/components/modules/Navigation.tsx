@@ -18,6 +18,8 @@ import {
   InputGroup,
   InputLeftElement,
   Input,
+  HStack,
+  Text,
 } from "@chakra-ui/react";
 import NxtLink from "next/link";
 import { HamburgerIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
@@ -25,7 +27,7 @@ import { Logo } from "../elements/branding/Logo";
 import { useAuth } from "../../../hooks/auth.hooks";
 import { FiSearch } from "react-icons/fi";
 import { UserRole } from "../../../types/dtos/user.dtos";
-import { GoDashboard } from "react-icons/go";
+import { GoDashboard, GoSignOut } from "react-icons/go";
 
 export function Nav(props: {
   dashboardMode?: boolean;
@@ -38,9 +40,24 @@ export function Nav(props: {
   };
   return (
     <>
-      <Box bg={useColorModeValue("white", "gray.900")} px={4} shadow="md">
+      <Box
+        bg={useColorModeValue("linkedin.600", props.dashboardMode?"gray.800":"linkedin.900")}
+        px={{base:"10",sm:"20"}}
+        py="2"
+        shadow="md"
+      >
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
-          {!props.dashboardMode && (
+          <HStack>
+          {props.dashboardMode && (
+                <Button
+                  onClick={props.drawerToggle}
+                  display={{ base: "flex", sm: "none" }}
+                  size="xs"
+                >
+                  <HamburgerIcon />
+                </Button>
+              )}
+          {true && (
             <NxtLink
               href={{
                 pathname: "/cause/list",
@@ -48,38 +65,39 @@ export function Nav(props: {
               passHref
             >
               <Wrap as="a" align={"center"} spacing="20px">
-                <Logo withTitle={true} />
+                <Logo 
+                  withTitle={true} 
+                  isWhite={true} 
+                  titleInline={true} />
               </Wrap>
             </NxtLink>
           )}
-          {props.dashboardMode && (
-            <InputGroup w="96" display={{ base: "none", md: "flex" }}>
-              <InputLeftElement color="gray.500">
+          </HStack>
+          {false && (
+            <InputGroup w="96" display={{ base: "none", md: "flex" }} >
+              <InputLeftElement color="white">
                 <FiSearch />
               </InputLeftElement>
-              <Input placeholder="Search DonorHub" />
+              <Input placeholder="Search DonorHub" color={"white"} />
             </InputGroup>
           )}
 
+          <Flex>
+          </Flex>
+
           <Flex alignItems={"center"}>
-            <Stack direction={"row"} spacing={7}>
+            <Stack direction={"row"} spacing={7} align="center">
               {isAuthorized && !props.dashboardMode && (
                 <NxtLink href={"/cause/new"} passHref>
                   <Button
                     display={{ base: "none", sm: "flex" }}
                     as="a"
-                    colorScheme={"blue"}
+                    colorScheme={"facebook"}
                   >
                     Create Campaign
                   </Button>
                 </NxtLink>
               )}
-             {props.dashboardMode && <Button onClick={props.drawerToggle} display={{base:'block',sm:'none'}}>
-                <HamburgerIcon/>
-              </Button>}
-               <Button onClick={toggleColorMode} >
-                {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
-              </Button>
 
               {isAuthorized ? (
                 <Menu>
@@ -91,7 +109,7 @@ export function Nav(props: {
                     minW={0}
                   >
                     <Avatar
-                      size={"sm"}
+                      size={"md"}
                       src={
                         "https://avatars.dicebear.com/api/adventurer-neutral/" +
                         user.uid +
@@ -117,26 +135,58 @@ export function Nav(props: {
                     </Center>
                     <br />
                     <MenuDivider />
-                    {(user.role === UserRole.ADMIN || user.role === UserRole.MODERATOR) &&
-                    <NxtLink href={"/mod/dashboard"} passHref>
-                    <MenuItem icon={<GoDashboard/>} as="a">Dashboard</MenuItem>
-                  </NxtLink>    
-                    }
+                    {(user.role === UserRole.ADMIN ||
+                      user.role === UserRole.MODERATOR) && (
+                        <>
+                      <NxtLink href={"/mod/dashboard"} passHref>
+                        <MenuItem icon={<GoDashboard />} as="a">
+                          Moderator Mode
+                        </MenuItem>
+                      </NxtLink>
+                      <MenuDivider/>
+                        </>
+                    )}
                     <NxtLink href={"/cause/new"} passHref>
                       <MenuItem as="a">Create Campaign</MenuItem>
                     </NxtLink>
                     <NxtLink href={"/me/campaigns"} passHref>
                       <MenuItem as="a">My Campaigns</MenuItem>
                     </NxtLink>
-                    <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                    <MenuDivider/>
+                    <MenuItem icon={<GoSignOut/>} onClick={handleLogout}>Logout</MenuItem>
+                    <MenuDivider />
+                    <MenuItem onClick={toggleColorMode}>
+                      {colorMode === "light" ? 
+                      <HStack>
+                        <MoonIcon /> 
+                        <Text>
+                        Switch to Dark Mode
+                        </Text>
+                      </HStack>
+                       : 
+                        <HStack>
+                          <SunIcon />
+                          <Text>
+                          Switch to Light Mode
+                          </Text>
+                        </HStack>
+                       }
+                      
+                    </MenuItem>
                   </MenuList>
                 </Menu>
               ) : (
+                <>
                 <NxtLink href="/auth/sign-in" passHref>
                   <Button as="a" colorScheme={"blue"}>
                     Sign In
                   </Button>
                 </NxtLink>
+                <Button onClick={toggleColorMode}>
+                    {colorMode === "light"? <MoonIcon/> : <SunIcon/>}
+                  </Button>
+                </>
+
               )}
             </Stack>
           </Flex>
