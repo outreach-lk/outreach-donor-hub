@@ -110,9 +110,7 @@ export const Footer = () => (
           <a href="https://www.freepik.com/vectors/monotone">
             Monotone vector created by rawpixel.com - www.freepik.com
           </a>
-          <a href="https://www.freepik.com/vectors/monotone">
-            Monotone vector created by rawpixel.com - www.freepik.com
-          </a>
+          <a href='https://www.freepik.com/vectors/modern-logo'>Modern logo vector created by andi asmara - www.freepik.com</a>
           <Heading size="xs">Image Copyright Disclaimer</Heading>
           <Text>
             If user submitted images violate your copyrights or privacy, inform us <Link>here</Link>.
