@@ -1,4 +1,5 @@
 import {
+  Badge,
   chakra,
   Heading,
   HStack,
@@ -48,7 +49,7 @@ export const Logo = (
               : useColorModeValue("blue.800", "blue.500")
           }
         >
-          {title}
+          {title} <Badge>Beta</Badge>
         </Heading>
         
       )}
