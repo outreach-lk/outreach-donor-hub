@@ -6,5 +6,6 @@ export const Copyright = (props: TextProps) => (
   <Text fontSize="sm" {...props}>
     {/* TODO: find an appropriate copyright message */}
     &copy; {new Date().getFullYear()} Outreach {getConfig().title}, Outreach.lk.
+    <br/>
   </Text>
 );
