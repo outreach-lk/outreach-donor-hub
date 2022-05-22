@@ -36,7 +36,7 @@ async redirects() {
     },
     {
       source: '/mod/dashboard',
-      destination: '/cause/campaigns',
+      destination: '/mod/campaigns',
       permanent: true,
     },
   ]
