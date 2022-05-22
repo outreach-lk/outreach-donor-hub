@@ -34,6 +34,11 @@ async redirects() {
       destination: '/cause/list',
       permanent: true,
     },
+    {
+      source: '/mod/dashboard',
+      destination: '/cause/campaigns',
+      permanent: true,
+    },
   ]
 },
 };

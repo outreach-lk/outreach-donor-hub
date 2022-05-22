@@ -62,7 +62,7 @@ export function DashboardLayout(props: PropsWithChildren<any>) {
         color={useColorModeValue("gray.600","white")}
         aria-label="Main Navigation"
       >
-        <NavItem route="dashboard" icon={MdHome}>Home</NavItem>
+        {/* <NavItem route="dashboard" icon={MdHome}>Home</NavItem> */}
         <NavItem route="campaigns" icon={FaDonate}>Campaigns</NavItem>
         <NavItem route="claims" icon={HiCollection}>Claims</NavItem>
         {/* <NavItem route="disputes" icon={FaExclamationCircle}>Disputes</NavItem> */}
