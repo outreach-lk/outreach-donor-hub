@@ -31,7 +31,7 @@ const Signup: NextPage = () => (
       <Stack spacing="8">
         <Stack spacing="6">
           <HStack justify={"center"}>
-            <Logo withTitle={true}/>
+            <Logo withTitle={true} isCenterd={true}/>
           </HStack>
           <Stack spacing={{ base: "2", md: "3" }} textAlign="center">
             <Heading size={useBreakpointValue({ base: "xs", md: "sm" })}>

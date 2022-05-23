@@ -26,6 +26,7 @@ import { Logo } from "../../elements/branding/Logo";
 import { Nav } from "../../modules/Navigation";
 import { GoChecklist } from "react-icons/go";
 import { NavItem } from "../../elements/dashboard/nav-item";
+import { getConfig } from "../../../../config";
 
 export function DashboardLayout(props: PropsWithChildren<any>) {
   const sidebar = useDisclosure();
@@ -68,6 +69,7 @@ export function DashboardLayout(props: PropsWithChildren<any>) {
         {/* <NavItem route="disputes" icon={FaExclamationCircle}>Disputes</NavItem> */}
         <NavItem route="users" icon={FaUsers}>Users</NavItem>
         <NavItem route="settings" icon={BsGearFill}>Settings</NavItem>
+
       </Flex>
     </Box>
   );

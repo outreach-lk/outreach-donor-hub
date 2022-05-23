@@ -169,7 +169,7 @@ export function Nav(props: {
               ) : (
                 <>
                   <NxtLink href="/auth/sign-in" passHref>
-                    <Button as="a" colorScheme={"blue"}>
+                    <Button as="a" colorScheme={"facebook"}>
                       Sign In
                     </Button>
                   </NxtLink>
