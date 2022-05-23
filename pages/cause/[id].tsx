@@ -14,6 +14,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { NextPageContext } from "next";
+import { NextSeo } from "next-seo";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -43,18 +44,6 @@ export default function CausePage(props: {
   const { cause } = props;
   return (
     <div>
-      <Head>
-        <title>{cause.title}</title>
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:site" content="@Outreachlka" />
-        <meta name="twitter:title" content={props.og.title} />
-        <meta name="twitter:description" content={props.og.description} />
-        <meta name="twitter:image" content={props.og.image} />
-        <meta name="description" content={props.og.description} />
-        <meta property="og:title" content={props.og.title} />
-        <meta property="og:type" content="article" />
-        <meta property="og:image" content={props.og.image} />
-      </Head>
       <Nav />
       <Container minW={"full"}
        bg={useColorModeValue("gray.200", "auto")}
@@ -162,13 +151,13 @@ export async function getServerSideProps(context: NextPageContext) {
   try {
     const { id } = context.query;
     const { data } = await CauseRepo.getRepo().get(("cause-" + id) as string);
-    console.log(data);
+    const description = data?.description? data.description[0].rawValue: '';
     return {
       props: {
         cause: JSON.parse(JSON.stringify(data)),
         og: {
           title: data?.title,
-          description: data?.title,
+          description,
           image: data?.attachments.find(at=>at?.path)
         }
       },
