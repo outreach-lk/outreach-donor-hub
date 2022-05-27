@@ -8,10 +8,16 @@ import {
   Container,
   Heading,
   HStack,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
   Text,
   Tooltip,
   useColorModeValue,
   VStack,
+  Wrap,
 } from "@chakra-ui/react";
 import { NextPageContext } from "next";
 import { NextSeo } from "next-seo";
@@ -23,6 +29,7 @@ import { IconBase } from "react-icons/lib";
 import Cause from "../../app/data/entities/cause.entity";
 import CauseRepo from "../../app/data/repos/cause.repo";
 import { CauseDto } from "../../app/types/dtos/cause.dtos";
+import { EventType } from "../../app/types/enums/events";
 import { AttachmentCarousel } from "../../app/ui/components/elements/carousel";
 import { CauseActions } from "../../app/ui/components/elements/cause/cause.actions";
 import { CauseStats } from "../../app/ui/components/elements/cause/cause.stats";
@@ -33,21 +40,19 @@ import { Footer } from "../../app/ui/components/modules/Footer";
 import { Nav } from "../../app/ui/components/modules/Navigation";
 import { RichTextEditor } from "../../app/ui/components/modules/wyswyg-editor";
 
-export default function CausePage(props: { 
-  cause: CauseDto
+export default function CausePage(props: {
+  cause: CauseDto;
   og: {
-    title: string,
-    image: string,
-    description: string
-  }
+    title: string;
+    image: string;
+    description: string;
+  };
 }) {
   const { cause } = props;
   return (
     <div>
       <Nav />
-      <Container minW={"full"}
-       bg={useColorModeValue("gray.200", "auto")}
-      >
+      <Container minW={"full"} bg={useColorModeValue("gray.200", "auto")}>
         <EntityPage
           entity="cause"
           id={cause.id as string}
@@ -62,12 +67,14 @@ export default function CausePage(props: {
                   <VStack align={"baseline"}>
                     <Heading marginTop="1">{data.title}</Heading>
                     <EntityVerifiedBanner
-                       isVerified={Boolean(data.isVerified)} 
-                       entity="Campaign" 
-                       tooltip={{
-                         verified: "This campaign has been Verified by DonorHub Mods.",
-                         unverified: "This campaign has not been verified by DonorHub Mods."
-                       }}
+                      isVerified={Boolean(data.isVerified)}
+                      entity="Campaign"
+                      tooltip={{
+                        verified:
+                          "This campaign has been Verified by DonorHub Mods.",
+                        unverified:
+                          "This campaign has not been verified by DonorHub Mods.",
+                      }}
                     />
                   </VStack>
                   <Box
@@ -123,18 +130,48 @@ export default function CausePage(props: {
                     </Box>
                   </Box>
                   {/* Cause Activity */}
-                  <Box
-                    marginTop={{ base: "10", md: "1" }}
-                    display="flex"
-                    flexDirection={{ base: "column", sm: "row" }}
-                    justifyContent="space-between"
-                    flexWrap={"wrap"}
-                  >
-                    <EventTimeline
-                      title="Campaign Activity"
-                      topic={data.id as string}
-                    />
-                  </Box>
+                  <Wrap direction="column">
+                    <Heading>Campaign Activity</Heading>
+                    <Tabs>
+                      <TabList>
+                        <Tab>Milestones</Tab>
+                        <Tab>Donations</Tab>
+                        <Tab>Expenses</Tab>
+                      </TabList>
+                      <TabPanels>
+                        <TabPanel>
+                          <EventTimeline
+                            topic={data.id as string}
+                            events={[
+                              EventType.CAUSE_CREATED,
+                              EventType.CAUSE_VERIFIED,
+                              EventType.CAUSE_MILESTONE_CREATED,
+                            ]}
+                          />
+                        </TabPanel>
+                        <TabPanel>
+                          <EventTimeline
+                            topic={data.id as string}
+                            events={[
+                              EventType.DONATION_CLAIM_CREATED,
+                              EventType.DONATION_CLAIM_ACKNOWLEDGED,
+                              EventType.DONATION_CLAIM_DECLINED,
+                            ]}
+                          />
+                        </TabPanel>
+                        <TabPanel>
+                          <EventTimeline
+                            topic={data.id as string}
+                            events={[
+                              EventType.EXPENSE_CLAIM_CREATED,
+                              EventType.EXPENSE_CLAIM_APPROVED,
+                              EventType.EXPENSE_CLAIM_DECLINED,
+                            ]}
+                          />
+                        </TabPanel>
+                      </TabPanels>
+                    </Tabs>
+                  </Wrap>
                   {/* Similar Causes */}
                 </Container>
               </>
@@ -151,15 +188,15 @@ export async function getServerSideProps(context: NextPageContext) {
   try {
     const { id } = context.query;
     const { data } = await CauseRepo.getRepo().get(("cause-" + id) as string);
-    const description = data?.description? data.description[0].rawValue: '';
+    const description = data?.description ? data.description[0].rawValue : "";
     return {
       props: {
         cause: JSON.parse(JSON.stringify(data)),
         og: {
           title: data?.title,
           description,
-          image: data?.attachments.find(at=>at?.path)
-        }
+          image: data?.attachments.find((at) => at?.path),
+        },
       },
     };
   } catch (error) {

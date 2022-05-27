@@ -70,7 +70,12 @@ export default class FirebaseDatabaseService implements IDatabaseService {
         } else if (!isNaN(Number(_value as string))){
           _value = Number(_value);
         }
-        query = query.where(key, "==", _value);
+        if(value.toString().match("OR")){
+          const values = value.toString().split("OR");
+          query = query.where(key, "in", values)
+        } else {
+          query = query.where(key, "==", _value);
+        }
       });
     }
 

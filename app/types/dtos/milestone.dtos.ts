@@ -10,12 +10,14 @@ import type { EntityCreatedDto } from "./server-message.dtos";
 import type { EntityUpdatedDto } from "./server-message.dtos";
 import type { MilestoneStatus } from "../enums/status";
 import { SerializableBlock } from "../../ui/components/modules/wyswyg-editor";
+import { FileDto } from "./remote-file.dtos";
 
 export type MilestoneDto = Ownable & {
     causeId: string,
     title: string,
     description: SerializableBlock[],
-    status?: MilestoneStatus
+    status?: MilestoneStatus,
+    attachments?: FileDto[]
 }
 
 export type MilestonePage = Pagable<MilestoneDto>

@@ -25,7 +25,7 @@ export function EntityListPage<T>(props: EntityListPageProps) {
     start: 0,
   };
   const [page, setPage] = useState<Page>(props.page || initPage);
-  const [queryChanged,setQueryChanged] = useState(false);
+  const [queryChanged, setQueryChanged] = useState(false);
   const [next, setNext] = useState<Page | null>(null);
   const [prev, setPrev] = useState<Page | null>(null);
   const [pageData, setPageData] = useState<T[]>([]);
@@ -50,12 +50,12 @@ export function EntityListPage<T>(props: EntityListPageProps) {
     fetchEntityPage(page, props.query)
       .then((data) => {
         if (data.data?.data.length) {
-          if(props.replace || queryChanged){
+          if (props.replace || queryChanged) {
             setPageData([...(data.data?.data as T[])]);
-          }else{
+          } else {
             setPageData([...pageData, ...(data.data?.data as T[])]);
           }
-        } else if(queryChanged){
+        } else if (queryChanged) {
           setPageData([]);
         } else {
           setPageData([...pageData]);
@@ -65,20 +65,20 @@ export function EntityListPage<T>(props: EntityListPageProps) {
         setError(error);
       })
       .finally(() => {
-        setIsLoading(false)
+        setIsLoading(false);
         setQueryChanged(false);
       });
   }, [page]);
 
-  useEffect(()=>{
-    if(props.page){
+  useEffect(() => {
+    if (props.page) {
       setPage(props.page);
     }
-  },[props.page])
+  }, [props.page]);
 
-  useEffect(()=>{
+  useEffect(() => {
     setQueryChanged(true);
-  },[props.query])
+  }, [props.query]);
 
   /**
    * sets page to load next page
@@ -91,42 +91,47 @@ export function EntityListPage<T>(props: EntityListPageProps) {
     console.log(_nxtPg);
     setPage(_nxtPg);
   };
-  if(props.raw){
+  if (props.raw) {
     return (
       <>
         {pageData.map((item, i) => {
-              return props.children(item);
-        })}            
+          return props.children(item);
+        })}
       </>
-    )
+    );
   }
   return (
     <>
       {/* Create Entity Control goes here */}
       {/* Child components are responsible for showing the entity items */}
       {!props.isEmbedded && <Nav />}
-      {(isLoading&&props.showFullScreenLoader)&&
-      <FullScreenLoader/>
-      }
-      <Container paddingY={"12"} alignItems="flex-start" minW={props.width || 'auto'}>
-        {(pageData.length)?
-        <>
-          <Flex direction={"column"}>
-            {pageData.map((item, i) => {
-              return <div key={i}>{props.children(item)}</div>;
-            })}
-          </Flex>
-          <Center p="12">
-            {/* Pagination Controls Go here */}
-            <Button isLoading={isLoading} onClick={loadNextPage}>Load More</Button>
-          </Center>
-        </>:
+      <Container alignItems="flex-start" minW={props.width || "auto"}>
+        {pageData.length ? (
           <>
-            {!isLoading&&<NoItemsCallForAction>
-                {props.emptyListScreen}
-              </NoItemsCallForAction>}
+            <Flex direction={"column"}>
+              {pageData.map((item, i) => {
+                return <div key={i}>{props.children(item)}</div>;
+              })}
+            </Flex>
+              {isLoading && props.showFullScreenLoader && 
+                <FullScreenLoader />
+              }
+            <Center p="12">
+              {/* Pagination Controls Go here */}
+              <Button isLoading={isLoading} onClick={loadNextPage}>
+                Load More
+              </Button>
+            </Center>
           </>
-        }
+        ) : (
+          <>
+            {!isLoading && (
+              <NoItemsCallForAction>
+                {props.emptyListScreen}
+              </NoItemsCallForAction>
+            )}
+          </>
+        )}
       </Container>
       {!props.isEmbedded && <Footer />}
     </>

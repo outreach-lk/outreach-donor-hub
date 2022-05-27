@@ -57,7 +57,7 @@ export default function CauseExpenses() {
     <>
       <Nav />
       <Container minW={"full"} p="4" bg={useColorModeValue("gray.200", "auto")}>
-        <Wrap direction={"column"}>
+        <Wrap direction={"column"} mb="12">
           <Heading size={"sm"}>Expenses</Heading>
           <Button
             onClick={() => {

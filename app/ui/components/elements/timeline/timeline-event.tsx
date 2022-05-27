@@ -6,6 +6,7 @@ import {
   Divider,
   Flex,
   Heading,
+  HStack,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -97,7 +98,10 @@ function TimelineEventReadMore(props: {
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>
-          <GoMilestone /> {props.title}{" "}
+          <HStack>
+          <GoMilestone /> 
+          <Heading>{props.title}</Heading>
+          </HStack>
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody>

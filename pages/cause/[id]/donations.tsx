@@ -59,7 +59,7 @@ export default function CauseDonations() {
     <>
       <Nav />
       <Container minW={"full"} p="4" bg={useColorModeValue("gray.200", "auto")}>
-        <Wrap direction={"column"}>
+        <Wrap direction={"column"} mb="12">
           <Heading size={"sm"}>Donations</Heading>
           <Button
             onClick={() => {

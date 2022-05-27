@@ -23,6 +23,8 @@ import causeMilestoneTemplate from "../../../../config/editor-templates/cause-mi
 import { FaClock, FaRegClock } from "react-icons/fa";
 import { useEntity } from "../../../../hooks/entity";
 import { MilestoneStatus } from "../../../../types/enums/status";
+import { FileStorageProvider } from "../../../../types/enums/providers";
+import { FileDto } from "../../../../types/dtos/remote-file.dtos";
 
 interface MilestoneFormProps {
   causeId: string  
@@ -43,6 +45,16 @@ export function MilestoneForm(props: MilestoneFormProps) {
       if(props.init){
           // is editing.
     }else{
+            const _attachments = [
+              ...description.map((block) => {
+                if (block.media?.src) {
+                  return {
+                    provider: FileStorageProvider.FIRESTORAGE,
+                    path: block.media?.src,
+                  } as FileDto;
+                }
+              }),
+            ];
           createEntity<MilestoneDto>({
               causeId: props.causeId,
               description,
