@@ -235,6 +235,28 @@
       "queryScope": "COLLECTION",
       "fields": [
         {
+          "fieldPath": "eventType",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "topic",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "isDeleted",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "createdOn",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "event",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
           "fieldPath": "isDeleted",
           "order": "ASCENDING"
         },
