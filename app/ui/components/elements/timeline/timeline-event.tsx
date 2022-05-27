@@ -42,7 +42,7 @@ export function TimelineEvent(props: AuditableEventDto & {minimized?:boolean}) {
 
   return (
     <>
-      <Stack direction="row" h={{base:'auto', sm:props.minimized?"80px":"120px"}} width={"full"} p={4}
+      <Stack direction="row" h={{base:'auto', sm:props.minimized?"80px":"120px"}} width={"full"} 
         opacity={props.minimized?"0.3":'auto'}
       >
         <Avatar
@@ -51,7 +51,7 @@ export function TimelineEvent(props: AuditableEventDto & {minimized?:boolean}) {
           icon={<TimelineEventIcon type={props.eventType} />}
         />
         <Divider orientation="vertical" />
-      <Box overflow={"clip"}>
+      <Box overflow={"scroll"} pb="12">
           <Box>
             <Heading size={"sm"}>{eventHeadings(props.eventType)}</Heading>
             <Text>

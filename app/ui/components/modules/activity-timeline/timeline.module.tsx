@@ -31,8 +31,8 @@ export function EventTimeline(props: TimelineProps) {
   _map.set("eventType",getMultipleValuesFromArray(props.events))
   const [map,setMap] = useState(_map);
   return (
-    <Box minW={"full"}>
-      <VStack alignItems={"center"}>
+    <Box minW={"full"} >
+      <VStack alignItems={"center"} py="12">
         <EntityListPage
           entity="event"
           query={map}

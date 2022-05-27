@@ -6,6 +6,7 @@ import { CheckCircleIcon } from "@chakra-ui/icons";
 import {
   Box,
   Container,
+  Divider,
   Heading,
   HStack,
   Tab,
@@ -130,7 +131,7 @@ export default function CausePage(props: {
                     </Box>
                   </Box>
                   {/* Cause Activity */}
-                  <Wrap direction="column">
+                  <Wrap direction="column" mt="12" >
                     <Heading>Campaign Activity</Heading>
                     <Tabs>
                       <TabList>
