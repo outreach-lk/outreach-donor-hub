@@ -68,7 +68,7 @@ export class EditorBlock {
           const resizeObserver = new ResizeObserver(() => {
             if (this.tree.menu.current && this.elem) {
               this.tree.menu.current.style.top = `${
-                this.elem.offsetTop + this.tree.menu.current.offsetHeight * 2
+                this.elem.offsetTop + this.tree.menu.current.offsetHeight
               }px`;
             }
           });

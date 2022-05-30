@@ -35,13 +35,13 @@ import { FileStorageProvider } from "../../../../types/enums/providers";
 import { EventTimeline } from "../activity-timeline/timeline.module";
 import Router from "next/router";
 
-export function CauseEditModule() {
+export function CauseEditModule(props: {cause?: CauseDto, callback?: ()=>void}) {
   const { show } = useFeedback();
-  const { createEntity } = useEntity("cause");
+  const { createEntity,updateEntity } = useEntity("cause");
   /**
    * set to true if an existing cause is being edited.
    */
-  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [isEditing, setIsEditing] = useState<boolean>(!!props.cause);
   /**
    * current step of the edit / create process
    */
@@ -61,7 +61,7 @@ export function CauseEditModule() {
   /**
    * a holder to keep the details which will finally be used to create the cause
    */
-  const [data, setData] = useState<CauseDto>({} as CauseDto);
+  const [data, setData] = useState<CauseDto>(props.cause || {} as CauseDto);
   /**
    * intermediate state for submission in progress
    */
@@ -161,38 +161,40 @@ export function CauseEditModule() {
    * the cause for verification
    */
   const onSubmitToVerify = () => {
+    let job: Promise<any>
     setIsSubmitting(true);
-    if (isEditing) {
+    if (isEditing && (data as any)._id) {
+      job = updateEntity((data as any)._id, data);
     } else {
-      createEntity(data)
-        .then((res) => {
-          show("Campaign Created", {
-            type: "success",
-          });
-          setStepStatus();
-          setIsFinish(true);
-          if (res.data?.data?._id) {
-            // gets the uuid from original cause id
-            const prefix = "cause-";
-            const id = (res.data.data._id as string).substring(prefix.length);
-            Router.push({
-              pathname: "/cause/[id]",
-              query: {
-                id,
-              },
-            });
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-          show((error as Error).message || error, {
-            type: "error",
-          });
-        })
-        .finally(() => {
-          setIsSubmitting(false);
-        });
+      job = createEntity(data)
     }
+    job.then((res) => {
+      show(isEditing?"Campaign Updated":"Campaign Created", {
+        type: "success",
+      });
+      setStepStatus();
+      setIsFinish(true);
+      if(props.callback) props.callback();
+      if (res.data?.data?._id) {
+        // gets the uuid from original cause id
+        const prefix = "cause-";
+        const id = (res.data.data._id as string).substring(prefix.length);
+        Router.push({
+          pathname: "/cause/[id]",
+          query: {
+            id,
+          },
+        });
+      }
+    })
+    .catch((error) => {
+      show((error as Error).message || error, {
+        type: "error",
+      });
+    })
+    .finally(() => {
+      setIsSubmitting(false);
+    });
   };
 
   /**

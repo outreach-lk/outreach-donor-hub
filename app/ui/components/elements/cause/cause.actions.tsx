@@ -6,12 +6,20 @@ import {
   Heading,
   Spacer,
   Flex,
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
 } from "@chakra-ui/react";
 import Link from "next/link";
+import { FaEdit } from "react-icons/fa";
+import { GoMilestone } from "react-icons/go";
 import { getConfig } from "../../../../config";
 import Cause from "../../../../data/entities/cause.entity";
 import { useEntity } from "../../../../hooks/entity";
 import { getCauseShareUrl } from "../../../../utils/get-share-url";
+import { CauseEditModule } from "../../modules/cause/cause-edit.module";
 import NewDonationClaimContainer from "../../modules/donation/pre-donation.module";
 import { NewExpenseForm } from "../../modules/expense/new-expense.module";
 import { MilestoneFormModal } from "../../modules/milestone/milestone-form.module";
@@ -40,6 +48,15 @@ export function CauseActions(props: CauseActionProps) {
     onOpen: onExpenseOpen,
     onClose: onExpenseClose,
   } = useDisclosure();
+  const {
+    isOpen: isEditOpen,
+    onOpen: onEditOpen,
+    onClose: onEditClose,
+  } = useDisclosure();
+
+  const onEditCampaignClick = () => {
+    onEditOpen();
+  }
 
   const { appUrl } = getConfig();
   return (
@@ -85,13 +102,21 @@ export function CauseActions(props: CauseActionProps) {
           </Link>
           {canUpdate && (
             <>
-              <Heading size={"sm"}>Edit Campaign</Heading>
+              <Heading size={"sm"}>Manage Campaign</Heading>
               <Button colorScheme={"blue"} onClick={onExpenseOpen}>
                 Add Campaign Expense
               </Button>
-              <Button colorScheme={"blue"} onClick={onMilestoneOpen}>
+              <Button colorScheme={"blue"} onClick={onMilestoneOpen}
+                leftIcon={<GoMilestone/>}
+              >
                 Add Campaign Milestone
               </Button>
+              {!props.cause.isVerified&&
+              <Button colorScheme={"blue"} onClick={onEditCampaignClick}
+                leftIcon={<FaEdit/>}
+              >
+                Edit Campaign Details
+              </Button>}
             </>
           )}
         </Wrap>
@@ -114,6 +139,16 @@ export function CauseActions(props: CauseActionProps) {
         onClose={onExpenseClose}
         forceRefresh={props.forceRefresh}
       />
+      {/* Edit Campaign Modal */}
+      <Modal isOpen={isEditOpen} onClose={onEditClose} size="full" scrollBehavior="inside">
+        <ModalContent>
+          <ModalHeader>Edit Campaign</ModalHeader>
+          <ModalCloseButton/>
+          <ModalBody>
+            <CauseEditModule cause={props.cause} callback={onEditClose}/>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
     </Box>
   );
 }
