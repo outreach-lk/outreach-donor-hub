@@ -13,6 +13,7 @@ import {
   InputGroup,
   InputLeftElement,
   InputRightElement,
+  Stack,
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useState } from "react";
@@ -22,59 +23,59 @@ import User from "../../../../data/entities/user.entity";
 import UserRepo from "../../../../data/repos/user.repo";
 import { useAuth } from "../../../../hooks/auth.hooks";
 import { useFeedback } from "../../../../hooks/feedback.hook";
-import { UserRole } from "../../../../types/dtos/user.dtos";
+import { UserDto, UserRole } from "../../../../types/dtos/user.dtos";
+import { UserCard } from "../../elements/user/user-card";
 
-export default function ChangeUserRole(props: { role: UserRole }) {
+export default function ChangeUserRole(props: {
+  role: UserRole;
+  user: UserDto;
+  callback: () => void;
+}) {
   const boxBg = useColorModeValue("white", "facebook.800");
-  const [uid, setUid] = useState<string>();
+  const uid = "user-" + props.user.uid;
+  const [isLoading, setIsLoading] = useState(false);
   const { user } = useAuth();
   const { show } = useFeedback();
   const isAllowed = user?.role === props.role || user?.role === UserRole.ADMIN;
 
   const handleElevate = () => {
     if (uid && uid.match("user-")) {
+      setIsLoading(true);
       UserRepo.getRepo()
         .$browserElevateUser(uid, props.role)
         .then((res) => {
           show("Changed User Role", {
             type: "success",
-            title: "Elevate User Role",
+            title: "Change User Role",
           });
+          props.callback();
         })
         .catch((error) => {
           show(error, {
             type: "error",
-            title: "Elevate User Role Error",
+            title: "Change User Role Error",
           });
+        })
+        .finally(() => {
+          setIsLoading(false);
         });
     } else {
       show("Provide a valid user id.", {
         type: "error",
-        title: "Elevate User Role Error",
+        title: "Change User Role Error",
       });
     }
   };
   return (
-    <Box px="6" py={"6"} bg={boxBg} rounded={"md"} maxW="md">
-      <HStack>
-        <FaUserAstronaut />
-        <Heading size={"md"}>
-          Elevate to{" "}
-          {props.role
-            .at(0)
-            ?.toUpperCase()
-            .concat(props.role.slice(1).toLowerCase())}
-        </Heading>
-      </HStack>
+    <Box px="6" py={"6"} rounded={"md"} maxW="md">
       {isAllowed ? (
         <>
-          <HStack p="4">
-            <InputGroup>
-              <InputAddon children="User ID" />
-              <Input onChange={(e) => setUid(e.target.value)} />
-            </InputGroup>
-            <Button onClick={handleElevate}>Submit</Button>
-          </HStack>
+          <Stack p="4">
+            <UserCard {...props.user} />
+            <Button onClick={handleElevate} isLoading={isLoading}>
+              Change
+            </Button>
+          </Stack>
           <Alert status="warning" size={"sm"}>
             <AlertIcon />
             <AlertDescription fontSize={"xs"}>

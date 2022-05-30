@@ -16,6 +16,7 @@ export type Props = {
     name: OAuthProviders;
     handler: React.MouseEventHandler<HTMLButtonElement>;
   }[];
+  isLoading?: boolean
 };
 
 /** Maps button click handlers passed through props for each button in the providers list. */
@@ -35,6 +36,7 @@ export const OAuthButtonGroup = (props: Props) => {
           onClick={mapProvider2Handler(name, props.handlers)}
           key={name}
           isFullWidth
+          isLoading={props.isLoading}
         >
           <VisuallyHidden>Sign in with {label}</VisuallyHidden>
           {icon}

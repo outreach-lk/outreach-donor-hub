@@ -24,7 +24,7 @@ export function queryMap2string(map: Map<string, string|number>):string{
 }
 export function getMultipleValuesFromArray(items: any[] | any[] | any):string{
     if(Array.isArray(items)){
-        return items.join("OR");
+        return items.join(" OR ");
     }else{
         return items;
     }

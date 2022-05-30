@@ -16,6 +16,7 @@ import BaseRepo from "./base.repo";
 import apiMap from "../../api/api-map.json";
 import { authClientFactory } from "../../api/clients";
 import axios, { AxiosError } from "axios";
+import { queryMap2string } from "../../utils/parse-querystring";
 
 
 /**
@@ -53,10 +54,32 @@ export default class UserRepo extends BaseRepo implements ICRUDREPO<UserDto> {
   getAll(): Promise<EntityFetchedPageDto<Auditable & UserDto[]>> {
     throw new Error("Method not implemented.");
   }
-  getPage(
-    page: Page
+  async getPage(
+    page: Page,
+    queryMap?: Map<string, string | number>
   ): Promise<EntityFetchedPageDto<Auditable & UserDto>> {
-    throw new Error("Method not implemented.");
+      if(this.isBrowser){
+        let path = apiMap.v1["[entity]"].root
+        .replace("[entity]", this.entity)
+        .concat("?", "limit=", page.limit.toString());
+      if (page.start) {
+        path = path.concat("&from=", String(page.start));
+      }
+      if (queryMap) {
+        path = path.concat("&query=", queryMap2string(queryMap));
+      }
+      try {
+        return (await axios.get(path, {})).data.data;
+      } catch (error) {
+        throw error;
+      }
+      }else{
+        return (this.db as IDatabaseService).findPage(
+          page,
+          this.entity,
+          queryMap
+        );
+      }
   }
   /**
    * Creates a user on the database through direct client request.

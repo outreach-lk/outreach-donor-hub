@@ -18,7 +18,7 @@ import { EntityVerifiedBanner } from "../entity-verified-banner";
 export function UserCard(props: UserDto) {
   return (
     <Flex
-      bg={useColorModeValue("#F9FAFB", "gray.600")}
+      bg={useColorModeValue("#F9FAFB", "auto")}
       p={4}
       w="full"
       alignItems="center"
@@ -26,19 +26,20 @@ export function UserCard(props: UserDto) {
     >
       <Box
         w="xs"
-        bg={useColorModeValue("white", "gray.800")}
+        bg={useColorModeValue("white", "linkedin.800")}
         shadow="lg"
         rounded="lg"
         overflow="hidden"
         mx="auto"
       >
         <Box py={5} textAlign="center">
-          <Avatar
-            size="lg"
-          />
+          <Avatar size="lg" />
+          <chakra.div>
+            <Badge>{props.role}</Badge>
+          </chakra.div>
           <Link
             display="block"
-            fontSize="2xl"
+            fontSize="md"
             color={useColorModeValue("gray.800", "white")}
             fontWeight="bold"
           >
@@ -50,16 +51,17 @@ export function UserCard(props: UserDto) {
           >
             {props.email}
           </chakra.span>
-            <Center>
+
+          <Center>
             <EntityVerifiedBanner
-                entity="user"
-                isVerified={props.isVerifiedUser}
-                tooltip={{
-                    unverified: "User has not completed the KYC verification",
-                    verified: "Verified User"
-                }}
+              entity="user"
+              isVerified={props.isVerifiedUser}
+              tooltip={{
+                unverified: "User has not completed the KYC verification",
+                verified: "Verified User",
+              }}
             />
-            </Center>
+          </Center>
         </Box>
       </Box>
     </Flex>

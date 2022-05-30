@@ -27,7 +27,7 @@ export function useAuth(){
         client: {
             accessToken: client.accessToken,
             signInWithEmail: (email: string, password: string, persist?: boolean) => {
-                client.signInWithEmail(email, password, persist)
+                return client.signInWithEmail(email, password, persist)
                 .then( session => {
                     setSession({
                         ...session,
@@ -40,7 +40,7 @@ export function useAuth(){
                 }));
             },
             signInWithGoogle: () => {
-                client.signInWithGoogle()
+                return client.signInWithGoogle()
                 .then( session => {
                     setSession({
                         ...session,

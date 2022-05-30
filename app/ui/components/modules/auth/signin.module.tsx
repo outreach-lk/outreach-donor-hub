@@ -27,6 +27,7 @@ import {
 import { PasswordField } from "../../elements/auth/PasswordField";
 
 export const SignInCard = () => {
+  const [isLoading,setIsLoading] = React.useState(false);
   const { client } = useAuth();
   const { signInWithEmail, signInWithGoogle } = client;
 
@@ -36,11 +37,13 @@ export const SignInCard = () => {
    */
   const handleSignInWithEmail: React.FormEventHandler = (e) => {
     e.preventDefault();
+    setIsLoading(true);
     const target = {
       email: (e.target as any).email.value as string,
       password: (e.target as any).password.value as string,
     };
-    signInWithEmail(target.email, target.password);
+    signInWithEmail(target.email, target.password)
+    .finally(()=>setIsLoading(false))
   };
 
   /**
@@ -51,7 +54,9 @@ export const SignInCard = () => {
     e
   ) => {
     e.preventDefault();
-    signInWithGoogle();
+    setIsLoading(true);
+    signInWithGoogle()
+    .finally(()=>setIsLoading(false))
   };
 
   /**
@@ -84,7 +89,10 @@ export const SignInCard = () => {
               Continue with
             </Text>
           </HStack>
-          <OAuthButtonGroup handlers={oAuthBtnGroupProps.handlers} />
+          <OAuthButtonGroup 
+            handlers={oAuthBtnGroupProps.handlers} 
+            isLoading={isLoading}
+          />
           <HStack>
           <Divider />
           <Text fontSize="sm" whiteSpace="nowrap">Or use your email</Text>
@@ -116,6 +124,7 @@ export const SignInCard = () => {
               }}
               type="submit"
               variant="primary"
+              isLoading={isLoading}
             >
               Sign in
             </Button>
