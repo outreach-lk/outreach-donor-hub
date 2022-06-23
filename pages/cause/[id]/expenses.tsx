@@ -71,7 +71,7 @@ export default function CauseExpenses() {
           entity="expense"
           query={map}
           isEmbedded={true}
-          showFullScreenLoader={true}
+          showFullScreenLoader={false}
           emptyListScreen={
             <Box>
               <Heading>No Expenses, Yet!</Heading>

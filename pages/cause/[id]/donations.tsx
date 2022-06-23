@@ -73,7 +73,7 @@ export default function CauseDonations() {
           entity="donation"
           query={map}
           isEmbedded={true}
-          showFullScreenLoader={true}
+          showFullScreenLoader={false}
           emptyListScreen={
             <Box>
               <Heading>No Donations, Yet!</Heading>

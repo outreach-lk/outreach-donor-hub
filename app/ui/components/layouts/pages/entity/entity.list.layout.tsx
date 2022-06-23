@@ -102,36 +102,26 @@ export function EntityListPage<T>(props: EntityListPageProps) {
   }
   return (
     <>
-      {/* Create Entity Control goes here */}
-      {/* Child components are responsible for showing the entity items */}
       {!props.isEmbedded && <Nav />}
       <Container alignItems="flex-start" minW={props.width || "auto"}>
-        {pageData.length ? (
+        {/* Show full screen loader */}
+        {(isLoading && !pageData.length) && <FullScreenLoader/>}
+        {pageData.length && 
           <>
-            <Flex direction={"column"}>
-              {pageData.map((item, i) => {
-                return <div key={i}>{props.children(item)}</div>;
-              })}
-            </Flex>
-              {isLoading && props.showFullScreenLoader && 
-                <FullScreenLoader />
-              }
-            <Center p="12">
-              {/* Pagination Controls Go here */}
-              <Button isLoading={isLoading} onClick={loadNextPage}>
-                Load More
-              </Button>
-            </Center>
-          </>
-        ) : (
-          <>
-            {!isLoading && (
-              <NoItemsCallForAction>
-                {props.emptyListScreen}
-              </NoItemsCallForAction>
-            )}
-          </>
-        )}
+          <Flex direction={"column"}>
+            {pageData.map((item, i) => {
+              return <div key={i}>{props.children(item)}</div>;
+            })}
+          </Flex>
+          {isLoading && props.showFullScreenLoader && <FullScreenLoader/>}
+          <Center p="12">
+            {/* Pagination Controls Go here */}
+            <Button isLoading={isLoading} onClick={loadNextPage}>
+              Load More
+            </Button>
+          </Center>
+        </>
+        }
       </Container>
       {!props.isEmbedded && <Footer />}
     </>
