@@ -53,14 +53,14 @@ export function TimelineEvent(props: AuditableEventDto & {minimized?:boolean}) {
         <Divider orientation="vertical" />
       <Box overflow={"scroll"} pb="12">
           <Box>
-            <Heading size={"sm"}>{eventHeadings(props.eventType)}</Heading>
+            <Heading size={"sm"}>{props.message}</Heading>
             <Text>
               {getDateFromFirebaseDateTimeObject(
                 props.createdOn as any
               )?.toLocaleDateString()}
             </Text>
             <Text>
-              {props.message + " "}
+              {eventHeadings(props.eventType) + " "}
               {shouldShowRichTextEditor && (
                 <>
                   <Button

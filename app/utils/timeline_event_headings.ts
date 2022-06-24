@@ -9,7 +9,7 @@ export function eventHeadings(event: EventType):string{
         case EventType.CAUSE_DECLINED:
             return 'Campaign Declined by Mods';
         case EventType.CAUSE_MILESTONE_CREATED:
-            return 'Reached Campaign Milestone 🎊';
+            return 'Campaign Milestone';
         case EventType.CAUSE_QUEUED:
             return 'Campaign Queued for Mod Verification';
         case EventType.CAUSE_VERIFIED:
