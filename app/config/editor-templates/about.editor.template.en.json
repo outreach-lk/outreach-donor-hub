@@ -1,0 +1,166 @@
+{
+  "id": "a27f3ddb-9983-4c38-8aa0-30a46625713f",
+  "blocks": [
+    {
+      "id": "1cc761b4-aca5-4d89-ac4a-cfefb3bbf326",
+      "type": "img",
+      "rawValue": "",
+      "blockAlignment": "left",
+      "media": { "src": "assets/images/about/about.dh.png" },
+      "nextBlockId": "308746ac-5e15-4a52-a740-3bb6a625308f"
+    },
+    {
+      "id": "308746ac-5e15-4a52-a740-3bb6a625308f",
+      "type": "h1",
+      "rawValue": "Donorhub: Open Crowd Funding",
+      "blockAlignment": "left",
+      "nextBlockId": "d9b0afe5-eb19-4e68-8c06-742c8a8c04ec"
+    },
+    {
+      "id": "d9b0afe5-eb19-4e68-8c06-742c8a8c04ec",
+      "type": "p",
+      "rawValue": "Donorhub by Outreach is an open crowd funding platform built with an aim to help individuals and organizations raising funds to support common causes with providing crowd sourced verification and tools to manage inward donations and expenses.",
+      "blockAlignment": "left",
+      "nextBlockId": "ce26e86d-49cd-44fa-91ae-4b6a071c77ae"
+    },
+    {
+      "id": "ce26e86d-49cd-44fa-91ae-4b6a071c77ae",
+      "type": "p",
+      "rawValue": "This ensures that fundraising activities are credible and transparent to all stakeholders including but not limited to prospective donors, campaign managers and beneficiaries.",
+      "blockAlignment": "left",
+      "nextBlockId": "96988769-1ecc-47cb-a91b-16d170b6894f"
+    },
+    {
+      "id": "96988769-1ecc-47cb-a91b-16d170b6894f",
+      "type": "p",
+      "rawValue": "Donorhub is a completely free and open source project run by volunteers.",
+      "blockAlignment": "left",
+      "nextBlockId": "f48f95cc-3315-4c97-9cb3-b90e74b9cc88"
+    },
+    {
+      "id": "f48f95cc-3315-4c97-9cb3-b90e74b9cc88",
+      "type": "h2",
+      "rawValue": "Campaign Verification",
+      "blockAlignment": "left",
+      "nextBlockId": "a948a7bf-2840-425d-a0f7-d74ca01251a9"
+    },
+    {
+      "id": "a948a7bf-2840-425d-a0f7-d74ca01251a9",
+      "type": "p",
+      "rawValue": "Genuine fundraising campaigns can easily be lost among a plethora of scams run by individuals or groups who have selfish and lucrative motives rather than helping actual people / animals or any cause that they claim to be representing. One of the key motivations behind building Donorhub has been with providing some form of credibility to actual and honest donation campaigns by running them through a process of human verification. ",
+      "blockAlignment": "left",
+      "nextBlockId": "171cefa5-3cdd-4293-9916-d0f3b9fd5318"
+    },
+    {
+      "id": "171cefa5-3cdd-4293-9916-d0f3b9fd5318",
+      "type": "p",
+      "rawValue": "Campaigns created on Donorhub will be run through the said process by volunteering moderators to assure the claims in the campaign as provided by its creator are in fact true. This process may involve volunteers from the same region reaching out to the creator and/or the potential beneficiaries of the campaign over phone or any other medium of convenience as well taking any other intuitive measures as deemed fit by the mods to ensure the campaign represents a real cause that warrants raising public funds.",
+      "blockAlignment": "left",
+      "nextBlockId": "92f25893-ab94-4a3d-ae12-6d57aa014092"
+    },
+    {
+      "id": "92f25893-ab94-4a3d-ae12-6d57aa014092",
+      "type": "p",
+      "rawValue": "Once run through it and affirmed, the campaign will be marked as verified and listed on the site, from where it can be shared among the masses, and donors, act.",
+      "blockAlignment": "left",
+      "nextBlockId": "cedc77a7-7a57-4689-8345-a719e12b158d"
+    },
+    {
+      "id": "cedc77a7-7a57-4689-8345-a719e12b158d",
+      "type": "h2",
+      "rawValue": "Donation Management",
+      "blockAlignment": "left",
+      "nextBlockId": "dff390c7-d34b-4c38-8d92-02880bdeacad"
+    },
+    {
+      "id": "dff390c7-d34b-4c38-8d92-02880bdeacad",
+      "type": "p",
+      "rawValue": "some text here",
+      "blockAlignment": "left",
+      "nextBlockId": "8ba45ff4-ba42-4350-bd7c-05c416413d89"
+    },
+    {
+      "id": "8ba45ff4-ba42-4350-bd7c-05c416413d89",
+      "type": "h2",
+      "rawValue": "Expense Management",
+      "blockAlignment": "left",
+      "nextBlockId": "23cd32a5-5f44-4bec-af85-e484b55c0c73"
+    },
+    {
+      "id": "23cd32a5-5f44-4bec-af85-e484b55c0c73",
+      "type": "p",
+      "rawValue": "some text here",
+      "blockAlignment": "left",
+      "nextBlockId": "c9850186-29b3-4b0f-abfe-a80ab84bb4e6"
+    },
+    {
+      "id": "c9850186-29b3-4b0f-abfe-a80ab84bb4e6",
+      "type": "h2",
+      "rawValue": "Campaign Milestones",
+      "blockAlignment": "left",
+      "nextBlockId": "3bd4e8f8-c353-490c-9a88-1aaade9806ba"
+    },
+    {
+      "id": "3bd4e8f8-c353-490c-9a88-1aaade9806ba",
+      "type": "p",
+      "rawValue": "some text here",
+      "blockAlignment": "left",
+      "nextBlockId": "95619655-e209-4482-9922-1bfcbd936ac5"
+    },
+    {
+      "id": "95619655-e209-4482-9922-1bfcbd936ac5",
+      "type": "h1",
+      "rawValue": "",
+      "blockAlignment": "left",
+      "nextBlockId": "d5372fb3-f68a-4412-85d5-e769a35ea446"
+    },
+    {
+      "id": "d5372fb3-f68a-4412-85d5-e769a35ea446",
+      "type": "p",
+      "rawValue": "",
+      "blockAlignment": "left",
+      "nextBlockId": "e941ee91-38d5-4151-ba8d-07b6aa70ccb6"
+    },
+    {
+      "id": "e941ee91-38d5-4151-ba8d-07b6aa70ccb6",
+      "type": "a",
+      "rawValue": "See help for more",
+      "blockAlignment": "left",
+      "nextBlockId": "4faf8a26-b165-4322-9956-785e504c412d"
+    },
+    {
+      "id": "4faf8a26-b165-4322-9956-785e504c412d",
+      "type": "h1",
+      "rawValue": "Sri Lanka 🇱🇰 : A Dystopian Tale in Paradise",
+      "blockAlignment": "left",
+      "nextBlockId": "26726e1c-24aa-49b7-ba84-356b30d6131e"
+    },
+    {
+      "id": "26726e1c-24aa-49b7-ba84-356b30d6131e",
+      "type": "p",
+      "rawValue": "some text here",
+      "blockAlignment": "left",
+      "nextBlockId": "cde7d16e-24a8-4967-b069-356f01c68c8b"
+    },
+    {
+      "id": "cde7d16e-24a8-4967-b069-356f01c68c8b",
+      "type": "p",
+      "rawValue": "",
+      "blockAlignment": "left",
+      "nextBlockId": "e761c910-d16d-4da1-a5e5-69b58142e706"
+    },
+    {
+      "id": "e761c910-d16d-4da1-a5e5-69b58142e706",
+      "type": "h1",
+      "rawValue": "Outreach",
+      "blockAlignment": "left",
+      "nextBlockId": "4fb4e371-4f2e-41b3-8a15-fb4e958f9066"
+    },
+    {
+      "id": "4fb4e371-4f2e-41b3-8a15-fb4e958f9066",
+      "type": "p",
+      "rawValue": "some text here",
+      "blockAlignment": "left"
+    }
+  ]
+}

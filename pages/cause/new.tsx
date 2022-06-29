@@ -29,7 +29,10 @@ export default function NewCausePage() {
       <Container maxW={"full"} py="4">
       <Breadcrumb>
           <BreadcrumbItem paddingBottom={"4"}>
-            <BreadcrumbLink href="/cause">Campaigns</BreadcrumbLink>
+            <BreadcrumbLink href="/">Home</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbItem paddingBottom={"4"}>
+            <BreadcrumbLink href="/cause/list">Campaigns</BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbItem isCurrentPage>
             <BreadcrumbLink>New Campaign</BreadcrumbLink>

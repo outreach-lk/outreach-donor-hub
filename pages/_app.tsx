@@ -9,7 +9,6 @@ import '../app/ui/components/modules/wyswyg-editor/wysiwyg-editor.css'
 import '../app/ui/styles/globals.css'
 
 function MyApp({ Component, pageProps }: AppProps) {
-  console.log(pageProps);
   const title = pageProps.og?.title || 'DonorHub';
   const description = pageProps.og?.description || 'Outreach DonorHub: Accountable Zero Cost Donation Management.';
   const image = pageProps.og?.image?.path || getConfig().appUrl + '/assets/images/cause/cause-default-image.jpg'

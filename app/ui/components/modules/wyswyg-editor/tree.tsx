@@ -104,6 +104,7 @@ export class EditorTree {
     let href: string | null;
     const _block = block || new EditorBlock(type, null, this);
     _block.isLocked = this.readOnly;
+    _block.hideMenu = this.readOnly;  
     switch (_block.type) {
       default:
       case "p":
@@ -133,7 +134,11 @@ export class EditorTree {
       case "a":
         _elem = document.createElement("a");
         _elem.classList.add("block", "editor-a");
-        href = prompt("URL");
+        if(!block){
+          href = prompt("URL");
+        }else{
+          href = block.rawValue // FIXME: use a new block::href value
+        }
         if(href){
           (_elem as HTMLAnchorElement).href = href || "";
           (_elem as HTMLAnchorElement).target = "_blank";

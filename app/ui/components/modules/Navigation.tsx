@@ -20,6 +20,8 @@ import {
   Input,
   HStack,
   Text,
+  Link,
+  LinkBox,
 } from "@chakra-ui/react";
 import NxtLink from "next/link";
 import { HamburgerIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
@@ -51,7 +53,7 @@ export function Nav(props: {
         shadow="md"
       >
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
-          <HStack>
+          <HStack spacing={4}>
             {props.dashboardMode && (
               <Button
                 onClick={props.drawerToggle}
@@ -64,7 +66,7 @@ export function Nav(props: {
             {!props.dashboardMode && (
               <NxtLink
                 href={{
-                  pathname: "/cause/list",
+                  pathname: "/",
                 }}
                 passHref
               >
@@ -74,6 +76,30 @@ export function Nav(props: {
               </NxtLink>
             )}
           </HStack>
+            {!props.dashboardMode&& 
+              <HStack display={{ base: "none", md: "flex" }}>
+                <NxtLink href={"/"} passHref>
+                  <Link textColor={"white"} fontWeight="black">
+                    Home
+                  </Link>
+                </NxtLink>
+                <NxtLink href={"/about"}>
+                <Link textColor={"white"} fontWeight="black">
+                  About
+                </Link>
+                </NxtLink>
+                <NxtLink href={"/cause/list"}>
+                <Link textColor={"white"} fontWeight="black">
+                  Campaigns
+                </Link>
+                </NxtLink>
+                <NxtLink href={"/help"}>
+                <Link textColor={"white"} fontWeight="black">
+                  Help
+                </Link>
+                </NxtLink>
+              </HStack>
+            }
           {false && (
             <InputGroup w="96" display={{ base: "none", md: "flex" }}>
               <InputLeftElement color="white">
@@ -83,11 +109,8 @@ export function Nav(props: {
             </InputGroup>
           )}
 
-          <Flex></Flex>
-
           <Flex alignItems={"center"}>
             <Stack direction={"row"} spacing={7} align="center">
-
               {isAuthorized && !props.dashboardMode && (
                 <NxtLink href={"/cause/new"} passHref>
                   <Button

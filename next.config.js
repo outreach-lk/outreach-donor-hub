@@ -29,11 +29,6 @@ const nextConfig = {
 },
 async redirects() {
   return [
-    {
-      source: '/',
-      destination: '/cause/list',
-      permanent: true,
-    },
   ]
 },
 };
