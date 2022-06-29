@@ -129,7 +129,6 @@ export class EditorTree {
         }
         (_elem as HTMLImageElement).src = _block.media?.src || "";
         (_elem as HTMLImageElement).setAttribute("data--storage-path", data);
-        (_elem as HTMLImageElement).style.width = "50%";
         break;
       case "a":
         _elem = document.createElement("a");
