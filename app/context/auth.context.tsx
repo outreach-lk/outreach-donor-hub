@@ -130,15 +130,9 @@ export function AuthProvider<P>(props: PropsWithChildren<P>) {
           query: postSignInQuery
         });
       } else if ( session.isAuthorized && session.user ) {
-        if( session.user.role === UserRole.REGULAR ){
-          push({
-            pathname: '/cause/list'
-          })
-        } else if ( session.user.role === UserRole.ADMIN || session.user.role === UserRole.MODERATOR ){
-          push({
-            pathname: '/mod/dashboard'
-          })
-        }
+        push({
+          pathname: '/'
+        })
       }
     }
   }, [postSignInPath, session]);

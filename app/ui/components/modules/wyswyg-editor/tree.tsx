@@ -37,6 +37,7 @@ export class EditorTree {
       const curr = _blocks.get(sBlock.id);
       if (curr) {
         curr.rawValue = sBlock.rawValue;
+        curr.href = sBlock.href;
         curr.blockAlignment = sBlock.blockAlignment || BlockAlignment.left;
         curr.media = sBlock.media;
         curr.preventAlignmentChange = sBlock.preventAlignmentChange || false;
@@ -136,14 +137,14 @@ export class EditorTree {
         _elem.classList.add("block", "editor-a");
         if(!block){
           href = prompt("URL");
-        }else{
-          href = block.rawValue // FIXME: use a new block::href value
+        }else if (block.href){
+          href = block.href
+        }else {
+          href = "#";
         }
         if(href){
-          (_elem as HTMLAnchorElement).href = href || "";
+          (_elem as HTMLAnchorElement).href = href;
           (_elem as HTMLAnchorElement).target = "_blank";
-          (_elem as HTMLAnchorElement).innerHTML = href;
-
         } 
 
         break;
@@ -194,6 +195,7 @@ export class EditorTree {
           id: block.id,
           type: block.type,
           rawValue: block.rawValue,
+          href: block.href,
           blockAlignment: block.blockAlignment,
           media: block.media,
           nextBlockId: block.next?.id,

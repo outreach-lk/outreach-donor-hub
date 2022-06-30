@@ -16,6 +16,7 @@ export class EditorBlock {
     width?: number;
     height?: number;
   };
+  href?: string;
   popupOpen = false;
   _nextType: BlockType;
   id: string;
@@ -70,6 +71,10 @@ export class EditorBlock {
               this.tree.menu.current.style.top = `${
                 this.elem.offsetTop + this.elem.offsetHeight
               }px`;
+              this.tree.menu.current.style.right = `${
+                0
+              }px`;
+              this.tree.menu.current.style.left = 'auto'
             }
           });
           this.elem.focus();
@@ -107,7 +112,20 @@ export class EditorBlock {
       case "Enter":
         this.onEnter();
         break;
-      
+      case "Escape":
+        if(this.tree.menu.current){
+          this.tree.menu.current.style.visibility = 'hidden';
+          this.popupOpen = false;
+        }
+        break;
+      case "/":
+        if(this.popupOpen) break;
+        e.preventDefault();
+        if(this.tree.menu.current){
+          this.tree.menu.current.style.visibility = "visible";
+          this.popupOpen = true;
+        }
+        break;
     }
   }
 

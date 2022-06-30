@@ -160,6 +160,7 @@ export type SerializableBlock = {
     width?: number;
     height?: number;
   };
+  href? :string,
   nextBlockId?: string;
   preventDeletion?: boolean;
   preventAlignmentChange?: boolean;

@@ -28,6 +28,7 @@ import { storageClientFactory } from "../../../../api/clients";
 import { FileDto } from "../../../../types/dtos/remote-file.dtos";
 import { FileStorageProvider } from "../../../../types/enums/providers";
 import { isFileValidImage } from "../../../../utils/file-type-validation";
+import { dragElement } from "../../../../utils/handle-elem-drag";
 import { FileUploader } from "../uploader";
 import FilePicker from "../uploader/picker";
 import { EditorBlock } from "./editor-block";
@@ -55,6 +56,12 @@ export function BlockTypeSel(props: BlockTypeSelProps) {
 
   if (props.currentBlock?.hideMenu) return null;
   const [uploader, showUploader] = useState(false);
+
+  useEffect(()=>{
+    if(props.menuRef.current){
+      dragElement(props.menuRef.current)
+    }
+  },[props.menuRef])
 
   return (
     <Box ref={props.menuRef} className="editor-popover">
